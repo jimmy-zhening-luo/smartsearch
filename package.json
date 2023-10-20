@@ -1,0 +1,49 @@
+{
+  "name": "smart-search",
+  "version": "0.1.0",
+  "description": "Extend Quick Search by using the OpenAI API to allow natural language queries in addition to the standard first-token-to-engine mapping",
+  "type": "module",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimmy-zhening-luo/smart-search.git"
+  },
+  "author": "Jimmy Zhening Luo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimmy-zhening-luo/smart-search/issues"
+  },
+  "homepage": "https://github.com/jimmy-zhening-luo/smart-search#readme",
+  "scripts": {
+    "clean": "npm run clean:dist",
+    "clean:dist": "rimraf dist",
+
+    "lint": "eslint --ext .ts .",
+    "prebuild": "npm run lint",
+    "build": "tsc",
+    "build:clean": "npm run clean:dist && npm run build",
+    "b": "npm run build",
+    "cb": "npm run build:clean",
+
+    "start": "node dist/index.js",
+    "dev:start": "npm run build:clean && npm run start",
+    "dev": "npm run dev:start"
+  },
+  "engines": {
+    "node": ">=18.18.0",
+    "npm": ">=10.2.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "openai": "^4.12.4",
+    "rimraf": "^5.0.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.8.0",
+    "@typescript-eslint/parser": "^6.8.0",
+    "eslint": "^8.52.0",
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
+}
