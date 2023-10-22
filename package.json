@@ -17,14 +17,12 @@
   "scripts": {
     "clean": "npm run clean:dist",
     "clean:dist": "rimraf dist",
-
-    "lint": "eslint --ext .ts .",
+    "lint": "eslint --cache src/**/*",
     "prebuild": "npm run lint",
     "build": "tsc",
     "build:clean": "npm run clean:dist && npm run build",
     "b": "npm run build",
     "cb": "npm run build:clean",
-
     "start": "node dist/index.js",
     "dev:start": "npm run build:clean && npm run start",
     "dev": "npm run dev:start"

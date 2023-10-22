@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import OpenAI from "openai";
-import OpenAiClient from "./client/index.js";
+import OpenAiClient from "./client/OpenAiClient.js";
 
 function initialize(): OpenAiClient {
   dotenv.config();
@@ -15,9 +15,10 @@ function initialize(): OpenAiClient {
 }
 
 async function main(client: OpenAiClient): Promise<void> {
-  const choices: OpenAI.ChatCompletion.Choice[] = await client.complete("Say 'hello world'");
+  const completion: OpenAI.ChatCompletion = await client.complete("Say 'hello world'");
 
-  console.log(choices);
+  console.log(completion.choices);
+  console.log(completion.model);
 }
 
 main(initialize());
