@@ -1,3 +1,1 @@
-export default abstract class Endpoint {
-
-}
+export default abstract class Endpoint {}
