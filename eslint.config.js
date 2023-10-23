@@ -93,8 +93,6 @@ export default [
       "@typescript-eslint/strict-boolean-expressions": "error",
       "@typescript-eslint/switch-exhaustiveness-check": "error",
       "@typescript-eslint/unified-signatures": "error",
-      "default-param-last": "off",
-      "@typescript-eslint/default-param-last": "error",
       "no-array-constructor": "off",
       "@typescript-eslint/no-array-constructor": "error",
       "no-extra-semi": "off",
