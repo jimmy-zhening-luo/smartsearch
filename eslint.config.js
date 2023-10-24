@@ -106,7 +106,13 @@ export default [
       "no-throw-literal": "off",
       "@typescript-eslint/no-throw-literal": "error",
       "no-unused-expressions": "off",
-      "@typescript-eslint/no-unused-expressions": "error",
+      "@typescript-eslint/no-unused-expressions": [
+        "error",
+        {
+          allowShortCircuit: true,
+          allowTernary: true,
+        },
+      ],
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error",
       "no-useless-constructor": "off",
