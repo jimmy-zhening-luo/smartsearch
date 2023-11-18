@@ -1,4 +1,4 @@
-// v2.1.1
+// v3.0.0
 import js from "@eslint/js";
 import tsLint from "@typescript-eslint/eslint-plugin";
 import tsLintParser from "@typescript-eslint/parser";
@@ -411,7 +411,7 @@ const jsStylisticRules = {
       allowSingleLineBlocks: true,
     },
   ],
-  // TODO: Dial in exact spacing between various statements: https://eslint.style/rules/default/padding-line-between-statements
+  // https://eslint.style/rules/default/padding-line-between-statements
   "@stylistic/padding-line-between-statements": [
     error,
     {
