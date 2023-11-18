@@ -11,19 +11,22 @@ import ModelsHandler from "./handlers/ModelsHandler.js";
 export default class OpenAIClient {
   openai: OpenAI;
 
-  constructor(
-    openai?: { apiKey: string; organization?: string } | OpenAI | OpenAIClient,
-  ) {
+  constructor(openai?:
+  { apiKey: string; organization?: string }
+  | OpenAI
+  | OpenAIClient) {
     try {
       if (openai === undefined) this.openai = this.initialize();
       else if (openai instanceof OpenAI) this.openai = openai;
       else if ("apiKey" in openai) {
-        this.openai =
-          "organization" in openai
+        this.openai
+          = "organization" in openai
             ? new OpenAI(openai)
             : new OpenAI({ apiKey: openai.apiKey });
-      } else this.openai = openai.openai;
-    } catch (e) {
+      }
+      else this.openai = openai.openai;
+    }
+    catch (e) {
       throw new EvalError(
         `OpenAIClient: ctor: Error constructing OpenAIClient instance`,
         {
@@ -37,7 +40,8 @@ export default class OpenAIClient {
     try {
       try {
         dotenv.config();
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `OpenAIClient: initialize: Error hydrating dotenv`,
           {
@@ -45,14 +49,17 @@ export default class OpenAIClient {
           },
         );
       }
+
       try {
         const apiKey: string = process.env.OPENAI_API_KEY ?? "";
         const organization: string = process.env.OPENAI_ORG_ID ?? "";
+
         return new OpenAI({
           apiKey: apiKey,
           organization: organization,
         });
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `OpenAIClient: initialize: Error calling OpenAI native ctor by passing params populated from env`,
           {
@@ -60,7 +67,8 @@ export default class OpenAIClient {
           },
         );
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `OpenAIClient: initialize: Error initializing OpenAI native client from env`,
         {
@@ -71,23 +79,32 @@ export default class OpenAIClient {
   }
 
   // ChatCompletion
-  async chat(
-    ...args: Parameters<ChatHandler["build"]>
-  ): ReturnType<ChatHandler["submit"]> {
+  async chat(...args: Parameters<ChatHandler["build"]>):
+  ReturnType<ChatHandler["submit"]> {
     try {
-      return await new ChatHandler(this.openai, ...args).submit();
-    } catch (e) {
-      throw new EvalError(`OpenAIClient: chat: Error submitting chat request`, {
-        cause: e,
-      });
+      return await new ChatHandler(
+        this.openai,
+        ...args,
+      )
+        .submit();
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: chat: Error submitting chat request`,
+        {
+          cause: e,
+        },
+      );
     }
   }
 
   // Models
   async models(): ReturnType<ModelsHandler["submit"]> {
     try {
-      return await new ModelsHandler(this.openai).submit();
-    } catch (e) {
+      return await new ModelsHandler(this.openai)
+        .submit();
+    }
+    catch (e) {
       throw new EvalError(
         `OpenAIClient: models: Error submitting models request`,
         {

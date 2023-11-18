@@ -229,7 +229,7 @@ export default [
       "@stylistic/eol-last": error,
       "@stylistic/function-call-argument-newline": [
         error,
-        "consistent",
+        "always",
       ],
       "@stylistic/function-call-spacing": error,
       "@stylistic/function-paren-newline": [
@@ -345,7 +345,7 @@ export default [
       "@stylistic/newline-per-chained-call": [
         error,
         {
-          ignoreChainWithDepth: 2,
+          ignoreChainWithDepth: 1,
         },
       ],
       "@stylistic/no-extra-parens": error,

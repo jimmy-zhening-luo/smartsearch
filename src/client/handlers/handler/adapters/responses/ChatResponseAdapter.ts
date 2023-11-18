@@ -9,15 +9,13 @@ type ChatResponseOutput = {
 };
 
 export default class ChatResponseAdapter extends ResponseAdapter<
-  ChatResponsePayload,
-  ChatResponseOutput
+ChatResponsePayload,
+ChatResponseOutput
 > {
   parse(payload: ChatResponsePayload): ChatResponseOutput {
     try {
       if (payload.choices.length === 0 || payload.choices[0] === undefined)
-        throw new SyntaxError(
-          `ChatResponseAdapter: parse: Response contains no 'choices' records`,
-        );
+        throw new SyntaxError(`ChatResponseAdapter: parse: Response contains no 'choices' records`);
       else {
         try {
           return {
@@ -25,7 +23,8 @@ export default class ChatResponseAdapter extends ResponseAdapter<
             answer: payload.choices[0].message.content ?? "",
             exit: payload.choices[0].finish_reason,
           };
-        } catch (e) {
+        }
+        catch (e) {
           throw new SyntaxError(
             `ChatResponseAdapter: parse: Error building response 'output' from properties in 'payload'`,
             {
@@ -34,7 +33,8 @@ export default class ChatResponseAdapter extends ResponseAdapter<
           );
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `ChatResponseAdapter: parse: Error parsing response`,
         {

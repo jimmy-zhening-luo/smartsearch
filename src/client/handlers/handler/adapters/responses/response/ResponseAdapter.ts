@@ -11,7 +11,8 @@ export default abstract class ResponseAdapter<
     try {
       try {
         super();
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `ResponseAdapter: ctor: Error calling parent ctor`,
           {
@@ -22,7 +23,8 @@ export default abstract class ResponseAdapter<
 
       try {
         this.payload = payload;
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `ResponseAdapter: ctor: Error setting payload from ctor input`,
           {
@@ -33,7 +35,8 @@ export default abstract class ResponseAdapter<
 
       try {
         this.output = this.parse(this.payload);
-      } catch (e) {
+      }
+      catch (e) {
         throw new EvalError(
           `ResponseAdapter: ctor: Error parsing output from payload`,
           {
@@ -41,7 +44,8 @@ export default abstract class ResponseAdapter<
           },
         );
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `ResponseAdapter: ctor: Error constructing ResponseAdapter instance`,
         {

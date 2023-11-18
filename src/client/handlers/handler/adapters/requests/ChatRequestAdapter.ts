@@ -3,7 +3,9 @@ import RequestAdapter from "./request/RequestAdapter.js";
 
 type ChatRequestPayload = OpenAI.ChatCompletionCreateParamsNonStreaming;
 
-export default class ChatRequestAdapter extends RequestAdapter<ChatRequestPayload> {
+export default class ChatRequestAdapter extends RequestAdapter<
+ChatRequestPayload
+> {
   build(
     userPrompt: string,
     systemPrompt: string = "",
@@ -27,7 +29,8 @@ export default class ChatRequestAdapter extends RequestAdapter<ChatRequestPayloa
         });
 
       return payload;
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `ChatRequestAdapter: build: Error building payload`,
         {

@@ -1,6 +1,7 @@
 import type OpenAI from "openai";
 import type RequestAdapter from "./adapters/requests/request/RequestAdapter.js";
-import type ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
+import type ResponseAdapter from
+  "./adapters/responses/response/ResponseAdapter.js";
 
 export default abstract class Handler<
   Req extends RequestAdapter<Req["payload"]>,
@@ -15,7 +16,8 @@ export default abstract class Handler<
   ) {
     try {
       this.client = client;
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Handler: ctor: Error setting 'client' property from ctor input`,
         {
@@ -23,9 +25,11 @@ export default abstract class Handler<
         },
       );
     }
+
     try {
       this.request = this.build(...inputs);
-    } catch (e) {
+    }
+    catch (e) {
       throw new EvalError(
         `Handler: ctor: Error building 'request' property from ctor inputs`,
         {
@@ -37,10 +41,10 @@ export default abstract class Handler<
 
   async submit(): Promise<Res["output"]> {
     try {
-      return this.handle(this.request.payload).then(
-        response => this.parse(response).output,
-      );
-    } catch (e) {
+      return this.handle(this.request.payload)
+        .then(response => this.parse(response).output);
+    }
+    catch (e) {
       throw new EvalError(
         `Handler: submit: Error submitting request payload and parsing response payload`,
         {

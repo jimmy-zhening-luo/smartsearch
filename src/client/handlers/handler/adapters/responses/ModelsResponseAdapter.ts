@@ -7,21 +7,20 @@ type ModelsResponseOutput = {
 };
 
 export default class ModelsResponseAdapter extends ResponseAdapter<
-  ModelsResponsePayload,
-  ModelsResponseOutput
+ModelsResponsePayload,
+ModelsResponseOutput
 > {
   parse(payload: ModelsResponsePayload): ModelsResponseOutput {
     try {
       if (payload.data.length === 0)
-        throw new SyntaxError(
-          `ModelsResponseAdapter: parse: Response contains no 'data' records`,
-        );
+        throw new SyntaxError(`ModelsResponseAdapter: parse: Response contains no 'data' records`);
       else {
         try {
           return {
             models: payload.data.map(model => model.id),
           };
-        } catch (e) {
+        }
+        catch (e) {
           throw new SyntaxError(
             `ModelsResponseAdapter: parse: Error building response 'output' from properties in 'payload'`,
             {
@@ -30,7 +29,8 @@ export default class ModelsResponseAdapter extends ResponseAdapter<
           );
         }
       }
-    } catch (e) {
+    }
+    catch (e) {
       throw new SyntaxError(
         `ModelsResponseAdapter: parse: Error parsing response`,
         {

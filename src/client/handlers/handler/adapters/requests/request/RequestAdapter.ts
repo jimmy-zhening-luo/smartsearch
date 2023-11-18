@@ -9,20 +9,29 @@ export default abstract class RequestAdapter<
     try {
       try {
         super();
-      } catch (e) {
-        throw new EvalError(`RequestAdapter: ctor: Error calling parent ctor`, {
-          cause: e,
-        });
+      }
+      catch (e) {
+        throw new EvalError(
+          `RequestAdapter: ctor: Error calling parent ctor`,
+          {
+            cause: e,
+          },
+        );
       }
 
       try {
         this.payload = this.build(...inputs);
-      } catch (e) {
-        throw new EvalError(`RequestAdapter: ctor: Error building payload`, {
-          cause: e,
-        });
       }
-    } catch (e) {
+      catch (e) {
+        throw new EvalError(
+          `RequestAdapter: ctor: Error building payload`,
+          {
+            cause: e,
+          },
+        );
+      }
+    }
+    catch (e) {
       throw new EvalError(
         `RequestAdapter: ctor: Error constructing RequestAdapter instance`,
         {
