@@ -1,4 +1,4 @@
-// v2.0.0
+// v2.0.1
 import tsLint from "@typescript-eslint/eslint-plugin";
 import tsLintParser from "@typescript-eslint/parser";
 import stylistic from "@stylistic/eslint-plugin";
