@@ -1,7 +1,6 @@
 import type OpenAI from "openai";
 import type RequestAdapter from "./adapters/requests/request/RequestAdapter.js";
-import type ResponseAdapter from
-  "./adapters/responses/response/ResponseAdapter.js";
+import type ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
 
 export default abstract class Handler<
   Req extends RequestAdapter<Req["payload"]>,
@@ -10,10 +9,7 @@ export default abstract class Handler<
   protected readonly client: OpenAI;
   protected readonly request: Req;
 
-  constructor(
-    client: OpenAI,
-    ...inputs: Parameters<Handler<Req, Res>["build"]>
-  ) {
+  constructor(client: OpenAI, ...inputs: Parameters<Handler<Req, Res>["build"]>) {
     try {
       this.client = client;
     }
@@ -41,7 +37,8 @@ export default abstract class Handler<
 
   async submit(): Promise<Res["output"]> {
     try {
-      return this.handle(this.request.payload)
+      return this
+        .handle(this.request.payload)
         .then(response => this.parse(response).output);
     }
     catch (e) {

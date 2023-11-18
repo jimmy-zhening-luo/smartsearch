@@ -1,8 +1,7 @@
 import Adapter from "../../adapter/Adapter.js";
 
-export default abstract class RequestAdapter<
-  RequestPayload,
-> extends Adapter<RequestPayload> {
+export default abstract class RequestAdapter< RequestPayload>
+  extends Adapter<RequestPayload> {
   readonly payload: RequestPayload;
 
   constructor(...inputs: Parameters<RequestAdapter<RequestPayload>["build"]>) {

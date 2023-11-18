@@ -6,10 +6,8 @@ type ModelsResponseOutput = {
   models: string[];
 };
 
-export default class ModelsResponseAdapter extends ResponseAdapter<
-ModelsResponsePayload,
-ModelsResponseOutput
-> {
+export default class ModelsResponseAdapter
+  extends ResponseAdapter<ModelsResponsePayload, ModelsResponseOutput> {
   parse(payload: ModelsResponsePayload): ModelsResponseOutput {
     try {
       if (payload.data.length === 0)

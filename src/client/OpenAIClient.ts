@@ -11,10 +11,11 @@ import ModelsHandler from "./handlers/ModelsHandler.js";
 export default class OpenAIClient {
   openai: OpenAI;
 
-  constructor(openai?:
-  { apiKey: string; organization?: string }
-  | OpenAI
-  | OpenAIClient) {
+  constructor(
+    openai?: { apiKey: string; organization?: string }
+    | OpenAI
+    | OpenAIClient,
+  ) {
     try {
       if (openai === undefined) this.openai = this.initialize();
       else if (openai instanceof OpenAI) this.openai = openai;
@@ -79,8 +80,7 @@ export default class OpenAIClient {
   }
 
   // ChatCompletion
-  async chat(...args: Parameters<ChatHandler["build"]>):
-  ReturnType<ChatHandler["submit"]> {
+  async chat(...args: Parameters<ChatHandler["build"]>): ReturnType<ChatHandler["submit"]> {
     try {
       return await new ChatHandler(
         this.openai,

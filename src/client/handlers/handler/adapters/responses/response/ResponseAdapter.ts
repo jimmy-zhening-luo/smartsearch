@@ -1,9 +1,7 @@
 import Adapter from "../../adapter/Adapter.js";
 
-export default abstract class ResponseAdapter<
-  ResponsePayload,
-  ResponseOutput,
-> extends Adapter<ResponsePayload> {
+export default abstract class ResponseAdapter< ResponsePayload, ResponseOutput>
+  extends Adapter<ResponsePayload> {
   readonly payload: ResponsePayload;
   readonly output: ResponseOutput;
 

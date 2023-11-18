@@ -8,14 +8,14 @@ type ChatResponseOutput = {
   exit: OpenAI.ChatCompletion.Choice["finish_reason"];
 };
 
-export default class ChatResponseAdapter extends ResponseAdapter<
-ChatResponsePayload,
-ChatResponseOutput
-> {
+export default class ChatResponseAdapter
+  extends ResponseAdapter<ChatResponsePayload, ChatResponseOutput> {
   parse(payload: ChatResponsePayload): ChatResponseOutput {
     try {
       if (payload.choices.length === 0 || payload.choices[0] === undefined)
-        throw new SyntaxError(`ChatResponseAdapter: parse: Response contains no 'choices' records`);
+        throw new SyntaxError(
+          `ChatResponseAdapter: parse: Response contains no 'choices' records`,
+        );
       else {
         try {
           return {

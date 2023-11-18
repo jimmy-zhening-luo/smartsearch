@@ -1,8 +1,6 @@
 import Handler from "./handler/Handler.js";
-import ChatRequestAdapter from
-  "./handler/adapters/requests/ChatRequestAdapter.js";
-import ChatResponseAdapter from
-  "./handler/adapters/responses/ChatResponseAdapter.js";
+import ChatRequestAdapter from "./handler/adapters/requests/ChatRequestAdapter.js";
+import ChatResponseAdapter from "./handler/adapters/responses/ChatResponseAdapter.js";
 
 export default class ChatHandler extends Handler<
 ChatRequestAdapter,

@@ -1,15 +1,12 @@
 import Handler from "./handler/Handler.js";
-import ModelsRequestAdapter from
-  "./handler/adapters/requests/ModelsRequestAdapter.js";
-import ModelsResponseAdapter from
-  "./handler/adapters/responses/ModelsResponseAdapter.js";
+import ModelsRequestAdapter from "./handler/adapters/requests/ModelsRequestAdapter.js";
+import ModelsResponseAdapter from "./handler/adapters/responses/ModelsResponseAdapter.js";
 
 export default class ChatHandler extends Handler<
 ModelsRequestAdapter,
 ModelsResponseAdapter
 > {
-  build(...inputs: Parameters<ModelsRequestAdapter["build"]>):
-  ModelsRequestAdapter {
+  build(...inputs: Parameters<ModelsRequestAdapter["build"]>): ModelsRequestAdapter {
     try {
       return new ModelsRequestAdapter(...inputs);
     }
@@ -37,8 +34,7 @@ ModelsResponseAdapter
     }
   }
 
-  parse(responsePayload: ModelsResponseAdapter["payload"]):
-  ModelsResponseAdapter {
+  parse(responsePayload: ModelsResponseAdapter["payload"]): ModelsResponseAdapter {
     try {
       return new ModelsResponseAdapter(responsePayload);
     }
