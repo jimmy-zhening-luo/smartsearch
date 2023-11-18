@@ -1,4 +1,4 @@
-// v2.0.1
+// v2.1.0
 import tsLint from "@typescript-eslint/eslint-plugin";
 import tsLintParser from "@typescript-eslint/parser";
 import stylistic from "@stylistic/eslint-plugin";
@@ -229,12 +229,12 @@ export default [
       "@stylistic/eol-last": error,
       "@stylistic/function-call-argument-newline": [
         error,
-        "always",
+        "consistent",
       ],
       "@stylistic/function-call-spacing": error,
       "@stylistic/function-paren-newline": [
         error,
-        "multiline",
+        "multiline-arguments",
       ],
       "@stylistic/generator-star-spacing": [
         error,
@@ -243,10 +243,7 @@ export default [
           after: false,
         },
       ],
-      "@stylistic/implicit-arrow-linebreak": [
-        error,
-        "beside",
-      ],
+      // https://eslint.style/rules/default/indent
       "@stylistic/indent": [
         error,
         2,
@@ -319,10 +316,9 @@ export default [
         {
           code: 80,
           tabWidth: 2,
-          comments: 80,
           ignoreComments: true,
           ignoreUrls: true,
-          ignoreStrings: false,
+          ignoreStrings: true,
           ignoreTemplateLiterals: true,
           ignoreRegExpLiterals: true,
 
