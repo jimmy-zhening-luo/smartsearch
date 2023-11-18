@@ -1,4 +1,4 @@
-// v2.1.0
+// v2.1.1
 import tsLint from "@typescript-eslint/eslint-plugin";
 import tsLintParser from "@typescript-eslint/parser";
 import stylistic from "@stylistic/eslint-plugin";
@@ -18,13 +18,7 @@ const any = "any";
  * i.e. Lint Config 0 executes, then Lint Config 1 executes.)
 */
 export default [
-  /** Lint Config 0:
-   * Disable legacy ESLint style rules, which may conflict with @stylistic/eslint-plugin
-   * Reference: https://github.com/eslint-stylistic/eslint-stylistic/blob/main/packages/eslint-plugin/configs/disable-legacy.ts
-  */
-  // stylistic.configs["disable-legacy"],
-
-  /** Lint Config 1 (main):
+  /** Lint Config 0 (main):
    * Enable ESLint rules (@typescript-eslint/ and @stylistic/ rules)
   */
   {

@@ -17,7 +17,7 @@
   "scripts": {
     "clean": "shx rm -rf dist",
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js **",
-    "lint:fix": "shx rm -rf .eslintcache && eslint --fix --cache --cache-strategy content -c eslint.config.js **",
+    "lint:fix": "eslint --fix --cache --cache-strategy content -c eslint.config.js **",
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc",
     "start": "node dist/index.js",
