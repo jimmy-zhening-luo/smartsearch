@@ -1,4 +1,4 @@
-// v3.0.0
+// v4.0.0
 import js from "@eslint/js";
 import tsLint from "@typescript-eslint/eslint-plugin";
 import tsLintParser from "@typescript-eslint/parser";
@@ -20,7 +20,7 @@ const files = {
   js: ["eslint.config.js"],
 };
 
-const processorConfig = {
+const baseProcessorConfig = {
   linterOptions: {
     noInlineConfig: true,
     reportUnusedDisableDirectives: true,
@@ -42,18 +42,19 @@ const processorConfig = {
   },
 };
 
-const tsConfigOptions = {
-  ...processorConfig,
-  files: files.ts,
-};
-
-const jsConfigOptions = {
-  ...processorConfig,
-  files: files.js,
+const configOptions = {
+  ts: {
+    ...baseProcessorConfig,
+    files: files.ts,
+  },
+  js: {
+    ...baseProcessorConfig,
+    files: files.js,
+  },
 };
 
 /* ESLint rules */
-const tsLintCustomRules = {
+const esLintTypeScriptCustomRules = {
   "@typescript-eslint/adjacent-overload-signatures": error,
   "@typescript-eslint/await-thenable": error,
   "@typescript-eslint/ban-ts-comment": error,
@@ -150,7 +151,8 @@ const tsLintCustomRules = {
   "@typescript-eslint/require-await": error,
 };
 
-const jsStylisticRules = {
+const jsOnlyStylisticCustomRules
+= {
   // JavaScript rules
   "@stylistic/array-bracket-newline": [
     error,
@@ -563,11 +565,13 @@ const jsStylisticRules = {
 
 };
 
-const tsStylisticRules = {
-  ...jsStylisticRules,
+const tsPlusJsStylisticCustomRules = {
+
+  ...jsOnlyStylisticCustomRules,
   // TypeScript rules
   "@stylistic/member-delimiter-style": error,
   "@stylistic/type-annotation-spacing": error,
+
 };
 
 /** ESLint flat config
@@ -579,19 +583,23 @@ export default [
    * Enable ESLint rules (@typescript-eslint/ and @stylistic/ rules)
   */
   {
-    ...jsConfigOptions,
+    ...configOptions.js,
     rules: js.configs.recommended.rules,
   },
   {
-    ...jsConfigOptions,
+    ...configOptions.js,
     rules: stylistic.configs["disable-legacy"].rules,
   },
   {
-    ...jsConfigOptions,
-    rules: jsStylisticRules,
+    ...configOptions.js,
+    rules: jsOnlyStylisticCustomRules,
   },
   {
-    ...tsConfigOptions,
+    ...configOptions.ts,
+    rules: stylistic.configs["disable-legacy"].rules,
+  },
+  {
+    ...configOptions.ts,
     rules: {
       ...tsLint.configs["eslint-recommended"].rules,
       "arrow-body-style": off,
@@ -599,15 +607,11 @@ export default [
     },
   },
   {
-    ...tsConfigOptions,
-    rules: tsLintCustomRules,
+    ...configOptions.ts,
+    rules: esLintTypeScriptCustomRules,
   },
   {
-    ...tsConfigOptions,
-    rules: stylistic.configs["disable-legacy"].rules,
-  },
-  {
-    ...tsConfigOptions,
-    rules: tsStylisticRules,
+    ...configOptions.ts,
+    rules: tsPlusJsStylisticCustomRules,
   },
 ];
