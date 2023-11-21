@@ -2,7 +2,7 @@ import Handler from "./handler/Handler.js";
 import ModelsRequestAdapter from "./handler/adapters/requests/ModelsRequestAdapter.js";
 import ModelsResponseAdapter from "./handler/adapters/responses/ModelsResponseAdapter.js";
 
-export default class ChatHandler extends Handler<
+export default class ModelsHandler extends Handler<
 ModelsRequestAdapter,
 ModelsResponseAdapter
 > {
