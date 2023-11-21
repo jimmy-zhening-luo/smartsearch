@@ -8,7 +8,7 @@ export default class ChatRequestAdapter
   build(
     userPrompt: string,
     systemPrompt: string = "",
-    model: string = "gpt-4",
+    model: ChatRequestPayload["model"] = "gpt-4",
   ): ChatRequestPayload {
     try {
       const payload: ChatRequestPayload = {
