@@ -3,7 +3,7 @@ import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ModelsResponsePayload = OpenAI.Models.ModelsPage;
 type ModelsResponseOutput = {
-  models: string[];
+  models: Array<Extract<ModelsResponsePayload["data"][0]["id"], string>>;
 };
 
 export default class ModelsResponseAdapter
