@@ -1,13 +1,12 @@
 import dotenv from "dotenv";
-import path from "path";
 import OpenAI from "openai";
 import ChatHandler from "./handlers/ChatHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
+import InputDirectory from "./directories/InputDirectory.js";
+import OutputDirectory from "./directories/OutputDirectory.js";
 // import fs from 'fs';
 // import fetch from 'node-fetch';
 // import { toFile } from 'openai';
-
-const DEFAULT_OUTPUT_RELATIVE_PATH: string = "output";
 
 export default class OpenAIClient {
   constructor(
@@ -17,15 +16,25 @@ export default class OpenAIClient {
     }
     | OpenAI
     | OpenAIClient,
-    outputDirectory?: string,
+    outputDirectory?: string | OutputDirectory,
+    inputDirectory?: string | OutputDirectory,
   ) {
     try {
       if (openai instanceof OpenAIClient) {
         this.openai = openai.openai;
-        this.outputDirectory = outputDirectory ?? openai.outputDirectory;
+        this.outputDirectory = outputDirectory === undefined
+          ? openai.outputPath
+          : new OutputDirectory(outputDirectory);
+        this.inputDirectory = inputDirectory === undefined
+          ? openai.inputPath
+          : new InputDirectory(inputDirectory);
       }
       else {
-        if (!openai || outputDirectory === undefined) {
+        if (
+          !openai
+          || outputDirectory === undefined
+          || inputDirectory === undefined
+        ) {
           try {
             dotenv.config();
           }
@@ -51,21 +60,14 @@ export default class OpenAIClient {
           }
         }
 
-        this.outputDirectory = outputDirectory
-          ?? process.env.OUTPUT_DIRECTORY
-          ?? path.join(
-            process.cwd(),
-            DEFAULT_OUTPUT_RELATIVE_PATH,
-          );
+        this.outputDirectory = outputDirectory ?? process.env.OUTPUT_DIRECTORY;
+        this.inputDirectory = inputDirectory ?? process.env.INPUT_DIRECTORY;
       }
     }
-
     catch (e) {
       throw new EvalError(
         `OpenAIClient: ctor: Failed to construct OpenAIClient instance`,
-        {
-          cause: e,
-        },
+        { cause: e },
       );
     }
   }
@@ -88,39 +90,75 @@ export default class OpenAIClient {
     catch (e) {
       throw new EvalError(
         `OpenAIClient: set openai: Failed to set openai`,
-        {
-          cause: e,
-        },
+        { cause: e },
       );
     }
   }
 
-  get outputDirectory(): string {
-    return this.outputDirectory;
+  protected get inputDirectory(): InputDirectory {
+    return this.inputDirectory;
   }
 
-  set outputDirectory(outputDirectory: string) {
+  protected set inputDirectory(
+    inputDirectory: undefined | string | InputDirectory,
+  ) {
     try {
-      if (outputDirectory === "")
-        throw new SyntaxError(`outputDirectory cannot be empty`);
-      else if (path.parse(outputDirectory).base !== "")
-        throw new TypeError(`outputDirectory must be a directory, not a filepath.`);
-      else {
-        this.outputDirectory = path.normalize(
-          path.resolve(outputDirectory),
-        );
-        if (this.outputDirectory === path.normalize(process.cwd()))
-          this.outputDirectory = path.normalize(
-            path.join(process.cwd(), DEFAULT_OUTPUT_RELATIVE_PATH),
-          );
-      }
+      this.inputDirectory = new InputDirectory(inputDirectory);
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: set outputDirectory: Failed to set outputDirectory`,
-        {
-          cause: e,
-        },
+        `OpenAIClient: protected set inputDirectory: Failed to set inputDirectory`,
+        { cause: e },
+      );
+    }
+  }
+
+  get inputPath(): string {
+    return this.inputDirectory.path;
+  }
+
+  set inputPath(inputPath: undefined | string | InputDirectory) {
+    try {
+      this.inputDirectory = inputPath;
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: set inputPath: Failed to set inputPath`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected get outputDirectory(): OutputDirectory {
+    return this.outputDirectory;
+  }
+
+  protected set outputDirectory(
+    outputDirectory: undefined | string | OutputDirectory,
+  ) {
+    try {
+      this.outputDirectory = new OutputDirectory(outputDirectory);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: protected set outputDirectory: Failed to set outputDirectory`,
+        { cause: e },
+      );
+    }
+  }
+
+  get outputPath(): string {
+    return this.outputDirectory.path;
+  }
+
+  set outputPath(outputPath: undefined | string | OutputDirectory) {
+    try {
+      this.outputDirectory = outputPath;
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: set outputPath: Failed to set outputPath`,
+        { cause: e },
       );
     }
   }
@@ -137,9 +175,7 @@ export default class OpenAIClient {
     catch (e) {
       throw new EvalError(
         `OpenAIClient: chat: Error submitting chat request`,
-        {
-          cause: e,
-        },
+        { cause: e },
       );
     }
   }
@@ -153,9 +189,7 @@ export default class OpenAIClient {
     catch (e) {
       throw new EvalError(
         `OpenAIClient: models: Error submitting models request`,
-        {
-          cause: e,
-        },
+        { cause: e },
       );
     }
   }
