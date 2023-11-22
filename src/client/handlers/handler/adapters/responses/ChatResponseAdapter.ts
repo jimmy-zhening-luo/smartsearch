@@ -3,9 +3,9 @@ import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ChatResponsePayload = OpenAI.ChatCompletion;
 type ChatResponseOutput = {
-  model: string;
   answer: string;
-  exit: OpenAI.ChatCompletion.Choice["finish_reason"];
+  model: Extract<ChatResponsePayload["model"], string>;
+  exit: Extract<OpenAI.ChatCompletion.Choice["finish_reason"], string>;
 };
 
 export default class ChatResponseAdapter
@@ -19,8 +19,8 @@ export default class ChatResponseAdapter
       else {
         try {
           return {
-            model: payload.model,
             answer: payload.choices[0].message.content ?? "",
+            model: payload.model,
             exit: payload.choices[0].finish_reason,
           };
         }
