@@ -7,7 +7,7 @@ async function main(): Promise<void> {
 
     console.log(chatAnswer);
 
-    const modelsList: string[] = (await client.models()).models;
+    const modelsList: string[] = await client.models();
 
     console.log(modelsList);
   }

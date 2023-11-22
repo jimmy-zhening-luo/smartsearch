@@ -2,9 +2,7 @@ import type OpenAI from "openai";
 import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ModelsResponsePayload = OpenAI.Models.ModelsPage;
-type ModelsResponseOutput = {
-  models: Array<Extract<ModelsResponsePayload["data"][0]["id"], string>>;
-};
+type ModelsResponseOutput = Array<Extract<ModelsResponsePayload["data"][0]["id"], string>>;
 
 export default class ModelsResponseAdapter
   extends ResponseAdapter<ModelsResponsePayload, ModelsResponseOutput> {
@@ -14,9 +12,7 @@ export default class ModelsResponseAdapter
         throw new SyntaxError(`ModelsResponseAdapter: parse: Response contains no 'data' records`);
       else {
         try {
-          return {
-            models: payload.data.map(model => model.id),
-          };
+          return payload.data.map(model => model.id);
         }
         catch (e) {
           throw new SyntaxError(
