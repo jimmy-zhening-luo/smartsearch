@@ -1,23 +1,12 @@
 import path from "path";
 
 export default class Directory {
-  constructor(pathString: string | Directory = process.cwd()) {
-    try {
-      this.path = pathString;
-    }
-    catch (e) {
-      throw new EvalError(
-        `Directory: constructor: Failed to create Directory instance`,
-        { cause: e },
-      );
-    }
-  }
+  readonly path: string;
 
-  get path(): string {
-    return this.path;
-  }
-
-  set path(pathString: string | Directory) {
+  constructor(
+    pathString: string | Directory = process.cwd(),
+    defaultRelativePathFromProjectRoot?: string,
+  ) {
     try {
       if (pathString instanceof Directory)
         this.path = pathString.path;
@@ -35,11 +24,20 @@ export default class Directory {
         );
         if (this.path === "")
           throw new EvalError(`pathString param was non-empty, resolved without falling back to the project directory, but somehow resolved to an empty string. This should never happen, because pathString should be the absolute, fully-qualified path for a directory.`);
+        else if (this.path === path.normalize(process.cwd()))
+          this.path = path.normalize(
+            defaultRelativePathFromProjectRoot !== undefined
+              ? path.join(
+                process.cwd(),
+                defaultRelativePathFromProjectRoot,
+              )
+              : process.cwd(),
+          );
       }
     }
     catch (e) {
       throw new EvalError(
-        `Directory: set path: Failed to set pathString`,
+        `Directory: constructor: Failed to create Directory instance`,
         { cause: e },
       );
     }
