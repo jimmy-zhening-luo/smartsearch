@@ -5,7 +5,7 @@ type ChatResponsePayload = OpenAI.ChatCompletion;
 type ChatResponseOutput = {
   answer: string;
   model: Extract<ChatResponsePayload["model"], string>;
-  exit: Extract<OpenAI.ChatCompletion.Choice["finish_reason"], string>;
+  exit: Extract<ChatResponsePayload["choices"][0]["finish_reason"], string>;
 };
 
 export default class ChatResponseAdapter
