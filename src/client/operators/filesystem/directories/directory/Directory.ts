@@ -42,4 +42,8 @@ export default class Directory {
       );
     }
   }
+
+  toString(): string {
+    return this.path;
+  }
 }
