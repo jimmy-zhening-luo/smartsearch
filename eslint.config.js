@@ -13,6 +13,7 @@ const off = "off";
 const always = "always";
 const never = "never";
 const any = "any";
+const consistent = "consistent";
 
 /* ESLint config options */
 const files = {
@@ -156,10 +157,7 @@ const jsOnlyStylisticCustomRules
   // JavaScript rules
   "@stylistic/array-bracket-newline": [
     error,
-    {
-      multiline: true,
-      minItems: 2,
-    },
+    consistent,
   ],
   "@stylistic/array-bracket-spacing": [
     error,
@@ -172,7 +170,7 @@ const jsOnlyStylisticCustomRules
   ],
   "@stylistic/array-element-newline": [
     error,
-    "consistent",
+    consistent,
   ],
   "@stylistic/arrow-parens": [
     error,
@@ -213,7 +211,7 @@ const jsOnlyStylisticCustomRules
   "@stylistic/eol-last": error,
   "@stylistic/function-call-argument-newline": [
     error,
-    "consistent",
+    consistent,
   ],
   "@stylistic/function-call-spacing": error,
   "@stylistic/function-paren-newline": [
@@ -316,7 +314,7 @@ const jsOnlyStylisticCustomRules
   ],
   "@stylistic/multiline-ternary": [
     error,
-    "always-multiline",
+    "always",
   ],
   "@stylistic/new-parens": [
     error,
@@ -363,7 +361,7 @@ const jsOnlyStylisticCustomRules
       },
       ObjectPattern: {
         multiline: true,
-        minProperties: 3,
+        minProperties: 2,
         consistent: true,
       },
       ImportDeclaration: {
@@ -382,7 +380,7 @@ const jsOnlyStylisticCustomRules
     error,
     always,
     {
-      arraysInObjects: false,
+      arraysInObjects: true,
       objectsInObjects: true,
     },
   ],
