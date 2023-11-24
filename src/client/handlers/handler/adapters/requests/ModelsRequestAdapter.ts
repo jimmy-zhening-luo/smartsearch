@@ -1,20 +1,17 @@
-import RequestAdapter from "./request/RequestAdapter.js";
+import NullRequestAdapter from "./null/NullRequestAdapter.js";
 
-type ModelsRequestPayload = null;
-
-export default class ModelsRequestAdapter
-  extends RequestAdapter<ModelsRequestPayload> {
-  build(): ModelsRequestPayload {
+class ModelsRequestAdapter extends NullRequestAdapter {
+  constructor() {
     try {
-      return null;
+      super();
     }
     catch (e) {
       throw new SyntaxError(
-        `ModelsRequestAdapter: build: Error building payload`,
-        {
-          cause: e,
-        },
+        `ModelsRequestAdapter: ctor: Failed to instantiate this using parent null request adapter ctor`,
+        { cause: e },
       );
     }
   }
 }
+
+export default ModelsRequestAdapter;

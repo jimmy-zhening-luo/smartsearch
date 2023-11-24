@@ -1,33 +1,46 @@
+/* Imports */
+// Project
 import dotenv from "dotenv";
 import OpenAI from "openai";
+
+// Handlers
 import ChatHandler from "./handlers/ChatHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
+
+// Operators
 import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
 import OutputDirectory from "./operators/filesystem/directories/OutputDirectory.js";
-// import fs from 'fs';
-// import fetch from 'node-fetch';
-// import { toFile } from 'openai';
 
+/* Client Implementation */
 export default class OpenAIClient {
+  protected openai: OpenAI;
+  protected outputDirectory: OutputDirectory;
+  protected inputDirectory: InputDirectory;
+
   constructor(
-    openai?: {
+    openai?:
+    | OpenAIClient
+    | OpenAI
+    | {
       apiKey: string;
       organization?: string;
-    }
-    | OpenAI
-    | OpenAIClient,
-    outputDirectory?: string | OutputDirectory,
-    inputDirectory?: string | OutputDirectory,
+    },
+    outputDirectory?: OutputDirectory | string,
+    inputDirectory?: InputDirectory | string,
   ) {
     try {
       if (openai instanceof OpenAIClient) {
-        this.openai = openai.openai;
-        this.outputDirectory = outputDirectory === undefined
-          ? openai.outputPath
-          : new OutputDirectory(outputDirectory);
-        this.inputDirectory = inputDirectory === undefined
-          ? openai.inputPath
-          : new InputDirectory(inputDirectory);
+        this.openai = this._createInternalClient(openai.openai);
+        this.outputDirectory = new OutputDirectory(
+          outputDirectory === undefined
+            ? openai.outputDirectory
+            : new OutputDirectory(outputDirectory),
+        );
+        this.inputDirectory = new InputDirectory(
+          inputDirectory === undefined
+            ? openai.inputDirectory
+            : new InputDirectory(inputDirectory),
+        );
       }
       else {
         if (
@@ -35,33 +48,34 @@ export default class OpenAIClient {
           || outputDirectory === undefined
           || inputDirectory === undefined
         ) {
-          try {
-            dotenv.config();
-          }
-          catch (e) {
-            throw new EvalError(`Error hydrating dotenv`, { cause: e });
-          }
+          dotenv.config();
         }
 
-        if (openai instanceof OpenAI) this.openai = openai;
-        else if (openai) this.openai = openai;
+        if (openai !== undefined)
+          this.openai = this._createInternalClient(openai);
         else {
           if (process.env.OPENAI_API_KEY === undefined)
             throw new SyntaxError(`process.env.OPENAI_API_KEY is undefined`);
           else {
-            this.openai = process.env.OPENAI_ORG_KEY !== undefined
-              ? {
-                  apiKey: process.env.OPENAI_API_KEY,
-                  organization: process.env.OPENAI_ORG_KEY,
-                }
-              : {
-                  apiKey: process.env.OPENAI_API_KEY,
-                };
+            this.openai = this._createInternalClient(
+              process.env.OPENAI_ORG_ID !== undefined
+                ? {
+                    apiKey: process.env.OPENAI_API_KEY,
+                    organization: process.env.OPENAI_ORG_ID,
+                  }
+                : {
+                    apiKey: process.env.OPENAI_API_KEY,
+                  },
+            );
           }
         }
 
-        this.outputDirectory = outputDirectory ?? process.env.OUTPUT_DIRECTORY;
-        this.inputDirectory = inputDirectory ?? process.env.INPUT_DIRECTORY;
+        this.outputDirectory = new OutputDirectory(
+          outputDirectory ?? process.env.OUTPUT_DIRECTORY,
+        );
+        this.inputDirectory = new InputDirectory(
+          inputDirectory ?? process.env.INPUT_DIRECTORY,
+        );
       }
     }
     catch (e) {
@@ -72,109 +86,60 @@ export default class OpenAIClient {
     }
   }
 
-  get openai(): OpenAI {
-    return this.openai;
-  }
-
-  set openai(openai: { apiKey: string; organization?: string } | OpenAI) {
+  private _createInternalClient(
+    openai:
+    {
+      apiKey: string;
+      organization?: string;
+    }
+    | OpenAI,
+  ): OpenAI {
     try {
-      if (openai instanceof OpenAI) this.openai = openai;
+      if (openai instanceof OpenAI)
+        return openai;
       else {
         if (openai.apiKey === "")
           throw new SyntaxError(`apiKey cannot be an empty string`);
         else if (openai.organization !== undefined && openai.organization === "")
           throw new SyntaxError(`organization cannot be an empty string`);
-        else this.openai = new OpenAI(openai);
+        else
+          return new OpenAI(openai);
       }
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: set openai: Failed to set openai`,
+        `OpenAIClient: private _createInternalClient: Failed to return a native OpenAI client instance from the provided params`,
         { cause: e },
       );
     }
   }
 
-  protected get inputDirectory(): InputDirectory {
-    return this.inputDirectory;
-  }
-
-  protected set inputDirectory(
-    inputDirectory: undefined | string | InputDirectory,
-  ) {
+  protected returnObject(
+    object: Record<string, unknown>,
+  ): Record<string, unknown> {
     try {
-      this.inputDirectory = new InputDirectory(inputDirectory);
+      return object;
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: protected set inputDirectory: Failed to set inputDirectory`,
-        { cause: e },
-      );
-    }
-  }
-
-  get inputPath(): string {
-    return this.inputDirectory.path;
-  }
-
-  set inputPath(inputPath: undefined | string | InputDirectory) {
-    try {
-      this.inputDirectory = inputPath;
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: set inputPath: Failed to set inputPath`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected get outputDirectory(): OutputDirectory {
-    return this.outputDirectory;
-  }
-
-  protected set outputDirectory(
-    outputDirectory: undefined | string | OutputDirectory,
-  ) {
-    try {
-      this.outputDirectory = new OutputDirectory(outputDirectory);
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: protected set outputDirectory: Failed to set outputDirectory`,
-        { cause: e },
-      );
-    }
-  }
-
-  get outputPath(): string {
-    return this.outputDirectory.path;
-  }
-
-  set outputPath(outputPath: undefined | string | OutputDirectory) {
-    try {
-      this.outputDirectory = outputPath;
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: set outputPath: Failed to set outputPath`,
+        `OpenAIClient: protected returnObject: Failed to return object`,
         { cause: e },
       );
     }
   }
 
   // ChatCompletion
-  async chat(...args: Parameters<ChatHandler["build"]>): ReturnType<ChatHandler["submit"]> {
+  async chat(...requestInput: ConstructorParameters<ChatHandler["reqCtor"]>): ReturnType<ChatHandler["submit"]> {
     try {
       return await new ChatHandler(
         this.openai,
-        ...args,
+        ...requestInput,
       )
         .submit();
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: chat: Error submitting chat request`,
+        `OpenAIClient: chat: Failed to submit chat request`,
         { cause: e },
       );
     }
@@ -183,12 +148,14 @@ export default class OpenAIClient {
   // Models
   async models(): ReturnType<ModelsHandler["submit"]> {
     try {
-      return await new ModelsHandler(this.openai)
+      return await new ModelsHandler(
+        this.openai,
+      )
         .submit();
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: models: Error submitting models request`,
+        `OpenAIClient: models: Failed to submit models request`,
         { cause: e },
       );
     }

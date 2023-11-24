@@ -1,7 +1,7 @@
 import path from "path";
 
 export default class Directory {
-  readonly path: string;
+  readonly pathString: string;
 
   constructor(
     pathString: string | Directory = process.cwd(),
@@ -9,41 +9,38 @@ export default class Directory {
   ) {
     try {
       if (pathString instanceof Directory)
-        this.path = pathString.path;
-      else if (pathString === "")
-        throw new SyntaxError(`pathString cannot be empty`);
-      else if (
-        path.parse(
-          path.normalize(pathString),
-        ).base !== ""
-      )
-        throw new TypeError(`pathString must be a directory, not a filepath.`);
+        this.pathString = pathString.pathString;
       else {
-        this.path = path.normalize(
-          path.resolve(pathString),
-        );
-        if (this.path === "")
-          throw new EvalError(`pathString param was non-empty, resolved without falling back to the project directory, but somehow resolved to an empty string. This should never happen, because pathString should be the absolute, fully-qualified path for a directory.`);
-        else if (this.path === path.normalize(process.cwd()))
-          this.path = path.normalize(
-            defaultRelativePathFromProjectRoot !== undefined
-              ? path.join(
-                process.cwd(),
-                defaultRelativePathFromProjectRoot,
-              )
-              : process.cwd(),
+        if (pathString === "")
+          throw new SyntaxError(`pathString cannot be empty`);
+        else {
+          const _pathString: string = path.normalize(
+            path.resolve(pathString),
           );
+          const _projectRoot: string = path.normalize(
+            process.cwd(),
+          );
+
+          if (_pathString === "")
+            throw new EvalError(
+              `pathString param was non-empty, resolved without falling back to the project directory, but somehow resolved to an empty string. This should never happen, because pathString should be the absolute, fully-qualified path for a directory.`,
+            );
+          else
+            this.pathString = path.join(
+              _pathString,
+              (_pathString === _projectRoot || _pathString === ".")
+              && defaultRelativePathFromProjectRoot !== undefined
+                ? defaultRelativePathFromProjectRoot
+                : "",
+            );
+        }
       }
     }
     catch (e) {
       throw new EvalError(
-        `Directory: constructor: Failed to create Directory instance`,
+        `Directory: ctor: Failed to instantiate base directory with member path set to a valid directory path`,
         { cause: e },
       );
     }
-  }
-
-  toString(): string {
-    return this.path;
   }
 }

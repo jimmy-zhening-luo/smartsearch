@@ -4,46 +4,38 @@ import ModelsResponseAdapter from "./handler/adapters/responses/ModelsResponseAd
 
 export default class ModelsHandler extends Handler<
 ModelsRequestAdapter,
-ModelsResponseAdapter
+typeof ModelsRequestAdapter,
+ModelsResponseAdapter,
+typeof ModelsResponseAdapter
 > {
-  build(...inputs: Parameters<ModelsRequestAdapter["build"]>): ModelsRequestAdapter {
+  constructor(
+    client: typeof ModelsHandler.prototype.client,
+    ...inputs: ConstructorParameters<typeof ModelsRequestAdapter>
+  ) {
     try {
-      return new ModelsRequestAdapter(...inputs);
+      super(
+        ModelsRequestAdapter,
+        ModelsResponseAdapter,
+        client,
+        ...inputs,
+      );
     }
     catch (e) {
-      throw new SyntaxError(
-        `ChatHandler: build: Error building ChatRequestAdapter from inputs`,
-        {
-          cause: e,
-        },
+      throw new EvalError(
+        `ModelsHandler: ctor: Failed to instantiate concrete handler by calling abstract parent handler ctor with passthrough params and ctors for req & res adapters`,
+        { cause: e },
       );
     }
   }
 
   async handle(): Promise<ModelsResponseAdapter["payload"]> {
     try {
-      return await this.client.models.list();
+      return this.client.models.list();
     }
     catch (e) {
       throw new EvalError(
-        `ChatHandler: handle: Error using native client function to submit request to OpenAI API`,
-        {
-          cause: e,
-        },
-      );
-    }
-  }
-
-  parse(responsePayload: ModelsResponseAdapter["payload"]): ModelsResponseAdapter {
-    try {
-      return new ModelsResponseAdapter(responsePayload);
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `ChatHandler: parse: Error building ChatResponseAdapter from response payload`,
-        {
-          cause: e,
-        },
+        `ModelsHandler: handle: Failed to make OpenAI request by passing a request payload to a native client function`,
+        { cause: e },
       );
     }
   }

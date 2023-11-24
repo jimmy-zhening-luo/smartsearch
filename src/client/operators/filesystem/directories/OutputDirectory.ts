@@ -9,7 +9,7 @@ export default class OutputDirectory extends Directory {
     }
     catch (e) {
       throw new EvalError(
-        `OutputDirectory: constructor: Failed to create OutputDirectory instance`,
+        `OutputDirectory: ctor: Failed to instantiate output directory using parent base directory ctor and const default output relative path`,
         { cause: e },
       );
     }

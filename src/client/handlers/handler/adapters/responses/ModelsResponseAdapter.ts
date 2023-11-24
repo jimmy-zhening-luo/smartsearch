@@ -2,34 +2,27 @@ import type OpenAI from "openai";
 import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ModelsResponsePayload = OpenAI.Models.ModelsPage;
-type ModelsResponseOutput = Array<Extract<ModelsResponsePayload["data"][0]["id"], string>>;
+type UnpackedModelsResponse = Array<Extract<ModelsResponsePayload["data"][0]["id"], string>>;
 
 export default class ModelsResponseAdapter
-  extends ResponseAdapter<ModelsResponsePayload, ModelsResponseOutput> {
-  parse(payload: ModelsResponsePayload): ModelsResponseOutput {
+  extends ResponseAdapter<ModelsResponsePayload, UnpackedModelsResponse> {
+  readonly unpacked: UnpackedModelsResponse;
+
+  constructor(payload: ModelsResponsePayload) {
     try {
-      if (payload.data.length === 0)
-        throw new SyntaxError(`ModelsResponseAdapter: parse: Response contains no 'data' records`);
+      super(payload);
+      if (this.payload.data.length === 0)
+        throw new SyntaxError(
+          `Unexpected: native client returned a payload with 0 models`,
+        );
       else {
-        try {
-          return payload.data.map(model => model.id);
-        }
-        catch (e) {
-          throw new SyntaxError(
-            `ModelsResponseAdapter: parse: Error building response 'output' from properties in 'payload'`,
-            {
-              cause: e,
-            },
-          );
-        }
+        this.unpacked = this.payload.data.map(model => model.id);
       }
     }
     catch (e) {
       throw new SyntaxError(
-        `ModelsResponseAdapter: parse: Error parsing response`,
-        {
-          cause: e,
-        },
+        `ModelsResponseAdapter: ctor: Failed to build instantiate response adapter with unpacked payload`,
+        { cause: e },
       );
     }
   }

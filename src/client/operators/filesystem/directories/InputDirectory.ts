@@ -9,7 +9,7 @@ export default class InputDirectory extends Directory {
     }
     catch (e) {
       throw new EvalError(
-        `InputDirectory: constructor: Failed to create InputDirectory instance`,
+        `InputDirectory: ctor: Failed to instantiate directory using parent base directory ctor and const default input relative path`,
         { cause: e },
       );
     }

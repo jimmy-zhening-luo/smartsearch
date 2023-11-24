@@ -5,13 +5,16 @@ type ChatRequestPayload = OpenAI.ChatCompletionCreateParamsNonStreaming;
 
 export default class ChatRequestAdapter
   extends RequestAdapter<ChatRequestPayload> {
-  build(
+  readonly payload: ChatRequestPayload;
+
+  constructor(
     userPrompt: string,
     systemPrompt: string = "",
     model: Extract<ChatRequestPayload["model"], string> = "gpt-4",
-  ): ChatRequestPayload {
+  ) {
     try {
-      const payload: ChatRequestPayload = {
+      super();
+      this.payload = {
         messages: [
           {
             role: "user",
@@ -22,19 +25,15 @@ export default class ChatRequestAdapter
       };
 
       if (systemPrompt !== "")
-        payload.messages.push({
+        this.payload.messages.push({
           role: "system",
           content: systemPrompt,
         });
-
-      return payload;
     }
     catch (e) {
       throw new SyntaxError(
-        `ChatRequestAdapter: build: Error building payload`,
-        {
-          cause: e,
-        },
+        `ChatRequestAdapter: ctor: Failed to build request payload from inputs`,
+        { cause: e },
       );
     }
   }

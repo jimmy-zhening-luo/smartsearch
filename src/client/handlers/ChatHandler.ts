@@ -4,48 +4,40 @@ import ChatResponseAdapter from "./handler/adapters/responses/ChatResponseAdapte
 
 export default class ChatHandler extends Handler<
 ChatRequestAdapter,
-ChatResponseAdapter
+typeof ChatRequestAdapter,
+ChatResponseAdapter,
+typeof ChatResponseAdapter
 > {
-  build(...inputs: Parameters<ChatRequestAdapter["build"]>):
-  ChatRequestAdapter {
+  constructor(
+    client: typeof ChatHandler.prototype.client,
+    ...inputs: ConstructorParameters<typeof ChatRequestAdapter>
+  ) {
     try {
-      return new ChatRequestAdapter(...inputs);
-    }
-    catch (e) {
-      throw new SyntaxError(
-        `ChatHandler: build: Error building ChatRequestAdapter from inputs`,
-        {
-          cause: e,
-        },
+      super(
+        ChatRequestAdapter,
+        ChatResponseAdapter,
+        client,
+        ...inputs,
       );
-    }
-  }
-
-  async handle(requestPayload: ChatRequestAdapter["payload"]):
-  Promise<ChatResponseAdapter["payload"]> {
-    try {
-      return await this.client.chat.completions.create(requestPayload);
     }
     catch (e) {
       throw new EvalError(
-        `ChatHandler: handle: Error using native client function to submit request to OpenAI API`,
-        {
-          cause: e,
-        },
+        `ChatHandler: ctor: Failed to instantiate concrete handler by calling abstract parent handler ctor with passthrough params and ctors for req & res adapters`,
+        { cause: e },
       );
     }
   }
 
-  parse(responsePayload: ChatResponseAdapter["payload"]): ChatResponseAdapter {
+  async handle(
+    requestPayload: ChatRequestAdapter["payload"],
+  ): Promise<ChatResponseAdapter["payload"]> {
     try {
-      return new ChatResponseAdapter(responsePayload);
+      return this.client.chat.completions.create(requestPayload);
     }
     catch (e) {
-      throw new SyntaxError(
-        `ChatHandler: parse: Error building ChatResponseAdapter from response payload`,
-        {
-          cause: e,
-        },
+      throw new EvalError(
+        `ChatHandler: handle: Failed to make OpenAI request by passing a request payload to a native client function`,
+        { cause: e },
       );
     }
   }

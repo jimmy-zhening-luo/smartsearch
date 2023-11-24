@@ -1,59 +1,60 @@
 import type OpenAI from "openai";
-import type RequestAdapter from "./adapters/requests/request/RequestAdapter.js";
-import type ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
+import RequestAdapter from "./adapters/requests/request/RequestAdapter.js";
+import ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
 
 export default abstract class Handler<
   Req extends RequestAdapter<Req["payload"]>,
-  Res extends ResponseAdapter<Res["payload"], Res["output"]>,
+  ReqConstructor extends new (
+    ...args: ConstructorParameters<ReqConstructor>
+  ) => Req,
+  Res extends ResponseAdapter<Res["payload"], Res["unpacked"]>,
+  ResConstructor extends new (
+    payload: Res["payload"]
+  ) => Res,
 > {
   protected readonly client: OpenAI;
+  readonly reqCtor: ReqConstructor;
+  protected readonly resCtor: ResConstructor;
   protected readonly request: Req;
 
-  constructor(client: OpenAI, ...inputs: Parameters<Handler<Req, Res>["build"]>) {
+  constructor(
+    requestConstructor: ReqConstructor,
+    responseConstructor: ResConstructor,
+    client: OpenAI,
+    ...inputs: ConstructorParameters<ReqConstructor>
+  ) {
     try {
       this.client = client;
+      this.reqCtor = requestConstructor;
+      this.resCtor = responseConstructor;
+      this.request = new this.reqCtor(...inputs);
     }
     catch (e) {
       throw new EvalError(
-        `Handler: ctor: Error setting 'client' property from ctor input`,
-        {
-          cause: e,
-        },
-      );
-    }
-
-    try {
-      this.request = this.build(...inputs);
-    }
-    catch (e) {
-      throw new EvalError(
-        `Handler: ctor: Error building 'request' property from ctor inputs`,
-        {
-          cause: e,
-        },
+        `Handler: ctor: Failed to instantiate abstract base handler by setting client, built request, and response constructor`,
+        { cause: e },
       );
     }
   }
 
-  async submit(): Promise<Res["output"]> {
+  async submit(): Promise<Res["unpacked"]> {
     try {
-      return this
-        .handle(this.request.payload)
-        .then(response => this.parse(response).output);
+      return this.handle(
+        this.request.payload,
+      )
+        .then(
+          responsePayload => new this.resCtor(responsePayload).unpacked,
+        );
     }
     catch (e) {
       throw new EvalError(
-        `Handler: submit: Error submitting request payload and parsing response payload`,
-        {
-          cause: e,
-        },
+        `Handler: submit: Failed to submit request payload by calling this.handle()`,
+        { cause: e },
       );
     }
   }
 
-  abstract build(...inputs: Parameters<Req["build"]>): Req;
-
-  abstract handle(requestPayload: Req["payload"]): Promise<Res["payload"]>;
-
-  abstract parse(responsePayload: Res["payload"]): Res;
+  abstract handle(
+    requestPayload: Req["payload"]
+  ): Promise<Res["payload"]>;
 }
