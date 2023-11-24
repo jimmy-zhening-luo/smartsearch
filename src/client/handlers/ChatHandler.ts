@@ -28,7 +28,7 @@ typeof ChatResponseAdapter
     }
   }
 
-  async handle(
+  protected async handle(
     requestPayload: ChatRequestAdapter["payload"],
   ): Promise<ChatResponseAdapter["payload"]> {
     try {

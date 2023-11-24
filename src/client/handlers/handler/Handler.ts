@@ -4,30 +4,33 @@ import ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
 
 export default abstract class Handler<
   Req extends RequestAdapter<Req["payload"]>,
-  ReqConstructor extends new (
-    ...args: ConstructorParameters<ReqConstructor>
+  ReqCtor extends new (
+    ...args: ConstructorParameters<ReqCtor>
   ) => Req,
   Res extends ResponseAdapter<Res["payload"], Res["unpacked"]>,
-  ResConstructor extends new (
+  ResCtor extends new (
     payload: Res["payload"]
   ) => Res,
 > {
+  // Functional
   protected readonly client: OpenAI;
-  readonly reqCtor: ReqConstructor;
-  protected readonly resCtor: ResConstructor;
-  protected readonly request: Req;
+  // Factories
+  readonly requestAdapterCtor: ReqCtor;
+  protected readonly responseAdapterCtor: ResCtor;
+  // Instances
+  protected readonly requestAdapter: Req;
 
   constructor(
-    requestConstructor: ReqConstructor,
-    responseConstructor: ResConstructor,
+    requestConstructor: ReqCtor,
+    responseConstructor: ResCtor,
     client: OpenAI,
-    ...inputs: ConstructorParameters<ReqConstructor>
+    ...requestInputs: ConstructorParameters<ReqCtor>
   ) {
     try {
       this.client = client;
-      this.reqCtor = requestConstructor;
-      this.resCtor = responseConstructor;
-      this.request = new this.reqCtor(...inputs);
+      this.requestAdapterCtor = requestConstructor;
+      this.responseAdapterCtor = responseConstructor;
+      this.requestAdapter = new this.requestAdapterCtor(...requestInputs);
     }
     catch (e) {
       throw new EvalError(
@@ -37,13 +40,41 @@ export default abstract class Handler<
     }
   }
 
+  protected abstract handle(
+    requestPayload: Req["payload"]
+  ): Promise<Res["payload"]>;
+
+  protected after?(unpacked: Res["unpacked"]): Res["unpacked"];
+
   async submit(): Promise<Res["unpacked"]> {
     try {
       return this.handle(
-        this.request.payload,
+        this.requestAdapter.payload,
       )
         .then(
-          responsePayload => new this.resCtor(responsePayload).unpacked,
+          responsePayload =>
+            new this.responseAdapterCtor(responsePayload).unpacked,
+          e =>
+            new EvalError(
+              `Failed to unpack the returned response payload`,
+              { cause: e },
+            ),
+        )
+        .then(
+          unpacked =>
+            this.after?.(unpacked) ?? unpacked,
+          e =>
+            new EvalError(
+              `Failed to postprocess unpacked response using after()`,
+              { cause: e },
+            ),
+        )
+        .catch(
+          failure =>
+            new EvalError(
+              `Promise rejected`,
+              { cause: failure },
+            ),
         );
     }
     catch (e) {
@@ -53,8 +84,4 @@ export default abstract class Handler<
       );
     }
   }
-
-  abstract handle(
-    requestPayload: Req["payload"]
-  ): Promise<Res["payload"]>;
 }

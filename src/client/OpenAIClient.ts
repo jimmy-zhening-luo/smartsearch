@@ -129,11 +129,11 @@ export default class OpenAIClient {
   }
 
   // ChatCompletion
-  async chat(...requestInput: ConstructorParameters<ChatHandler["reqCtor"]>): ReturnType<ChatHandler["submit"]> {
+  async chat(...input: ConstructorParameters<ChatHandler["requestAdapterCtor"]>): ReturnType<ChatHandler["submit"]> {
     try {
       return await new ChatHandler(
         this.openai,
-        ...requestInput,
+        ...input,
       )
         .submit();
     }
@@ -146,10 +146,11 @@ export default class OpenAIClient {
   }
 
   // Models
-  async models(): ReturnType<ModelsHandler["submit"]> {
+  async models(...input: ConstructorParameters<ModelsHandler["requestAdapterCtor"]>): ReturnType<ModelsHandler["submit"]> {
     try {
       return await new ModelsHandler(
         this.openai,
+        ...input,
       )
         .submit();
     }

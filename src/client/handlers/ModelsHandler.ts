@@ -28,7 +28,23 @@ typeof ModelsResponseAdapter
     }
   }
 
-  async handle(): Promise<ModelsResponseAdapter["payload"]> {
+  protected override after(unpacked: ModelsResponseAdapter["unpacked"]): ModelsResponseAdapter["unpacked"] {
+    try {
+      return unpacked
+        .sort()
+        .filter(
+          model => model.includes(this.requestAdapter.filterString),
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `ModelsHandler: after: Failed to unpack the returned response payload`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected async handle(): Promise<ModelsResponseAdapter["payload"]> {
     try {
       return this.client.models.list();
     }

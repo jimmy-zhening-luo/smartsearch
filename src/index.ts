@@ -7,7 +7,7 @@ async function main(): Promise<void> {
 
     console.log(chatAnswer);
 
-    const modelsList: string[] = await client.models();
+    const modelsList: string[] = await client.models("gpt");
 
     console.log(modelsList);
   }
