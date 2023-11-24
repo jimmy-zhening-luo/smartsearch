@@ -172,17 +172,7 @@ const jsOnlyStylisticCustomRules
   ],
   "@stylistic/array-element-newline": [
     error,
-    {
-      ArrayExpression: {
-        multiline: true,
-        minItems: 2,
-      },
-
-      ArrayPattern: {
-        multiline: true,
-        minItems: 2,
-      },
-    },
+    "consistent",
   ],
   "@stylistic/arrow-parens": [
     error,
