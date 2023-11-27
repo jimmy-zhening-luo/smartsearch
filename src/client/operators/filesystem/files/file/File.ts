@@ -1,9 +1,22 @@
 import path from "path";
+import type Directory from "../../directories/directory/Directory.js";
 
 export default class File {
-  protected readonly fileName: string;
+  protected readonly directory: Directory;
 
-  constructor(fileName: string) {
+  constructor(directory: Directory) {
+    try {
+      this.directory = directory;
+    }
+    catch (e) {
+      throw new EvalError(
+        `File: ctor: Failed to instantiate base File with member directory set to: ${directory.fullPath}`,
+        { cause: e },
+      );
+    }
+  }
+
+  prepare(fileName: string): string {
     try {
       if (fileName === "")
         throw new SyntaxError(`fileName is empty`);
@@ -19,12 +32,12 @@ export default class File {
         else if (parsedFileName.ext === "")
           throw new SyntaxError(`fileName is missing extension`);
         else
-          this.fileName = path.format(parsedFileName);
+          return path.join(this.directory.fullPath, fileName);
       }
     }
     catch (e) {
       throw new EvalError(
-        `File: ctor: Failed to instantiate base File with member fileName set to a valid file name`,
+        `File: prepare: Failed to join directory "${this.directory.fullPath}" with fileName "${fileName}"`,
         { cause: e },
       );
     }
