@@ -6,39 +6,38 @@ export default class ModelsHandler extends Handler<
 ModelsRequestAdapter,
 typeof ModelsRequestAdapter,
 ModelsResponseAdapter,
-typeof ModelsResponseAdapter
+typeof ModelsResponseAdapter,
+undefined
 > {
   constructor(
     client: typeof ModelsHandler.prototype.client,
-    ...inputs: ConstructorParameters<typeof ModelsRequestAdapter>
+    defaults: typeof ModelsHandler.prototype.defaults,
   ) {
     try {
       super(
         ModelsRequestAdapter,
         ModelsResponseAdapter,
         client,
-        ...inputs,
+        defaults,
       );
     }
     catch (e) {
       throw new EvalError(
-        `ModelsHandler: ctor: Failed to instantiate concrete handler by calling abstract parent handler ctor with passthrough params and ctors for req & res adapters`,
+        `ModelsHandler: ctor: Failed to instantiate by calling abstract parent Handler ctor`,
         { cause: e },
       );
     }
   }
 
-  protected override after(unpacked: ModelsResponseAdapter["unpacked"]): ModelsResponseAdapter["unpacked"] {
+  protected requestInterface(
+    ...args: ConstructorParameters<typeof ModelsRequestAdapter>
+  ): ConstructorParameters<typeof ModelsRequestAdapter> {
     try {
-      return unpacked
-        .sort()
-        .filter(
-          model => model.includes(this.requestAdapter.filterString),
-        );
+      return [...args];
     }
     catch (e) {
       throw new EvalError(
-        `ModelsHandler: after: Failed to unpack the returned response payload`,
+        `ModelsHandler: requestInterface: Failed to pass through request inputs`,
         { cause: e },
       );
     }
@@ -51,6 +50,25 @@ typeof ModelsResponseAdapter
     catch (e) {
       throw new EvalError(
         `ModelsHandler: handle: Failed to make OpenAI request by passing a request payload to a native client function`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected override after(
+    requestAdapter: ModelsRequestAdapter,
+    unpacked: ModelsResponseAdapter["unpacked"],
+  ): ModelsResponseAdapter["unpacked"] {
+    try {
+      return unpacked
+        .sort()
+        .filter(
+          model => model.includes(requestAdapter.filterString),
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `ModelsHandler: after: Failed to unpack the returned response payload`,
         { cause: e },
       );
     }

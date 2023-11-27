@@ -11,45 +11,56 @@ export default abstract class Handler<
   ResCtor extends new (
     payload: Res["payload"]
   ) => Res,
+  Defaults extends undefined | Required<Record<string, string>>,
 > {
-  // Functional
-  protected readonly client: OpenAI;
-  // Factories
-  readonly requestAdapterCtor: ReqCtor;
+  protected readonly requestAdapterCtor: ReqCtor;
   protected readonly responseAdapterCtor: ResCtor;
-  // Instances
-  protected readonly requestAdapter: Req;
+  protected readonly client: OpenAI;
+  protected readonly defaults: Defaults;
 
   constructor(
     requestConstructor: ReqCtor,
     responseConstructor: ResCtor,
     client: OpenAI,
-    ...requestInputs: ConstructorParameters<ReqCtor>
+    defaults: Defaults,
   ) {
     try {
-      this.client = client;
       this.requestAdapterCtor = requestConstructor;
       this.responseAdapterCtor = responseConstructor;
-      this.requestAdapter = new this.requestAdapterCtor(...requestInputs);
+      this.client = client;
+      this.defaults = defaults;
     }
     catch (e) {
       throw new EvalError(
-        `Handler: ctor: Failed to instantiate abstract base handler by setting client, built request, and response constructor`,
+        `Handler: ctor: Failed to instantiate abstract base handler by setting client and ctors`,
         { cause: e },
       );
     }
   }
 
+  protected abstract requestInterface(
+    ...requestInputs: unknown[]
+  ): ConstructorParameters<ReqCtor>;
+
   protected abstract handle(
     requestPayload: Req["payload"]
   ): Promise<Res["payload"]>;
 
-  protected after?(unpacked: Res["unpacked"]): Res["unpacked"];
+  protected after?(
+    requestAdapter: Req,
+    unpacked: Res["unpacked"]
+  ): Res["unpacked"];
 
-  async submit(): Promise<Res["unpacked"]> {
+  async submit(
+    ...requestInputs: Parameters<typeof Handler.prototype.requestInterface>
+  ): Promise<Res["unpacked"]> {
     try {
+      const requestAdapter: Req = new this.requestAdapterCtor(
+        ...this.requestInterface(...requestInputs),
+      );
+
       return this.handle(
-        this.requestAdapter.payload,
+        requestAdapter.payload,
       )
         .then(
           responsePayload =>
@@ -62,7 +73,7 @@ export default abstract class Handler<
         )
         .then(
           unpacked =>
-            this.after?.(unpacked) ?? unpacked,
+            this.after?.(requestAdapter, unpacked) ?? unpacked,
           e =>
             new EvalError(
               `Failed to postprocess unpacked response using after()`,

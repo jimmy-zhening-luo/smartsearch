@@ -1,7 +1,7 @@
 /* Imports */
 // Project
-import dotenv from "dotenv";
 import OpenAI from "openai";
+import ClientDefaults from "./defaults/ClientDefaults.js";
 
 // Handlers
 import ChatHandler from "./handlers/ChatHandler.js";
@@ -13,70 +13,86 @@ import OutputDirectory from "./operators/filesystem/directories/OutputDirectory.
 
 /* Client Implementation */
 export default class OpenAIClient {
-  protected openai: OpenAI;
-  protected outputDirectory: OutputDirectory;
-  protected inputDirectory: InputDirectory;
+  protected readonly openai: OpenAI;
+  protected readonly defaults: ClientDefaults;
+  protected readonly directories: {
+    input: InputDirectory;
+    output: OutputDirectory;
+  };
+  protected readonly handlers: {
+    chat: ChatHandler;
+    models: ModelsHandler;
+  };
 
   constructor(
-    openai?:
+    client?:
     | OpenAIClient
     | OpenAI
     | {
       apiKey: string;
       organization?: string;
     },
-    outputDirectory?: OutputDirectory | string,
     inputDirectory?: InputDirectory | string,
+    outputDirectory?: OutputDirectory | string,
+    overrideDefaults?: ClientDefaults,
   ) {
     try {
-      if (openai instanceof OpenAIClient) {
-        this.openai = this._createInternalClient(openai.openai);
-        this.outputDirectory = new OutputDirectory(
-          outputDirectory === undefined
-            ? openai.outputDirectory
-            : new OutputDirectory(outputDirectory),
-        );
-        this.inputDirectory = new InputDirectory(
-          inputDirectory === undefined
-            ? openai.inputDirectory
-            : new InputDirectory(inputDirectory),
-        );
+      if (client instanceof OpenAIClient) {
+        this.openai = client.openai;
+        this.defaults = overrideDefaults ?? client.defaults;
+        this.directories = {
+          input: new InputDirectory(
+            inputDirectory ?? client.directories.input,
+            this.defaults.settings.DEFAULT_INPUT_RELATIVE_PATH,
+          ),
+          output: new OutputDirectory(
+            outputDirectory ?? client.directories.output,
+            this.defaults.settings.DEFAULT_OUTPUT_RELATIVE_PATH,
+          ),
+        };
       }
       else {
-        if (
-          !openai
-          || outputDirectory === undefined
-          || inputDirectory === undefined
-        ) {
-          dotenv.config();
-        }
+        this.defaults = overrideDefaults ?? new ClientDefaults();
+        this.directories = {
+          input: new InputDirectory(
+            inputDirectory ?? this.defaults.settings.INPUT_DIRECTORY,
+            this.defaults.settings.DEFAULT_INPUT_RELATIVE_PATH,
+          ),
+          output: new OutputDirectory(
+            outputDirectory ?? this.defaults.settings.OUTPUT_DIRECTORY,
+            this.defaults.settings.DEFAULT_OUTPUT_RELATIVE_PATH,
+          ),
+        };
 
-        if (openai !== undefined)
-          this.openai = this._createInternalClient(openai);
+        if (client instanceof OpenAI)
+          this.openai = client;
         else {
-          if (process.env.OPENAI_API_KEY === undefined)
-            throw new SyntaxError(`process.env.OPENAI_API_KEY is undefined`);
-          else {
-            this.openai = this._createInternalClient(
-              process.env.OPENAI_ORG_ID !== undefined
-                ? {
-                    apiKey: process.env.OPENAI_API_KEY,
-                    organization: process.env.OPENAI_ORG_ID,
-                  }
-                : {
-                    apiKey: process.env.OPENAI_API_KEY,
-                  },
-            );
-          }
-        }
+          if (client === undefined) {
+            const organization: string | undefined = this
+              .defaults.settings
+              .OPENAI_ORG_ID;
 
-        this.outputDirectory = new OutputDirectory(
-          outputDirectory ?? process.env.OUTPUT_DIRECTORY,
-        );
-        this.inputDirectory = new InputDirectory(
-          inputDirectory ?? process.env.INPUT_DIRECTORY,
-        );
+            client = organization === undefined
+              ? {
+                  apiKey: this.defaults.settings.OPENAI_API_KEY,
+                }
+              : {
+                  apiKey: this.defaults.settings.OPENAI_API_KEY,
+                  organization: organization,
+                };
+          }
+          if (client.apiKey === "")
+            throw new SyntaxError(`apiKey cannot be an empty string`);
+          else if (client.organization !== undefined && client.organization === "")
+            throw new SyntaxError(`organization cannot be an empty string. If you do not have an organization, omit this member from the input object.`);
+          else
+            this.openai = new OpenAI(client);
+        }
       }
+      this.handlers = this._createHandlers(
+        this.openai,
+        this.defaults,
+      );
     }
     catch (e) {
       throw new EvalError(
@@ -86,56 +102,39 @@ export default class OpenAIClient {
     }
   }
 
-  private _createInternalClient(
-    openai:
-    {
-      apiKey: string;
-      organization?: string;
-    }
-    | OpenAI,
-  ): OpenAI {
+  private _createHandlers(
+    openai: OpenAI,
+    defaults: ClientDefaults,
+  ): {
+      chat: ChatHandler;
+      models: ModelsHandler;
+    } {
     try {
-      if (openai instanceof OpenAI)
-        return openai;
-      else {
-        if (openai.apiKey === "")
-          throw new SyntaxError(`apiKey cannot be an empty string`);
-        else if (openai.organization !== undefined && openai.organization === "")
-          throw new SyntaxError(`organization cannot be an empty string`);
-        else
-          return new OpenAI(openai);
-      }
+      return {
+        chat: new ChatHandler(
+          openai,
+          {
+            model: defaults.settings.DEFAULT_CHAT_MODEL,
+          },
+        ),
+        models: new ModelsHandler(
+          openai,
+          undefined,
+        ),
+      };
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: private _createInternalClient: Failed to return a native OpenAI client instance from the provided params`,
-        { cause: e },
-      );
-    }
-  }
-
-  protected returnObject(
-    object: Record<string, unknown>,
-  ): Record<string, unknown> {
-    try {
-      return object;
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: protected returnObject: Failed to return object`,
+        `OpenAIClient: _createHandlers: Failed to create handlers`,
         { cause: e },
       );
     }
   }
 
   // ChatCompletion
-  async chat(...input: ConstructorParameters<ChatHandler["requestAdapterCtor"]>): ReturnType<ChatHandler["submit"]> {
+  async chat(...input: Parameters<ChatHandler["submit"]>): ReturnType<ChatHandler["submit"]> {
     try {
-      return await new ChatHandler(
-        this.openai,
-        ...input,
-      )
-        .submit();
+      return await this.handlers.chat.submit(...input);
     }
     catch (e) {
       throw new EvalError(
@@ -146,13 +145,9 @@ export default class OpenAIClient {
   }
 
   // Models
-  async models(...input: ConstructorParameters<ModelsHandler["requestAdapterCtor"]>): ReturnType<ModelsHandler["submit"]> {
+  async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
     try {
-      return await new ModelsHandler(
-        this.openai,
-        ...input,
-      )
-        .submit();
+      return await this.handlers.models.submit(...input);
     }
     catch (e) {
       throw new EvalError(

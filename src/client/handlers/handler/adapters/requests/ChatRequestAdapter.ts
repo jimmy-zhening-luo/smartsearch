@@ -8,23 +8,23 @@ export default class ChatRequestAdapter
   readonly payload: ChatRequestPayload;
 
   constructor(
+    model: Extract<ChatRequestPayload["model"], string>,
     userPrompt: string,
-    systemPrompt: string = "",
-    model: Extract<ChatRequestPayload["model"], string> = "gpt-4",
+    systemPrompt?: string,
   ) {
     try {
       super();
       this.payload = {
+        model,
         messages: [
           {
             role: "user",
             content: userPrompt,
           },
         ],
-        model: model,
       };
 
-      if (systemPrompt !== "")
+      if (systemPrompt !== undefined && systemPrompt !== "")
         this.payload.messages.push({
           role: "system",
           content: systemPrompt,

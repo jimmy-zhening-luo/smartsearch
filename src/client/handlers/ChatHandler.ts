@@ -6,23 +6,46 @@ export default class ChatHandler extends Handler<
 ChatRequestAdapter,
 typeof ChatRequestAdapter,
 ChatResponseAdapter,
-typeof ChatResponseAdapter
+typeof ChatResponseAdapter,
+{
+  model: Extract<ChatRequestAdapter["payload"]["model"], string>;
+}
 > {
   constructor(
     client: typeof ChatHandler.prototype.client,
-    ...inputs: ConstructorParameters<typeof ChatRequestAdapter>
+    defaults: typeof ChatHandler.prototype.defaults,
   ) {
     try {
       super(
         ChatRequestAdapter,
         ChatResponseAdapter,
         client,
-        ...inputs,
+        defaults,
       );
     }
     catch (e) {
       throw new EvalError(
-        `ChatHandler: ctor: Failed to instantiate concrete handler by calling abstract parent handler ctor with passthrough params and ctors for req & res adapters`,
+        `ChatHandler: ctor: Failed to instantiate by calling abstract parent Handler ctor`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected requestInterface(
+    userPrompt: string,
+    systemPrompt?: string,
+    model: Extract<ChatRequestAdapter["payload"]["model"], string> = this.defaults.model,
+  ): ConstructorParameters<typeof ChatRequestAdapter> {
+    try {
+      return [
+        model,
+        userPrompt,
+        systemPrompt,
+      ];
+    }
+    catch (e) {
+      throw new EvalError(
+        `ChatHandler: requestInterface: Failed to return inputs with defaults for request adapter ctor`,
         { cause: e },
       );
     }
