@@ -584,10 +584,6 @@ export default [
   },
   {
     ...configOptions.ts,
-    rules: stylistic.configs["disable-legacy"].rules,
-  },
-  {
-    ...configOptions.ts,
     rules: {
       ...tsLint.configs["eslint-recommended"].rules,
       "arrow-body-style": off,
@@ -597,6 +593,10 @@ export default [
   {
     ...configOptions.ts,
     rules: esLintTypeScriptCustomRules,
+  },
+  {
+    ...configOptions.ts,
+    rules: stylistic.configs["disable-legacy"].rules,
   },
   {
     ...configOptions.ts,
