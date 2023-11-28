@@ -1,20 +1,15 @@
-/* Imports */
-// Project
 import OpenAI from "openai";
 import ClientDefaults from "./defaults/ClientDefaults.js";
 
-// Handlers
-import ChatHandler from "./handlers/ChatHandler.js";
-import ModelsHandler from "./handlers/ModelsHandler.js";
-import SpeechHandler from "./handlers/SpeechHandler.js";
-
-// Operators
 import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
 import OutputDirectory from "./operators/filesystem/directories/OutputDirectory.js";
 import FileReader from "./operators/filesystem/files/FileReader.js";
 import FileWriter from "./operators/filesystem/files/FileWriter.js";
 
-/* Client Implementation */
+import ChatHandler from "./handlers/ChatHandler.js";
+import ModelsHandler from "./handlers/ModelsHandler.js";
+import SpeechHandler from "./handlers/SpeechHandler.js";
+
 export default class OpenAIClient {
   protected readonly openai: OpenAI;
   protected readonly defaults: ClientDefaults;
@@ -189,7 +184,6 @@ export default class OpenAIClient {
     }
   }
 
-  // ChatCompletion
   async chat(...input: Parameters<ChatHandler["submit"]>): ReturnType<ChatHandler["submit"]> {
     try {
       return await this.handlers.chat.submit(...input);
@@ -202,7 +196,6 @@ export default class OpenAIClient {
     }
   }
 
-  // Models
   async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
     try {
       return await this.handlers.models.submit(...input);
