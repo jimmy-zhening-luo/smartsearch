@@ -1,12 +1,12 @@
 import path from "path";
-import type Directory from "../../directories/directory/Directory.js";
+import Directory from "../../directories/directory/Directory.js";
 
 export default class File {
   protected readonly directory: Directory;
 
   constructor(directory: Directory) {
     try {
-      this.directory = directory;
+      this.directory = new Directory(directory);
     }
     catch (e) {
       throw new EvalError(

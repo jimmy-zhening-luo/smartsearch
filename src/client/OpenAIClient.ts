@@ -59,9 +59,9 @@ export default class OpenAIClient {
           },
         );
         if (overrides === undefined) {
-          this.defaults = client.defaults;
-          this.operators = client.operators;
-          this.handlers = client.handlers;
+          this.defaults = new ClientDefaults(client.defaults);
+          this.operators = { ...client.operators };
+          this.handlers = { ...client.handlers };
         }
         else {
           this.defaults = overrides.defaults ?? client.defaults;

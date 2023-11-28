@@ -9,15 +9,15 @@ const DEFAULT_OUTPUT_RELATIVE_PATH = "output";
 
 export default class ClientDefaults
   extends Config<ClientSettings> {
-  constructor() {
+  constructor(previous?: ClientDefaults | ClientSettings) {
     try {
       dotenv.config();
-
-      const settings: ClientSettings = {
+      super(previous ?? {
         OPENAI_API_KEY: ClientDefaults
           .getEnv(
             "OPENAI_API_KEY",
           ) ?? "",
+        OPENAI_ORG_ID: ClientDefaults.getEnv("OPENAI_ORG_ID") ?? null,
         INPUT_DIRECTORY: ClientDefaults
           .getEnv("INPUT_DIRECTORY") ?? path.join(process.cwd(), DEFAULT_INPUT_RELATIVE_PATH),
         OUTPUT_DIRECTORY: ClientDefaults
@@ -32,12 +32,7 @@ export default class ClientDefaults
           .getEnvCoerce<OpenAI.Audio.SpeechCreateParams["voice"]>("DEFAULT_SPEECH_VOICE") ?? "alloy",
         DEFAULT_SPEECH_RESPONSE_FORMAT: ClientDefaults
           .getEnvCoerce<OpenAI.Audio.SpeechCreateParams["response_format"]>("DEFAULT_SPEECH_RESPONSE_FORMAT") ?? "mp3",
-      };
-
-      if (Config.getEnv("OPENAI_ORG_ID") !== undefined)
-        settings.OPENAI_ORG_ID = Config.getEnv("OPENAI_ORG_ID") ?? "";
-
-      super(settings);
+      });
     }
     catch (e) {
       throw new EvalError(

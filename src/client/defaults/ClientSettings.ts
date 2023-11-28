@@ -4,7 +4,7 @@ import type Settings from "./config/Settings.js";
 export default interface ClientSettings extends Settings {
   // // OpenAI API
   OPENAI_API_KEY: string;
-  OPENAI_ORG_ID?: string;
+  OPENAI_ORG_ID: string | null;
   // // Client Operations
   INPUT_DIRECTORY: string;
   OUTPUT_DIRECTORY: string;
