@@ -15,14 +15,16 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/smart-search#readme",
   "scripts": {
+    "clean": "npm run clean:dist && npm run clean:lint-cache",
+    "clean:dist": "shx rm -rf dist",
+    "clean:lint-cache": "shx rm -rf .eslintcache",
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js **",
     "lint:fix": "npm run lint -- --fix",
-    "clean": "shx rm -rf dist",
+    "prebuild": "npm run lint:fix",
     "build": "tsc",
-    "rebuild": "npm run lint && npm run clean && npm run build",
     "start": "node dist/index.js",
-    "dev": "npm run rebuild && npm run start",
-    "debug": "npm run build && npm run start"
+    "dev": "npm run build && npm run start",
+    "dev:clean": "npm run clean && npm run build && npm run start"
   },
   "engines": {
     "node": ">=20.10.0",
