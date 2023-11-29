@@ -1,6 +1,6 @@
-import type Settings from "./Settings.js";
+import type ISettings from "./ISettings.js";
 
-export default class Config<S extends Settings> {
+export default class Config<S extends ISettings> {
   readonly settings: S;
 
   constructor(settings: S | Config<S>) {
@@ -17,7 +17,7 @@ export default class Config<S extends Settings> {
     }
   }
 
-  protected static getEnv(key: keyof Settings): string | undefined {
+  protected static getEnv(key: keyof ISettings): string | undefined {
     try {
       return process.env[String(key)];
     }
@@ -30,7 +30,7 @@ export default class Config<S extends Settings> {
   }
 
   protected static getEnvCoerce<
-    S extends Settings,
+    S extends ISettings,
     T,
   >(
     key: keyof S,

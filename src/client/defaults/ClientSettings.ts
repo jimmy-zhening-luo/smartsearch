@@ -1,7 +1,7 @@
 import type OpenAI from "openai";
-import type Settings from "./config/Settings.js";
+import type ISettings from "./config/ISettings.js";
 
-export default interface ClientSettings extends Settings {
+export default interface ClientSettings extends ISettings {
   // // OpenAI API
   OPENAI_API_KEY: string;
   OPENAI_ORG_ID: string | null;
