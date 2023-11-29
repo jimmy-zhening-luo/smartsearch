@@ -1,19 +1,33 @@
 import OpenAIClient from "./client/OpenAIClient.js";
+import Log from "./cli/output/Log.js";
 
-async function main(): Promise<void> {
-  try {
-    const client: OpenAIClient = new OpenAIClient();
-    const chatAnswer: string = (await client.chat("Say 'hello world'")).answer;
+namespace Program {
 
-    console.log(chatAnswer);
+  export async function main(): Promise<void> {
+    try {
+      const client: OpenAIClient = new OpenAIClient();
 
-    const modelsList: string[] = await client.models("gpt");
+      const chatAnswer: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
 
-    console.log(modelsList);
-  }
-  catch (e) {
-    console.error(e);
+      Log.clientResponse(
+        "Chat",
+        `model: ${chatAnswer.model}`,
+        chatAnswer.answer,
+      );
+
+      const modelFilter: string = "gpt";
+      const modelsList: Awaited<ReturnType<OpenAIClient["models"]>> = await client.models(modelFilter);
+
+      Log.clientResponse(
+        "Models",
+        `filter: "${modelFilter}"`,
+        modelsList,
+      );
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 }
 
-main();
+Program.main();
