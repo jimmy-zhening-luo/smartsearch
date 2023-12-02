@@ -5,7 +5,8 @@ type SpeechRequestPayload = OpenAI.Audio.SpeechCreateParams;
 
 export default class SpeechRequestAdapter
   extends RequestAdapter<SpeechRequestPayload> {
-  readonly payload: SpeechRequestPayload;
+  public readonly payload: SpeechRequestPayload;
+  public readonly clientOptions: null;
 
   constructor(
     model: Extract<SpeechRequestPayload["model"], string> = "tts-1-hd",
@@ -16,6 +17,7 @@ export default class SpeechRequestAdapter
   ) {
     try {
       super();
+      this.clientOptions = null;
       this.payload = {
         model,
         voice,

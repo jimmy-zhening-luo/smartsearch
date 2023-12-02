@@ -1,12 +1,20 @@
 import NullRequestAdapter from "./null/NullRequestAdapter.js";
 
-class ModelsRequestAdapter extends NullRequestAdapter {
-  readonly filterString: string;
+class ModelsRequestAdapter extends NullRequestAdapter<{
+  filter: string;
+}> {
+  public readonly clientOptions: {
+    filter: string;
+  };
 
-  constructor(filter: string = "") {
+  constructor(
+    filter: string = "",
+  ) {
     try {
       super();
-      this.filterString = filter;
+      this.clientOptions = {
+        filter,
+      };
     }
     catch (e) {
       throw new SyntaxError(

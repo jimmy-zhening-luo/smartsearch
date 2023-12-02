@@ -9,7 +9,7 @@ export default class SpeechResponseAdapter
   SpeechResponsePayload,
   UnpackedSpeechResponse
   > {
-  readonly unpacked: UnpackedSpeechResponse;
+  public readonly unpacked: UnpackedSpeechResponse;
 
   constructor(payload: SpeechResponsePayload) {
     try {

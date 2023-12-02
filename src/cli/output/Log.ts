@@ -1,22 +1,26 @@
 import type { LogMessage } from "./log/LogMessage.js";
 
 export default class Log {
-  static clientResponse: LogMessage = function (
-    endpoint,
-    qualifier,
-    response,
+  public static clientResponse: LogMessage = function (
+    endpoint: string,
+    qualifier: string,
+    response: string[] | string,
   ): void {
-    Log.logFormattedParagraph(
-      `${endpoint}: [${qualifier}]`,
+    Log.logFormattedP(
+      `${endpoint}:${
+        qualifier === ""
+          ? ""
+          : " [" + qualifier + "]"
+      }`,
       response,
     );
   };
 
-  protected static logFormattedParagraph(
+  protected static logFormattedP(
     prefix: string,
-    body: string | string[],
+    body: string[] | string,
   ): void {
-    Log.logParagraph(
+    Log.logP(
       ...[
         prefix,
         ...Array.isArray(body)
@@ -26,7 +30,7 @@ export default class Log {
     );
   }
 
-  protected static logParagraph(
+  protected static logP(
     ...lines: string[]
   ): void {
     for (const line of lines)

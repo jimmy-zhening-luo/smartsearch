@@ -2,8 +2,8 @@ import type IAdapter from "../../adapter/IAdapter.js";
 
 export default abstract class ResponseAdapter<ResponsePayload, UnpackedResponse>
 implements IAdapter<ResponsePayload> {
-  readonly payload: ResponsePayload;
-  abstract readonly unpacked: UnpackedResponse;
+  public readonly payload: ResponsePayload;
+  public abstract readonly unpacked: UnpackedResponse;
 
   constructor(payload: ResponsePayload) {
     try {

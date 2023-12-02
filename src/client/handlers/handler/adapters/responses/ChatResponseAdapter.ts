@@ -10,7 +10,7 @@ type UnpackedChatResponse = {
 
 export default class ChatResponseAdapter
   extends ResponseAdapter<ChatResponsePayload, UnpackedChatResponse> {
-  readonly unpacked: UnpackedChatResponse;
+  public readonly unpacked: UnpackedChatResponse;
 
   constructor(payload: ChatResponsePayload) {
     try {

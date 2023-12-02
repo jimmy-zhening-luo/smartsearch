@@ -1,7 +1,12 @@
 import RequestAdapter from "../request/RequestAdapter.js";
 
-export default class NullRequestAdapter extends RequestAdapter<null> {
-  readonly payload: null;
+export default abstract class NullRequestAdapter<
+  ClientOptions = null,
+> extends RequestAdapter<
+  null,
+  ClientOptions
+  > {
+  public readonly payload: null;
 
   constructor() {
     try {

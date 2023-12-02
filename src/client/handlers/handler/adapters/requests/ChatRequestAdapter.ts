@@ -5,7 +5,8 @@ type ChatRequestPayload = OpenAI.ChatCompletionCreateParamsNonStreaming;
 
 export default class ChatRequestAdapter
   extends RequestAdapter<ChatRequestPayload> {
-  readonly payload: ChatRequestPayload;
+  public readonly payload: ChatRequestPayload;
+  public readonly clientOptions: null;
 
   constructor(
     model: Extract<ChatRequestPayload["model"], string>,
@@ -14,6 +15,7 @@ export default class ChatRequestAdapter
   ) {
     try {
       super();
+      this.clientOptions = null;
       this.payload = {
         model,
         messages: [

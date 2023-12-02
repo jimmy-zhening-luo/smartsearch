@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import ClientDefaults from "./defaults/ClientDefaults.js";
+import ClientSettingRuntime from "./defaults/ClientSettingRuntime.js";
 
 import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
 import OutputDirectory from "./operators/filesystem/directories/OutputDirectory.js";
@@ -8,11 +8,10 @@ import FileWriter from "./operators/filesystem/files/FileWriter.js";
 
 import ChatHandler from "./handlers/ChatHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
-import SpeechHandler from "./handlers/SpeechHandler.js";
 
 export default class OpenAIClient {
   protected readonly openai: OpenAI;
-  protected readonly defaults: ClientDefaults;
+  protected readonly settings: ClientSettingRuntime;
   protected readonly operators: {
     io: {
       dir: {
@@ -28,21 +27,18 @@ export default class OpenAIClient {
   protected readonly handlers: {
     chat: ChatHandler;
     models: ModelsHandler;
-    speech: SpeechHandler;
   };
 
   constructor(
     client?:
-    | OpenAIClient
-    | OpenAI
-    | {
+    OpenAI | OpenAIClient | {
       apiKey: string;
       organization?: string;
     },
     overrides?: {
       inputDirectory?: InputDirectory | string;
       outputDirectory?: OutputDirectory | string;
-      defaults?: ClientDefaults;
+      defaults?: ClientSettingRuntime;
     },
   ) {
     try {
@@ -54,14 +50,14 @@ export default class OpenAIClient {
           },
         );
         if (overrides === undefined) {
-          this.defaults = new ClientDefaults(client.defaults);
+          this.settings = new ClientSettingRuntime(client.settings);
           this.operators = { ...client.operators };
           this.handlers = { ...client.handlers };
         }
         else {
-          this.defaults = overrides.defaults ?? client.defaults;
+          this.settings = overrides.defaults ?? client.settings;
           this.operators = this._createOperators(
-            this.defaults,
+            this.settings,
             overrides.inputDirectory ?? client
               .operators
               .io
@@ -74,13 +70,13 @@ export default class OpenAIClient {
               .output,
           );
           this.handlers = this._createHandlers(
-            this.defaults,
+            this.settings,
             this.openai,
           );
         }
       }
       else {
-        this.defaults = overrides?.defaults ?? new ClientDefaults();
+        this.settings = overrides?.defaults ?? new ClientSettingRuntime();
         this.openai = new OpenAI(
           client instanceof OpenAI
             ? {
@@ -88,18 +84,18 @@ export default class OpenAIClient {
                 organization: client.organization,
               }
             : {
-                apiKey: client?.apiKey ?? this.defaults.settings.OPENAI_API_KEY,
+                apiKey: client?.apiKey ?? this.settings.env.OPENAI_API_KEY ?? "",
                 organization: client?.organization
-               ?? this.defaults.settings.OPENAI_ORG_ID ?? null,
+               ?? this.settings.env.OPENAI_ORG_ID,
               },
         );
         this.operators = this._createOperators(
-          this.defaults,
-          overrides?.inputDirectory ?? this.defaults.settings.INPUT_DIRECTORY,
-          overrides?.outputDirectory ?? this.defaults.settings.OUTPUT_DIRECTORY,
+          this.settings,
+          overrides?.inputDirectory ?? this.settings.env.INPUT_DIRECTORY,
+          overrides?.outputDirectory ?? this.settings.env.OUTPUT_DIRECTORY,
         );
         this.handlers = this._createHandlers(
-          this.defaults,
+          this.settings,
           this.openai,
         );
       }
@@ -113,20 +109,52 @@ export default class OpenAIClient {
     }
   }
 
+  public get inputDirectory(): string {
+    return this.operators.io.dir.input.fullPath;
+  }
+
+  public get outputDirectory(): string {
+    return this.operators.io.dir.output.fullPath;
+  }
+
+  public async chat(...input: Parameters<ChatHandler["submit"]>): ReturnType<ChatHandler["submit"]> {
+    try {
+      return await this.handlers.chat.submit(...input);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: chat: Failed to submit chat request`,
+        { cause: e },
+      );
+    }
+  }
+
+  public async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
+    try {
+      return await this.handlers.models.submit(...input);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: models: Failed to submit models request`,
+        { cause: e },
+      );
+    }
+  }
+
   private _createOperators(
-    defaults: ClientDefaults,
+    settings: ClientSettingRuntime,
     inputDirectory: InputDirectory | string,
     outputDirectory: OutputDirectory | string,
   ): typeof OpenAIClient.prototype.operators {
     try {
       const input: InputDirectory = new InputDirectory(
         inputDirectory,
-        defaults.settings.DEFAULT_INPUT_RELATIVE_PATH,
+        settings.env.DEFAULT_INPUT_RELATIVE_PATH,
       );
 
       const output: OutputDirectory = new OutputDirectory(
         outputDirectory,
-        defaults.settings.DEFAULT_OUTPUT_RELATIVE_PATH,
+        settings.env.DEFAULT_OUTPUT_RELATIVE_PATH,
       );
 
       return {
@@ -151,7 +179,7 @@ export default class OpenAIClient {
   }
 
   private _createHandlers(
-    defaults: ClientDefaults,
+    settings: ClientSettingRuntime,
     openai: OpenAI,
   ): typeof OpenAIClient.prototype.handlers {
     try {
@@ -159,50 +187,18 @@ export default class OpenAIClient {
         chat: new ChatHandler(
           openai,
           {
-            model: defaults.settings.DEFAULT_CHAT_MODEL,
+            model: settings.const.DEFAULT_CHAT_MODEL,
           },
         ),
         models: new ModelsHandler(
           openai,
-          undefined,
-        ),
-        speech: new SpeechHandler(
-          openai,
-          {
-            model: defaults.settings.DEFAULT_SPEECH_MODEL,
-            voice: defaults.settings.DEFAULT_SPEECH_VOICE,
-            response_format: defaults.settings.DEFAULT_SPEECH_RESPONSE_FORMAT,
-          },
+          null,
         ),
       };
     }
     catch (e) {
       throw new EvalError(
         `OpenAIClient: _createHandlers: Failed to create handlers`,
-        { cause: e },
-      );
-    }
-  }
-
-  async chat(...input: Parameters<ChatHandler["submit"]>): ReturnType<ChatHandler["submit"]> {
-    try {
-      return await this.handlers.chat.submit(...input);
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: chat: Failed to submit chat request`,
-        { cause: e },
-      );
-    }
-  }
-
-  async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
-    try {
-      return await this.handlers.models.submit(...input);
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: models: Failed to submit models request`,
         { cause: e },
       );
     }

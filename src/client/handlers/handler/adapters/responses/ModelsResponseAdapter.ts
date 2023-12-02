@@ -6,7 +6,7 @@ type UnpackedModelsResponse = Array<Extract<ModelsResponsePayload["data"][0]["id
 
 export default class ModelsResponseAdapter
   extends ResponseAdapter<ModelsResponsePayload, UnpackedModelsResponse> {
-  readonly unpacked: UnpackedModelsResponse;
+  public readonly unpacked: UnpackedModelsResponse;
 
   constructor(payload: ModelsResponsePayload) {
     try {

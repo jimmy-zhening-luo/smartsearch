@@ -1,9 +1,9 @@
 import type OpenAI from "openai";
-import RequestAdapter from "./adapters/requests/request/RequestAdapter.js";
-import ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
+import type RequestAdapter from "./adapters/requests/request/RequestAdapter.js";
+import type ResponseAdapter from "./adapters/responses/response/ResponseAdapter.js";
 
 export default abstract class Handler<
-  Req extends RequestAdapter<Req["payload"]>,
+  Req extends RequestAdapter<Req["payload"], Req["clientOptions"]>,
   ReqCtor extends new (
     ...args: ConstructorParameters<ReqCtor>
   ) => Req,
@@ -11,24 +11,25 @@ export default abstract class Handler<
   ResCtor extends new (
     payload: Res["payload"]
   ) => Res,
-  Defaults extends undefined | Required<Record<string, string>>,
+  ReqInterface extends unknown[] = [],
+  ReqInterfaceDefaults extends Required<Record<string, string>> | null = null,
 > {
   protected readonly requestAdapterCtor: ReqCtor;
   protected readonly responseAdapterCtor: ResCtor;
   protected readonly client: OpenAI;
-  protected readonly defaults: Defaults;
+  protected readonly requestInterfaceDefaults: ReqInterfaceDefaults;
 
   constructor(
     requestConstructor: ReqCtor,
     responseConstructor: ResCtor,
     client: OpenAI,
-    defaults: Defaults,
+    defaults: ReqInterfaceDefaults,
   ) {
     try {
       this.requestAdapterCtor = requestConstructor;
       this.responseAdapterCtor = responseConstructor;
       this.client = client;
-      this.defaults = defaults;
+      this.requestInterfaceDefaults = defaults;
     }
     catch (e) {
       throw new EvalError(
@@ -38,54 +39,34 @@ export default abstract class Handler<
     }
   }
 
-  protected abstract requestInterface(
-    ...requestInputs: unknown[]
-  ): ConstructorParameters<ReqCtor>;
-
-  protected abstract handle(
-    requestPayload: Req["payload"]
-  ): Promise<Res["payload"]>;
-
-  protected after?(
-    requestAdapter: Req,
-    unpacked: Res["unpacked"]
-  ): Res["unpacked"];
-
-  async submit(
-    ...requestInputs: Parameters<typeof Handler.prototype.requestInterface>
-  ): Promise<Res["unpacked"]> {
+  public async submit(
+    ...requestInputs: Parameters<Handler<Req, ReqCtor, Res, ResCtor, ReqInterface, ReqInterfaceDefaults>["requestInterface"]>
+  ): Promise<ReturnType<Handler<Req, ReqCtor, Res, ResCtor, ReqInterface, ReqInterfaceDefaults>["unpack"]>> {
     try {
       const requestAdapter: Req = new this.requestAdapterCtor(
         ...this.requestInterface(...requestInputs),
       );
 
-      return this.handle(
+      return await this.handle(
         requestAdapter.payload,
       )
         .then(
-          responsePayload =>
-            new this.responseAdapterCtor(responsePayload).unpacked,
-          e =>
-            new EvalError(
-              `Failed to unpack the returned response payload`,
-              { cause: e },
-            ),
+          responsePayload => this.unpack(responsePayload),
         )
         .then(
           unpacked =>
-            this.after?.(requestAdapter, unpacked) ?? unpacked,
-          e =>
-            new EvalError(
-              `Failed to postprocess unpacked response using after()`,
-              { cause: e },
-            ),
+            this.after?.(
+              unpacked,
+              requestAdapter.clientOptions,
+            ) ?? unpacked,
         )
         .catch(
-          failure =>
-            new EvalError(
+          rejection => {
+            throw new EvalError(
               `Promise rejected`,
-              { cause: failure },
-            ),
+              { cause: rejection },
+            );
+          },
         );
     }
     catch (e) {
@@ -95,4 +76,31 @@ export default abstract class Handler<
       );
     }
   }
+
+  protected unpack(
+    responsePayload: Res["payload"],
+  ): Res["unpacked"] {
+    try {
+      return new this.responseAdapterCtor(responsePayload).unpacked;
+    }
+    catch (e) {
+      throw new EvalError(
+        `Handler: unpack: Failed to unpack the returned response payload`,
+        { cause: e },
+      );
+    }
+  }
+
+  protected abstract requestInterface(
+    ...requestInputs: ReqInterface
+  ): ConstructorParameters<ReqCtor>;
+
+  protected abstract handle(
+    requestPayload: Req["payload"]
+  ): Promise<Res["payload"]>;
+
+  protected after?(
+    unpacked: Res["unpacked"],
+    clientOptions?: Req["clientOptions"],
+  ): Res["unpacked"];
 }

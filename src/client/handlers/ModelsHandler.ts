@@ -7,11 +7,13 @@ ModelsRequestAdapter,
 typeof ModelsRequestAdapter,
 ModelsResponseAdapter,
 typeof ModelsResponseAdapter,
-undefined
+[
+  filter?: string,
+]
 > {
   constructor(
     client: typeof ModelsHandler.prototype.client,
-    defaults: typeof ModelsHandler.prototype.defaults,
+    defaults: typeof ModelsHandler.prototype.requestInterfaceDefaults,
   ) {
     try {
       super(
@@ -29,11 +31,9 @@ undefined
     }
   }
 
-  protected requestInterface(
-    ...args: ConstructorParameters<typeof ModelsRequestAdapter>
-  ): ConstructorParameters<typeof ModelsRequestAdapter> {
+  protected requestInterface(filter: string = ""): ConstructorParameters<typeof ModelsRequestAdapter> {
     try {
-      return [...args];
+      return [filter];
     }
     catch (e) {
       throw new EvalError(
@@ -45,7 +45,7 @@ undefined
 
   protected async handle(): Promise<ModelsResponseAdapter["payload"]> {
     try {
-      return this.client.models.list();
+      return await this.client.models.list();
     }
     catch (e) {
       throw new EvalError(
@@ -56,14 +56,14 @@ undefined
   }
 
   protected override after(
-    requestAdapter: ModelsRequestAdapter,
     unpacked: ModelsResponseAdapter["unpacked"],
+    clientOptions: ModelsRequestAdapter["clientOptions"],
   ): ModelsResponseAdapter["unpacked"] {
     try {
       return unpacked
         .sort()
         .filter(
-          model => model.includes(requestAdapter.filterString),
+          model => model.includes(clientOptions.filter),
         );
     }
     catch (e) {

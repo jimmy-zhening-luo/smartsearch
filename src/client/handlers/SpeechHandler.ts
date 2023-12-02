@@ -7,6 +7,13 @@ SpeechRequestAdapter,
 typeof SpeechRequestAdapter,
 SpeechResponseAdapter,
 typeof SpeechResponseAdapter,
+[
+  input: string,
+  speed?: number,
+  voice?: Extract<SpeechRequestAdapter["payload"]["voice"], string>,
+  response_format?: Extract<SpeechRequestAdapter["payload"]["response_format"], string>,
+  model?: Extract<SpeechRequestAdapter["payload"]["model"], string>,
+],
 {
   model: Extract<SpeechRequestAdapter["payload"]["model"], string>;
   voice: Extract<SpeechRequestAdapter["payload"]["voice"], string>;
@@ -15,7 +22,7 @@ typeof SpeechResponseAdapter,
 > {
   constructor(
     client: typeof SpeechHandler.prototype.client,
-    defaults: typeof SpeechHandler.prototype.defaults,
+    defaults: typeof SpeechHandler.prototype.requestInterfaceDefaults,
   ) {
     try {
       super(
@@ -36,9 +43,9 @@ typeof SpeechResponseAdapter,
   protected requestInterface(
     input: string,
     speed?: number,
-    voice: Extract<SpeechRequestAdapter["payload"]["voice"], string> = this.defaults.voice,
-    response_format: Extract<SpeechRequestAdapter["payload"]["response_format"], string> = this.defaults.response_format,
-    model: Extract<SpeechRequestAdapter["payload"]["model"], string> = this.defaults.model,
+    voice: Extract<SpeechRequestAdapter["payload"]["voice"], string> = this.requestInterfaceDefaults.voice,
+    response_format: Extract<SpeechRequestAdapter["payload"]["response_format"], string> = this.requestInterfaceDefaults.response_format,
+    model: Extract<SpeechRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,
   ): ConstructorParameters<typeof SpeechRequestAdapter> {
     try {
       return [
@@ -61,7 +68,7 @@ typeof SpeechResponseAdapter,
     requestPayload: SpeechRequestAdapter["payload"],
   ): Promise<SpeechResponseAdapter["payload"]> {
     try {
-      return this.client.audio.speech.create(requestPayload);
+      return await this.client.audio.speech.create(requestPayload);
     }
     catch (e) {
       throw new EvalError(

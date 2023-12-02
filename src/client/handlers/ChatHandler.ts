@@ -7,13 +7,18 @@ ChatRequestAdapter,
 typeof ChatRequestAdapter,
 ChatResponseAdapter,
 typeof ChatResponseAdapter,
+[
+  userPrompt: string,
+  systemPrompt?: string,
+  model?: Extract<ChatRequestAdapter["payload"]["model"], string>,
+],
 {
   model: Extract<ChatRequestAdapter["payload"]["model"], string>;
 }
 > {
   constructor(
     client: typeof ChatHandler.prototype.client,
-    defaults: typeof ChatHandler.prototype.defaults,
+    defaults: typeof ChatHandler.prototype.requestInterfaceDefaults,
   ) {
     try {
       super(
@@ -34,7 +39,7 @@ typeof ChatResponseAdapter,
   protected requestInterface(
     userPrompt: string,
     systemPrompt?: string,
-    model: Extract<ChatRequestAdapter["payload"]["model"], string> = this.defaults.model,
+    model: Extract<ChatRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,
   ): ConstructorParameters<typeof ChatRequestAdapter> {
     try {
       return [
@@ -55,7 +60,7 @@ typeof ChatResponseAdapter,
     requestPayload: ChatRequestAdapter["payload"],
   ): Promise<ChatResponseAdapter["payload"]> {
     try {
-      return this.client.chat.completions.create(requestPayload);
+      return await this.client.chat.completions.create(requestPayload);
     }
     catch (e) {
       throw new EvalError(
