@@ -1,7 +1,7 @@
 import path from "path";
 
 export default class Directory {
-  readonly fullPath: string;
+  public readonly fullPath: string;
 
   constructor(
     directory: Directory | string = ".",
