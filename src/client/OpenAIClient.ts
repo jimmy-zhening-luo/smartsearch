@@ -149,12 +149,12 @@ export default class OpenAIClient {
     try {
       const input: InputDirectory = new InputDirectory(
         inputDirectory,
-        settings.env.DEFAULT_INPUT_RELATIVE_PATH,
+        settings.const.DEFAULT_INPUT_RELATIVE_PATH,
       );
 
       const output: OutputDirectory = new OutputDirectory(
         outputDirectory,
-        settings.env.DEFAULT_OUTPUT_RELATIVE_PATH,
+        settings.const.DEFAULT_OUTPUT_RELATIVE_PATH,
       );
 
       return {
