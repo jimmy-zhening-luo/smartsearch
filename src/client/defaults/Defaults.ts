@@ -15,7 +15,12 @@ export type {
   EnvSettings,
 };
 
+const _INPUT = "input";
+const _OUTPUT = "output";
+
 export const constDefaults: ConstConfig<ConstSettingIds, ConstSettings> = {
+  DEFAULT_INPUT_RELATIVE_PATH: _INPUT,
+  DEFAULT_OUTPUT_RELATIVE_PATH: _OUTPUT,
   // // API Handlers
   // Chat
   DEFAULT_CHAT_MODEL: "gpt-4-1106-preview",
@@ -25,9 +30,6 @@ export const constDefaults: ConstConfig<ConstSettingIds, ConstSettings> = {
   DEFAULT_SPEECH_RESPONSE_FORMAT: "mp3",
   DEFAULT_SPEECH_SPEED: undefined,
 };
-
-const _INPUT = "input";
-const _OUTPUT = "output";
 
 export const envDefaults: EnvConfig<EnvSettingIds, EnvSettings> = {
   // // OpenAI API
@@ -42,6 +44,4 @@ export const envDefaults: EnvConfig<EnvSettingIds, EnvSettings> = {
     process.cwd(),
     _OUTPUT,
   ),
-  DEFAULT_INPUT_RELATIVE_PATH: _INPUT,
-  DEFAULT_OUTPUT_RELATIVE_PATH: _OUTPUT,
 };

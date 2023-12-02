@@ -1,6 +1,9 @@
 import type OpenAI from "openai";
 
 export type ConstSettingIds =
+  // // Client Operations
+  | "DEFAULT_INPUT_RELATIVE_PATH"
+  | "DEFAULT_OUTPUT_RELATIVE_PATH"
   // // API Handlers
   // Chat
   | "DEFAULT_CHAT_MODEL"
@@ -16,11 +19,12 @@ export type EnvSettingIds =
   | "OPENAI_ORG_ID"
   // // Client Operations
   | "INPUT_DIRECTORY"
-  | "OUTPUT_DIRECTORY"
-  | "DEFAULT_INPUT_RELATIVE_PATH"
-  | "DEFAULT_OUTPUT_RELATIVE_PATH";
+  | "OUTPUT_DIRECTORY";
 
 export interface ConstSettings {
+  // // Client Operations
+  DEFAULT_INPUT_RELATIVE_PATH: string;
+  DEFAULT_OUTPUT_RELATIVE_PATH: string;
   // // API Handlers
   // Chat
   DEFAULT_CHAT_MODEL: OpenAI.ChatCompletionCreateParamsNonStreaming["model"];
@@ -38,6 +42,4 @@ export interface EnvSettings {
   // // Client Operations
   INPUT_DIRECTORY: string;
   OUTPUT_DIRECTORY: string;
-  DEFAULT_INPUT_RELATIVE_PATH: string;
-  DEFAULT_OUTPUT_RELATIVE_PATH: string;
 }
