@@ -13,7 +13,8 @@
 
 ##### BEGIN Project-Specific Files to .gitignore #####
 
-
+/input/
+/output/
 
 #####   END Project-Specific Files to .gitignore #####
 
