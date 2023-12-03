@@ -11,7 +11,7 @@ export default class TranslateRequestAdapter
 
   constructor(
     model: Extract<TranslateRequestPayload["model"], string>,
-    file: ReadStream,
+    file: Extract<TranslateRequestPayload["file"], ReadStream>,
     instructions?: string,
     outputType?: Extract<TranslateRequestPayload["response_format"], string>,
   ) {
