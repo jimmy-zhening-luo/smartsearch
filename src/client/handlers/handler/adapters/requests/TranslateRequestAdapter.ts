@@ -1,6 +1,6 @@
+import type { ReadStream } from "fs";
 import type OpenAI from "openai";
 import RequestAdapter from "./request/RequestAdapter.js";
-import type { ReadStream } from "fs";
 
 type TranslateRequestPayload = OpenAI.Audio.TranslationCreateParams;
 

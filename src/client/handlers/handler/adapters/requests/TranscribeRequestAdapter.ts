@@ -1,7 +1,7 @@
+import type { ReadStream } from "fs";
+import type { LanguageCode } from "iso-639-1";
 import type OpenAI from "openai";
 import RequestAdapter from "./request/RequestAdapter.js";
-import type { LanguageCode } from "iso-639-1";
-import type { ReadStream } from "fs";
 
 type TranscribeRequestPayload = OpenAI.Audio.TranscriptionCreateParams;
 
