@@ -8,6 +8,7 @@ import FileWriter from "./operators/filesystem/files/FileWriter.js";
 
 import ChatHandler from "./handlers/ChatHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
+import SpeechHandler from "./handlers/SpeechHandler.js";
 
 export default class OpenAIClient {
   protected readonly openai: OpenAI;
@@ -27,6 +28,7 @@ export default class OpenAIClient {
   protected readonly handlers: {
     chat: ChatHandler;
     models: ModelsHandler;
+    speech: SpeechHandler;
   };
 
   constructor(
@@ -141,6 +143,24 @@ export default class OpenAIClient {
     }
   }
 
+  public async speech(fileName: string, ...input: Parameters<SpeechHandler["submit"]>): Promise<void> {
+    try {
+      await new this.operators.io.file.writer(
+        this.operators.io.dir.output,
+        fileName,
+      )
+        .write(
+          this.handlers.speech.submit(...input),
+        );
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: speech: Failed to submit speech request`,
+        { cause: e },
+      );
+    }
+  }
+
   private _createOperators(
     settings: ClientSettingRuntime,
     inputDirectory: InputDirectory | string,
@@ -193,6 +213,14 @@ export default class OpenAIClient {
         models: new ModelsHandler(
           openai,
           null,
+        ),
+        speech: new SpeechHandler(
+          openai,
+          {
+            model: settings.const.DEFAULT_SPEECH_MODEL,
+            voice: settings.const.DEFAULT_SPEECH_VOICE,
+            response_format: settings.const.DEFAULT_SPEECH_RESPONSE_FORMAT,
+          },
         ),
       };
     }

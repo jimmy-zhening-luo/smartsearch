@@ -35,6 +35,8 @@ namespace Program {
         `filter: "${modelFilter}"`,
         modelsList,
       );
+
+      await client.speech("hello.mp3", "Hello world.");
     }
     catch (e) {
       console.error(e);
