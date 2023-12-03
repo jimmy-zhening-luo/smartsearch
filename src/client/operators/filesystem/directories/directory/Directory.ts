@@ -109,7 +109,7 @@ export default abstract class Directory<Op extends keyof typeof FileOperation> {
   public async safeFilePath(fileName: string): Promise<string> {
     try {
       if (!await this.exists(fileName))
-        this.ifNotExists();
+        await this.ifNotExists();
 
       return this.sanitizeFilePath(fileName).filePath;
     }
