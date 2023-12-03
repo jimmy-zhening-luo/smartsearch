@@ -1,5 +1,8 @@
 import type OpenAI from "openai";
 
+// TODO: Create utility function to extract any string from OpenAI types
+// TODO: Create utility function to extract string literals from OpenAI types
+
 export type ConstSettingIds =
   // // Client Operations
   | "DEFAULT_INPUT_RELATIVE_PATH"
@@ -27,12 +30,12 @@ export interface ConstSettings {
   DEFAULT_OUTPUT_RELATIVE_PATH: string;
   // // API Handlers
   // Chat
-  DEFAULT_CHAT_MODEL: OpenAI.ChatCompletionCreateParamsNonStreaming["model"];
+  DEFAULT_CHAT_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
   // Speech
-  DEFAULT_SPEECH_MODEL: OpenAI.Audio.SpeechCreateParams["model"];
-  DEFAULT_SPEECH_VOICE: OpenAI.Audio.SpeechCreateParams["voice"];
-  DEFAULT_SPEECH_RESPONSE_FORMAT: Exclude<OpenAI.Audio.SpeechCreateParams["response_format"], undefined>;
-  DEFAULT_SPEECH_SPEED: OpenAI.Audio.SpeechCreateParams["speed"];
+  DEFAULT_SPEECH_MODEL: Extract<OpenAI.Audio.SpeechCreateParams["model"], string>;
+  DEFAULT_SPEECH_VOICE: Extract<OpenAI.Audio.SpeechCreateParams["voice"], string>;
+  DEFAULT_SPEECH_RESPONSE_FORMAT: Extract<OpenAI.Audio.SpeechCreateParams["response_format"], string>;
+  DEFAULT_SPEECH_SPEED: Extract<OpenAI.Audio.SpeechCreateParams["speed"], number | undefined>;
 }
 
 export interface EnvSettings {
