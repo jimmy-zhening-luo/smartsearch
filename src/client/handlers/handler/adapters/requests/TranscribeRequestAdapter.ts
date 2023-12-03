@@ -12,7 +12,7 @@ export default class TranscribeRequestAdapter
 
   constructor(
     model: Extract<TranscribeRequestPayload["model"], string>,
-    file: Extract<TranscribeRequestPayload["file"], ReadStream>,
+    file: ReadStream,
     inputLanguage?: Extract<LanguageCode, string>,
     instructions?: string,
     outputType?: Extract<TranscribeRequestPayload["response_format"], string>,
