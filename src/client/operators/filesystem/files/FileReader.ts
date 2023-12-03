@@ -1,16 +1,17 @@
 import { promises as fs } from "fs";
+import type InputDirectory from "../directories/InputDirectory.js";
 import File from "./file/File.js";
 
-export default class FileReader extends File {
-  async open(fileName: string): Promise<Buffer> {
+export default class FileReader extends File<"READ", InputDirectory> {
+  public async read(): Promise<Buffer> {
     try {
       return await fs.readFile(
-        this.prepare(fileName),
+        await this.safePath(),
       );
     }
     catch (e) {
       throw new EvalError(
-        `InputFile: read: Failed to read file`,
+        `InputFile: async read: Failed to read file`,
         { cause: e },
       );
     }

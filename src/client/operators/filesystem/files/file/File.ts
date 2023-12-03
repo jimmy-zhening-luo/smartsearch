@@ -1,12 +1,17 @@
-import path from "path";
-import Directory from "../../directories/directory/Directory.js";
+import type Directory from "../../directories/directory/Directory.js";
+import type FileOperation from "../../operations/FileOperation.js";
 
-export default class File {
-  protected readonly directory: Directory;
+export default abstract class File<
+  FileOperation extends keyof typeof FileOperation,
+  DirectoryType extends Directory<FileOperation>,
+> {
+  public readonly sanitizedName: string;
+  protected readonly directory: DirectoryType;
 
-  constructor(directory: Directory) {
+  constructor(directory: DirectoryType, fileName: string) {
     try {
-      this.directory = new Directory(directory);
+      this.directory = directory;
+      this.sanitizedName = this.directory.sanitizeFilePath(fileName).fileName;
     }
     catch (e) {
       throw new EvalError(
@@ -16,28 +21,13 @@ export default class File {
     }
   }
 
-  prepare(fileName: string): string {
+  protected async safePath(): Promise<string> {
     try {
-      if (fileName === "")
-        throw new SyntaxError(`fileName is empty`);
-      else {
-        const parsedFileName: path.ParsedPath = path.parse(
-          path.normalize(fileName),
-        );
-
-        if (parsedFileName.base === "")
-          throw new SyntaxError(`fileName does not resolve to a valid base`);
-        else if (parsedFileName.name === "")
-          throw new SyntaxError(`fileName is missing name`);
-        else if (parsedFileName.ext === "")
-          throw new SyntaxError(`fileName is missing extension`);
-        else
-          return path.join(this.directory.fullPath, fileName);
-      }
+      return await this.directory.safeFilePath(this.sanitizedName);
     }
     catch (e) {
       throw new EvalError(
-        `File: prepare: Failed to join directory "${this.directory.fullPath}" with fileName "${fileName}"`,
+        `File: protected async safePath: Failed to get safe (operable) path for file`,
         { cause: e },
       );
     }

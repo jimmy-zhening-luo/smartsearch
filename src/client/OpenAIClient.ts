@@ -19,8 +19,8 @@ export default class OpenAIClient {
         output: OutputDirectory;
       };
       file: {
-        reader: FileReader;
-        writer: FileWriter;
+        reader: typeof FileReader;
+        writer: typeof FileWriter;
       };
     };
   };
@@ -164,8 +164,8 @@ export default class OpenAIClient {
             output: new OutputDirectory(output),
           },
           file: {
-            reader: new FileReader(input),
-            writer: new FileWriter(output),
+            reader: FileReader,
+            writer: FileWriter,
           },
         },
       };
