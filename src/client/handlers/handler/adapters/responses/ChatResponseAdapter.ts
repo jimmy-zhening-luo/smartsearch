@@ -3,7 +3,7 @@ import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ChatResponsePayload = OpenAI.ChatCompletion;
 type UnpackedChatResponse = {
-  answer: string;
+  answer: Extract<ChatResponsePayload["choices"][0]["message"]["content"], string>;
   model: Extract<ChatResponsePayload["model"], string>;
   exit: Extract<ChatResponsePayload["choices"][0]["finish_reason"], string>;
 };
