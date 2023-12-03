@@ -7,18 +7,6 @@ namespace Program {
     try {
       const client: OpenAIClient = new OpenAIClient();
 
-      const inputDir: string = client.inputDirectory;
-      const outputDir: string = client.outputDirectory;
-
-      Log.clientResponse(
-        "I/O Folders",
-        "",
-        [
-          `input: ${inputDir}`,
-          `output: ${outputDir}`,
-        ],
-      );
-
       const chatAnswer: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
 
       Log.clientResponse(

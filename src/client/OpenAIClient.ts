@@ -111,14 +111,6 @@ export default class OpenAIClient {
     }
   }
 
-  public get inputDirectory(): string {
-    return this.operators.io.dir.input.fullPath;
-  }
-
-  public get outputDirectory(): string {
-    return this.operators.io.dir.output.fullPath;
-  }
-
   public async chat(...input: Parameters<ChatHandler["submit"]>): ReturnType<ChatHandler["submit"]> {
     try {
       return await this.handlers.chat.submit(...input);
