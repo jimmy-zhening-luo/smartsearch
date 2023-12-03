@@ -9,8 +9,8 @@ export default class SpeechRequestAdapter
   public readonly clientOptions: null;
 
   constructor(
-    model: Extract<SpeechRequestPayload["model"], string> = "tts-1-hd",
-    voice: Extract<SpeechRequestPayload["voice"], string> = "alloy",
+    model: Extract<SpeechRequestPayload["model"], string>,
+    voice: Extract<SpeechRequestPayload["voice"], string>,
     input: string,
     speed?: number,
     response_format?: Extract<SpeechRequestPayload["response_format"], string>,
