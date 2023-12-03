@@ -13,8 +13,7 @@ export type ConstSettingIds =
   // Speech
   | "DEFAULT_SPEECH_MODEL"
   | "DEFAULT_SPEECH_VOICE"
-  | "DEFAULT_SPEECH_RESPONSE_FORMAT"
-  | "DEFAULT_SPEECH_SPEED";
+  | "DEFAULT_SPEECH_RESPONSE_FORMAT";
 
 export type EnvSettingIds =
   // // OpenAI API
@@ -35,7 +34,6 @@ export interface ConstSettings {
   DEFAULT_SPEECH_MODEL: Extract<OpenAI.Audio.SpeechCreateParams["model"], string>;
   DEFAULT_SPEECH_VOICE: Extract<OpenAI.Audio.SpeechCreateParams["voice"], string>;
   DEFAULT_SPEECH_RESPONSE_FORMAT: Extract<OpenAI.Audio.SpeechCreateParams["response_format"], string>;
-  DEFAULT_SPEECH_SPEED: Extract<OpenAI.Audio.SpeechCreateParams["speed"], number | undefined>;
 }
 
 export interface EnvSettings {
