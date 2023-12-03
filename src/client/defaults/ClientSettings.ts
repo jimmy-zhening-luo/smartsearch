@@ -31,7 +31,7 @@ export interface ConstSettings {
   // Speech
   DEFAULT_SPEECH_MODEL: OpenAI.Audio.SpeechCreateParams["model"];
   DEFAULT_SPEECH_VOICE: OpenAI.Audio.SpeechCreateParams["voice"];
-  DEFAULT_SPEECH_RESPONSE_FORMAT: OpenAI.Audio.SpeechCreateParams["response_format"];
+  DEFAULT_SPEECH_RESPONSE_FORMAT: Exclude<OpenAI.Audio.SpeechCreateParams["response_format"], undefined>;
   DEFAULT_SPEECH_SPEED: OpenAI.Audio.SpeechCreateParams["speed"];
 }
 
