@@ -10,12 +10,29 @@ export type ConstSettingIds =
   // // API Handlers
   // Chat
   | "DEFAULT_CHAT_MODEL"
+  | "DEFAULT_CHAT_JSON_MODEL"
+  | "DEFAULT_CHAT_VISION_MODEL"
+  // Image
+  | "DEFAULT_IMAGE_MODEL"
+  | "DEFAULT_IMAGE_COUNT"
+  | "DEFAULT_IMAGE_QUALITY"
+  | "DEFAULT_IMAGE_STYLE"
+  | "DEFAULT_IMAGE_SQUARE_SIZE"
+  | "DEFAULT_IMAGE_PORTRAIT_SIZE"
+  | "DEFAULT_IMAGE_LANDSCAPE_SIZE"
+  | "DEFAULT_IMAGE_RESPONSE_FORMAT"
+  | "DEFAULT_REIMAGE_MODEL"
+  | "DEFAULT_REIMAGE_COUNT"
+  | "DEFAULT_REIMAGE_SIZE"
+  | "DEFAULT_REIMAGE_RESPONSE_FORMAT"
   // Speech
   | "DEFAULT_SPEECH_MODEL"
   | "DEFAULT_SPEECH_VOICE"
   | "DEFAULT_SPEECH_RESPONSE_FORMAT"
-  | "DEFAULT_TRANSLATE_MODEL"
-  | "DEFAULT_TRANSCRIBE_MODEL";
+  // Transcribe
+  | "DEFAULT_TRANSCRIBE_MODEL"
+  // Translate
+  | "DEFAULT_TRANSLATE_MODEL";
 
 export type EnvSettingIds =
   // // OpenAI API
@@ -32,12 +49,30 @@ export interface ConstSettings {
   // // API Handlers
   // Chat
   DEFAULT_CHAT_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
+  DEFAULT_CHAT_JSON_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
+  DEFAULT_CHAT_VISION_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
+  // Image
+  DEFAULT_IMAGE_MODEL: Extract<OpenAI.Images.ImageGenerateParams["model"], string>;
+  DEFAULT_IMAGE_COUNT: Extract<OpenAI.Images.ImageGenerateParams["n"], number>;
+  DEFAULT_IMAGE_QUALITY: Extract<OpenAI.Images.ImageGenerateParams["quality"], string>;
+  DEFAULT_IMAGE_STYLE: Extract<OpenAI.Images.ImageGenerateParams["style"], string>;
+  DEFAULT_IMAGE_SQUARE_SIZE: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
+  DEFAULT_IMAGE_PORTRAIT_SIZE: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
+  DEFAULT_IMAGE_LANDSCAPE_SIZE: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
+  DEFAULT_IMAGE_RESPONSE_FORMAT: Extract<OpenAI.Images.ImageGenerateParams["response_format"], string>;
+
+  DEFAULT_REIMAGE_MODEL: Extract<OpenAI.Images.ImageEditParams["model"], string>;
+  DEFAULT_REIMAGE_COUNT: Extract<OpenAI.Images.ImageEditParams["n"], number>;
+  DEFAULT_REIMAGE_SIZE: Extract<OpenAI.Images.ImageEditParams["size"], string>;
+  DEFAULT_REIMAGE_RESPONSE_FORMAT: Extract<OpenAI.Images.ImageEditParams["response_format"], string>;
   // Speech
   DEFAULT_SPEECH_MODEL: Extract<OpenAI.Audio.SpeechCreateParams["model"], string>;
   DEFAULT_SPEECH_VOICE: Extract<OpenAI.Audio.SpeechCreateParams["voice"], string>;
   DEFAULT_SPEECH_RESPONSE_FORMAT: Extract<OpenAI.Audio.SpeechCreateParams["response_format"], string>;
-  DEFAULT_TRANSLATE_MODEL: Extract<OpenAI.Audio.TranslationCreateParams["model"], string>;
+  // Transcribe
   DEFAULT_TRANSCRIBE_MODEL: Extract<OpenAI.Audio.TranscriptionCreateParams["model"], string>;
+  // Translate
+  DEFAULT_TRANSLATE_MODEL: Extract<OpenAI.Audio.TranslationCreateParams["model"], string>;
 }
 
 export interface EnvSettings {
