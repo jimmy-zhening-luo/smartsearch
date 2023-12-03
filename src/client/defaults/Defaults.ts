@@ -28,6 +28,8 @@ export const constDefaults: ConstConfig<ConstSettingIds, ConstSettings> = {
   DEFAULT_SPEECH_MODEL: "tts-1-hd",
   DEFAULT_SPEECH_VOICE: "alloy",
   DEFAULT_SPEECH_RESPONSE_FORMAT: "mp3",
+  DEFAULT_TRANSLATE_MODEL: "whisper-1",
+  DEFAULT_TRANSCRIBE_MODEL: "whisper-1",
 };
 
 export const envDefaults: EnvConfig<EnvSettingIds, EnvSettings> = {
