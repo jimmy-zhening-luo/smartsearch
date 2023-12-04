@@ -1,4 +1,11 @@
 import type OpenAI from "openai";
+import type { ChatModelSupport } from "../handlers/types/ChatTypes.js";
+import type {
+  ImageModelSupport,
+  ImageShape,
+  ImageCount,
+} from "../handlers/types/ImageTypes.js";
+import type { ReimageCount } from "../handlers/types/ReimageTypes.js";
 
 // TODO: Create utility function to extract any string from OpenAI types
 // TODO: Create utility function to extract string literals from OpenAI types
@@ -17,13 +24,15 @@ export type ConstSettingIds =
   | "DEFAULT_IMAGE_COUNT"
   | "DEFAULT_IMAGE_QUALITY"
   | "DEFAULT_IMAGE_STYLE"
-  | "DEFAULT_IMAGE_SQUARE_SIZE"
-  | "DEFAULT_IMAGE_PORTRAIT_SIZE"
-  | "DEFAULT_IMAGE_LANDSCAPE_SIZE"
+  | "DEFAULT_IMAGE_SHAPE"
+  | "DEFAULT_IMAGE_LANDSCAPE_DIMENSIONS"
+  | "DEFAULT_IMAGE_PORTRAIT_DIMENSIONS"
+  | "DEFAULT_IMAGE_SQUARE_DIMENSIONS"
   | "DEFAULT_IMAGE_RESPONSE_FORMAT"
+  // Reimage
   | "DEFAULT_REIMAGE_MODEL"
   | "DEFAULT_REIMAGE_COUNT"
-  | "DEFAULT_REIMAGE_SIZE"
+  | "DEFAULT_REIMAGE_DIMENSIONS"
   | "DEFAULT_REIMAGE_RESPONSE_FORMAT"
   // Speech
   | "DEFAULT_SPEECH_MODEL"
@@ -49,21 +58,22 @@ export interface ConstSettings {
   // // API Handlers
   // Chat
   DEFAULT_CHAT_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
-  DEFAULT_CHAT_JSON_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
-  DEFAULT_CHAT_VISION_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
+  DEFAULT_CHAT_JSON_MODEL: Extract<Extract<ChatModelSupport["json"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
+  DEFAULT_CHAT_VISION_MODEL: Extract<Extract<ChatModelSupport["vision"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
   // Image
-  DEFAULT_IMAGE_MODEL: Extract<OpenAI.Images.ImageGenerateParams["model"], string>;
-  DEFAULT_IMAGE_COUNT: Extract<OpenAI.Images.ImageGenerateParams["n"], number>;
+  DEFAULT_IMAGE_MODEL: Extract<Extract<ImageModelSupport["hd"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
+  DEFAULT_IMAGE_COUNT: Extract<ImageCount, OpenAI.Images.ImageGenerateParams["n"]>;
   DEFAULT_IMAGE_QUALITY: Extract<OpenAI.Images.ImageGenerateParams["quality"], string>;
   DEFAULT_IMAGE_STYLE: Extract<OpenAI.Images.ImageGenerateParams["style"], string>;
-  DEFAULT_IMAGE_SQUARE_SIZE: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
-  DEFAULT_IMAGE_PORTRAIT_SIZE: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
-  DEFAULT_IMAGE_LANDSCAPE_SIZE: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
+  DEFAULT_IMAGE_SHAPE: Extract<ImageShape, string>;
+  DEFAULT_IMAGE_LANDSCAPE_DIMENSIONS: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
+  DEFAULT_IMAGE_PORTRAIT_DIMENSIONS: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
+  DEFAULT_IMAGE_SQUARE_DIMENSIONS: Extract<OpenAI.Images.ImageGenerateParams["size"], string>;
   DEFAULT_IMAGE_RESPONSE_FORMAT: Extract<OpenAI.Images.ImageGenerateParams["response_format"], string>;
-
+  // Reimage
   DEFAULT_REIMAGE_MODEL: Extract<OpenAI.Images.ImageEditParams["model"], string>;
-  DEFAULT_REIMAGE_COUNT: Extract<OpenAI.Images.ImageEditParams["n"], number>;
-  DEFAULT_REIMAGE_SIZE: Extract<OpenAI.Images.ImageEditParams["size"], string>;
+  DEFAULT_REIMAGE_COUNT: Extract<ReimageCount, OpenAI.Images.ImageEditParams["n"]>;
+  DEFAULT_REIMAGE_DIMENSIONS: Extract<OpenAI.Images.ImageEditParams["size"], string>;
   DEFAULT_REIMAGE_RESPONSE_FORMAT: Extract<OpenAI.Images.ImageEditParams["response_format"], string>;
   // Speech
   DEFAULT_SPEECH_MODEL: Extract<OpenAI.Audio.SpeechCreateParams["model"], string>;
