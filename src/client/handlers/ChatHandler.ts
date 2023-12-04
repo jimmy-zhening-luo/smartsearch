@@ -10,7 +10,10 @@ typeof ChatResponseAdapter,
 [
   prompt: string,
   instructions?: string,
+  temperature?: Extract<ChatRequestAdapter["payload"]["temperature"], number>,
+  maxTokens?: Extract<ChatRequestAdapter["payload"]["max_tokens"], number>,
   model?: Extract<ChatRequestAdapter["payload"]["model"], string>,
+  seed?: Extract<ChatRequestAdapter["payload"]["seed"], number>,
 ],
 {
   model: Extract<ChatRequestAdapter["payload"]["model"], string>;
@@ -39,13 +42,19 @@ typeof ChatResponseAdapter,
   protected requestInterface(
     prompt: string,
     instructions?: string,
-    model: Extract<ChatRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,
+    temperature?: Extract<ChatRequestAdapter["payload"]["temperature"], number>,
+    maxTokens?: Extract<ChatRequestAdapter["payload"]["max_tokens"], number>,
+    model?: Extract<ChatRequestAdapter["payload"]["model"], string>,
+    seed?: Extract<ChatRequestAdapter["payload"]["seed"], number>,
   ): ConstructorParameters<typeof ChatRequestAdapter> {
     try {
       return [
-        model,
+        model ?? this.requestInterfaceDefaults.model,
         prompt,
         instructions,
+        temperature,
+        maxTokens,
+        seed,
       ];
     }
     catch (e) {
