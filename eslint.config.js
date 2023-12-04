@@ -1,4 +1,4 @@
-// v5.0.0
+// v5.1.0
 
 // PLUGINS
 import jsLint from "@eslint/js";
@@ -129,7 +129,7 @@ const RuleSet = {
                 enforceConst: true,
                 detectObjects: false,
                 ignoreEnums: false,
-                ignoreNumericLiteralTypes: false,
+                ignoreNumericLiteralTypes: true,
                 ignoreReadonlyClassProperties: true,
                 ignoreTypeIndexes: true,
               },
