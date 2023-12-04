@@ -12,7 +12,7 @@ export default abstract class Handler<
     payload: Res["payload"]
   ) => Res,
   ReqInterface extends unknown[] = [],
-  ReqInterfaceDefaults extends Required<Record<string, string>> | null = null,
+  ReqInterfaceDefaults extends Required<Record<string, unknown>> | null = null,
 > {
   protected readonly requestAdapterCtor: ReqCtor;
   protected readonly responseAdapterCtor: ResCtor;
