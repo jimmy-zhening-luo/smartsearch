@@ -58,7 +58,7 @@ typeof SpeechResponseAdapter,
     }
     catch (e) {
       throw new EvalError(
-        `ChatHandler: requestInterface: Failed to return inputs with defaults for request adapter ctor`,
+        `SpeechHandler: requestInterface: Failed to return inputs with defaults for request adapter ctor`,
         { cause: e },
       );
     }
