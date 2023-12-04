@@ -26,7 +26,7 @@ export interface ConstSettings {
   DEFAULT_CHAT_VISION_MODEL: Extract<Extract<ChatModelSupport["vision"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
   // Image
   DEFAULT_IMAGE_MODEL: Extract<Extract<ImageModelSupport["hd"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
-  DEFAULT_IMAGE_COUNT: Extract<ImageCount, OpenAI.Images.ImageGenerateParams["n"]>;
+  DEFAULT_IMAGE_COUNT: Extract<Extract<ImageCount, OpenAI.Images.ImageGenerateParams["n"]>, number>;
   DEFAULT_IMAGE_QUALITY: Extract<OpenAI.Images.ImageGenerateParams["quality"], string>;
   DEFAULT_IMAGE_STYLE: Extract<OpenAI.Images.ImageGenerateParams["style"], string>;
   DEFAULT_IMAGE_SHAPE: Extract<ImageShape, string>;
@@ -36,7 +36,7 @@ export interface ConstSettings {
   DEFAULT_IMAGE_RESPONSE_FORMAT: Extract<OpenAI.Images.ImageGenerateParams["response_format"], string>;
   // Reimage
   DEFAULT_REIMAGE_MODEL: Extract<OpenAI.Images.ImageEditParams["model"], string>;
-  DEFAULT_REIMAGE_COUNT: Extract<ReimageCount, OpenAI.Images.ImageEditParams["n"]>;
+  DEFAULT_REIMAGE_COUNT: Extract<Extract<ReimageCount, OpenAI.Images.ImageGenerateParams["n"]>, number>;
   DEFAULT_REIMAGE_DIMENSIONS: Extract<OpenAI.Images.ImageEditParams["size"], string>;
   DEFAULT_REIMAGE_RESPONSE_FORMAT: Extract<OpenAI.Images.ImageEditParams["response_format"], string>;
   // Speech
