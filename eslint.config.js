@@ -1,4 +1,4 @@
-// v5.1.0
+// v5.2.0
 
 // PLUGINS
 import jsLint from "@eslint/js";
