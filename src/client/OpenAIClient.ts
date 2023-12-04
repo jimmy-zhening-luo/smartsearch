@@ -211,7 +211,7 @@ export default class OpenAIClient {
           {
             model: settings.consts.DEFAULT_SPEECH_MODEL,
             voice: settings.consts.DEFAULT_SPEECH_VOICE,
-            response_format: settings.consts.DEFAULT_SPEECH_RESPONSE_FORMAT,
+            outputType: settings.consts.DEFAULT_SPEECH_RESPONSE_FORMAT,
           },
         ),
       };

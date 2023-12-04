@@ -13,7 +13,7 @@ export default class SpeechRequestAdapter
     voice: Extract<SpeechRequestPayload["voice"], string>,
     input: string,
     speed?: number,
-    response_format?: Extract<SpeechRequestPayload["response_format"], string>,
+    outputType?: Extract<SpeechRequestPayload["response_format"], string>,
   ) {
     try {
       super();
@@ -25,8 +25,8 @@ export default class SpeechRequestAdapter
       };
       if (speed !== undefined)
         this.payload.speed = speed;
-      if (response_format !== undefined)
-        this.payload.response_format = response_format;
+      if (outputType !== undefined)
+        this.payload.response_format = outputType;
     }
     catch (e) {
       throw new SyntaxError(

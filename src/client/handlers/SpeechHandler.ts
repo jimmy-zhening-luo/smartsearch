@@ -11,13 +11,13 @@ typeof SpeechResponseAdapter,
   input: string,
   speed?: number,
   voice?: Extract<SpeechRequestAdapter["payload"]["voice"], string>,
-  response_format?: Extract<SpeechRequestAdapter["payload"]["response_format"], string>,
+  outputType?: Extract<SpeechRequestAdapter["payload"]["response_format"], string>,
   model?: Extract<SpeechRequestAdapter["payload"]["model"], string>,
 ],
 {
   model: Extract<SpeechRequestAdapter["payload"]["model"], string>;
   voice: Extract<SpeechRequestAdapter["payload"]["voice"], string>;
-  response_format: Extract<SpeechRequestAdapter["payload"]["response_format"], string>;
+  outputType: Extract<SpeechRequestAdapter["payload"]["response_format"], string>;
 }
 > {
   constructor(
@@ -44,7 +44,7 @@ typeof SpeechResponseAdapter,
     input: string,
     speed?: number,
     voice: Extract<SpeechRequestAdapter["payload"]["voice"], string> = this.requestInterfaceDefaults.voice,
-    response_format: Extract<SpeechRequestAdapter["payload"]["response_format"], string> = this.requestInterfaceDefaults.response_format,
+    outputType: Extract<SpeechRequestAdapter["payload"]["response_format"], string> = this.requestInterfaceDefaults.outputType,
     model: Extract<SpeechRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,
   ): ConstructorParameters<typeof SpeechRequestAdapter> {
     try {
@@ -53,7 +53,7 @@ typeof SpeechResponseAdapter,
         voice,
         input,
         speed,
-        response_format,
+        outputType,
       ];
     }
     catch (e) {
