@@ -1,5 +1,6 @@
 import type OpenAI from "openai";
 import RequestAdapter from "./request/RequestAdapter.js";
+import type { ImageCount } from "../../../types/ImageTypes.js";
 
 type ImageRequestPayload = OpenAI.Images.ImageGenerateParams;
 
@@ -14,7 +15,7 @@ export default class ImageRequestAdapter
     quality: Extract<ImageRequestPayload["quality"], string>,
     size: Extract<ImageRequestPayload["size"], string>,
     style?: Extract<ImageRequestPayload["style"], string>,
-    n?: 1,
+    n?: Extract<Extract<ImageCount, ImageRequestPayload["n"]>, number>,
     outputType?: Extract<ImageRequestPayload["response_format"], string>,
   ) {
     try {

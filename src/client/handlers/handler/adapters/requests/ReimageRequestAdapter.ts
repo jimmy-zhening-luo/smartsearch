@@ -1,6 +1,7 @@
 import type { ReadStream } from "fs";
 import type OpenAI from "openai";
 import RequestAdapter from "./request/RequestAdapter.js";
+import type { ReimageCount } from "../../../types/ReimageTypes.js";
 
 type ReimageRequestPayload = OpenAI.Images.ImageEditParams;
 
@@ -11,10 +12,10 @@ export default class ReimageRequestAdapter
 
   constructor(
     model: Extract<ReimageRequestPayload["model"], string>,
-    image: Extract<ReimageRequestPayload["image"], ReadStream>,
+    image: ReadStream,
     prompt: string,
     size: Extract<ReimageRequestPayload["size"], string>,
-    n?: 1,
+    n?: Extract<Extract<ReimageCount, ReimageRequestPayload["n"]>, number>,
     outputType?: Extract<ReimageRequestPayload["response_format"], string>,
   ) {
     try {
