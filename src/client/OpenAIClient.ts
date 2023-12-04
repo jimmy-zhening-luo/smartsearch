@@ -7,8 +7,14 @@ import FileReader from "./operators/filesystem/files/FileReader.js";
 import FileWriter from "./operators/filesystem/files/FileWriter.js";
 
 import ChatHandler from "./handlers/ChatHandler.js";
+import ChatJsonHandler from "./handlers/ChatJsonHandler.js";
+import ChatVisionHandler from "./handlers/ChatVisionHandler.js";
+import ImageHandler from "./handlers/ImageHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
+import ReimageHandler from "./handlers/ReimageHandler.js";
 import SpeechHandler from "./handlers/SpeechHandler.js";
+import TranscribeHandler from "./handlers/TranscribeHandler.js";
+import TranslateHandler from "./handlers/TranslateHandler.js";
 
 export default class OpenAIClient {
   protected readonly openai: OpenAI;
@@ -27,8 +33,14 @@ export default class OpenAIClient {
   };
   protected readonly handlers: {
     chat: ChatHandler;
+    chatJson: ChatJsonHandler;
+    chatVision: ChatVisionHandler;
+    image: ImageHandler;
     models: ModelsHandler;
+    reimage: ReimageHandler;
     speech: SpeechHandler;
+    transcribe: TranscribeHandler;
+    translate: TranslateHandler;
   };
 
   constructor(
@@ -202,16 +214,69 @@ export default class OpenAIClient {
             model: settings.consts.DEFAULT_CHAT_MODEL,
           },
         ),
+        chatJson: new ChatJsonHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_CHAT_JSON_MODEL,
+            jsonInstruction: settings.consts.DEFAULT_CHAT_JSON_INSTRUCTION,
+            temperature: settings.consts.DEFAULT_CHAT_JSON_TEMPERATURE,
+            seed: settings.consts.DEFAULT_CHAT_JSON_SEED,
+          },
+        ),
+        chatVision: new ChatVisionHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_CHAT_VISION_MODEL,
+            maxTokens: settings.consts.DEFAULT_CHAT_VISION_MAX_TOKENS,
+          },
+        ),
+        image: new ImageHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_IMAGE_MODEL,
+            count: settings.consts.DEFAULT_IMAGE_COUNT,
+            quality: settings.consts.DEFAULT_IMAGE_QUALITY,
+            style: settings.consts.DEFAULT_IMAGE_STYLE,
+            shape: settings.consts.DEFAULT_IMAGE_SHAPE,
+            shapeDimensions: {
+              landscape: settings.consts.DEFAULT_IMAGE_LANDSCAPE_DIMENSIONS,
+              portrait: settings.consts.DEFAULT_IMAGE_PORTRAIT_DIMENSIONS,
+              square: settings.consts.DEFAULT_IMAGE_SQUARE_DIMENSIONS,
+            },
+            outputType: settings.consts.DEFAULT_IMAGE_OUTPUT_TYPE,
+          },
+        ),
         models: new ModelsHandler(
           openai,
           null,
+        ),
+        reimage: new ReimageHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_REIMAGE_MODEL,
+            count: settings.consts.DEFAULT_REIMAGE_COUNT,
+            dimensions: settings.consts.DEFAULT_REIMAGE_DIMENSIONS,
+            outputType: settings.consts.DEFAULT_REIMAGE_OUTPUT_TYPE,
+          },
         ),
         speech: new SpeechHandler(
           openai,
           {
             model: settings.consts.DEFAULT_SPEECH_MODEL,
             voice: settings.consts.DEFAULT_SPEECH_VOICE,
-            outputType: settings.consts.DEFAULT_SPEECH_RESPONSE_FORMAT,
+            outputType: settings.consts.DEFAULT_SPEECH_OUTPUT_TYPE,
+          },
+        ),
+        transcribe: new TranscribeHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_TRANSCRIBE_MODEL,
+          },
+        ),
+        translate: new TranslateHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_TRANSLATE_MODEL,
           },
         ),
       };

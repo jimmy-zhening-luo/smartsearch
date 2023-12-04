@@ -19,20 +19,24 @@ export const DefaultConfig: {
   env: EnvConfig<EnvSettingIds, EnvSettings>;
 } = {
   consts: {
-  // // Client Operations
+    // // Client Operations
     DEFAULT_INPUT_RELATIVE_PATH: _INPUT,
     DEFAULT_OUTPUT_RELATIVE_PATH: _OUTPUT,
+
     // // API Handlers
     // Chat
     DEFAULT_CHAT_MODEL: "gpt-4-1106-preview",
+
     // Chat: JSON
     DEFAULT_CHAT_JSON_MODEL: "gpt-4-1106-preview",
     DEFAULT_CHAT_JSON_INSTRUCTION: "Your response must be formatted as JSON. ",
     DEFAULT_CHAT_JSON_TEMPERATURE: 0,
     DEFAULT_CHAT_JSON_SEED: 1,
+
     // Chat: Vision
     DEFAULT_CHAT_VISION_MODEL: "gpt-4-vision-preview",
     DEFAULT_CHAT_VISION_MAX_TOKENS: 4096,
+
     // Image
     DEFAULT_IMAGE_MODEL: "dall-e-3",
     DEFAULT_IMAGE_COUNT: 1,
@@ -42,23 +46,28 @@ export const DefaultConfig: {
     DEFAULT_IMAGE_LANDSCAPE_DIMENSIONS: "1792x1024",
     DEFAULT_IMAGE_PORTRAIT_DIMENSIONS: "1024x1792",
     DEFAULT_IMAGE_SQUARE_DIMENSIONS: "1024x1024",
-    DEFAULT_IMAGE_RESPONSE_FORMAT: "url",
+    DEFAULT_IMAGE_OUTPUT_TYPE: "url",
     DEFAULT_REIMAGE_MODEL: "dall-e-2",
     DEFAULT_REIMAGE_COUNT: 6,
     DEFAULT_REIMAGE_DIMENSIONS: "1024x1024",
-    DEFAULT_REIMAGE_RESPONSE_FORMAT: "url",
+    DEFAULT_REIMAGE_OUTPUT_TYPE: "url",
+
     // Speech
     DEFAULT_SPEECH_MODEL: "tts-1-hd",
     DEFAULT_SPEECH_VOICE: "alloy",
-    DEFAULT_SPEECH_RESPONSE_FORMAT: "mp3",
+    DEFAULT_SPEECH_OUTPUT_TYPE: "mp3",
+
     // Transcribe
     DEFAULT_TRANSCRIBE_MODEL: "whisper-1",
+
     // Translate
     DEFAULT_TRANSLATE_MODEL: "whisper-1",
   },
   env: {
+    // // OpenAI API
     OPENAI_API_KEY: null,
     OPENAI_ORG_ID: null,
+
     // // Client Operations
     INPUT_DIRECTORY: path.join(
       process.cwd(),
