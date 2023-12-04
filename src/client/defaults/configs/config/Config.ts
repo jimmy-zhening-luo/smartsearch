@@ -1,8 +1,6 @@
-import type { Setting } from "./setting/Setting.js";
+import type { Settings } from "./Settings.js";
 
-export type { Setting };
-
-type _StructuralType<
+type _ExactMembers<
   Actual,
   Interface,
 > = Actual extends Interface
@@ -14,5 +12,5 @@ type _StructuralType<
 export type Config<
   K extends string,
   V,
-  P extends Setting<K, V>,
-> = _StructuralType<P, Setting<K, V>>;
+  P extends Settings<K, V>,
+> = _ExactMembers<P, Settings<K, V>>;

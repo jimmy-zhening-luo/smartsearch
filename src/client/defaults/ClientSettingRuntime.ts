@@ -1,11 +1,11 @@
 import SettingRuntime from "./runtime/SettingRuntime.js";
-import { constDefaults, envDefaults } from "./Defaults.js";
+import { DefaultConfig } from "./DefaultConfig.js";
 import type {
   ConstSettingIds,
   ConstSettings,
   EnvSettingIds,
   EnvSettings,
-} from "./Defaults.js";
+} from "./DefaultConfig.js";
 
 export default class ClientSettingRuntime extends SettingRuntime<
 ConstSettingIds,
@@ -18,14 +18,14 @@ EnvSettings
     | ClientSettingRuntime
     | {
 
-      const: typeof ClientSettingRuntime.prototype.const;
+      consts: typeof ClientSettingRuntime.prototype.consts;
       env: typeof ClientSettingRuntime.prototype.env;
     },
   ) {
     super(
       settings ?? {
-        "const": constDefaults,
-        env: envDefaults,
+        consts: { ...DefaultConfig.consts },
+        env: { ...DefaultConfig.env },
       },
     );
   }

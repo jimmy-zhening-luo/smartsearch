@@ -161,12 +161,12 @@ export default class OpenAIClient {
     try {
       const input: InputDirectory = new InputDirectory(
         inputDirectory,
-        settings.const.DEFAULT_INPUT_RELATIVE_PATH,
+        settings.consts.DEFAULT_INPUT_RELATIVE_PATH,
       );
 
       const output: OutputDirectory = new OutputDirectory(
         outputDirectory,
-        settings.const.DEFAULT_OUTPUT_RELATIVE_PATH,
+        settings.consts.DEFAULT_OUTPUT_RELATIVE_PATH,
       );
 
       return {
@@ -199,7 +199,7 @@ export default class OpenAIClient {
         chat: new ChatHandler(
           openai,
           {
-            model: settings.const.DEFAULT_CHAT_MODEL,
+            model: settings.consts.DEFAULT_CHAT_MODEL,
           },
         ),
         models: new ModelsHandler(
@@ -209,9 +209,9 @@ export default class OpenAIClient {
         speech: new SpeechHandler(
           openai,
           {
-            model: settings.const.DEFAULT_SPEECH_MODEL,
-            voice: settings.const.DEFAULT_SPEECH_VOICE,
-            response_format: settings.const.DEFAULT_SPEECH_RESPONSE_FORMAT,
+            model: settings.consts.DEFAULT_SPEECH_MODEL,
+            voice: settings.consts.DEFAULT_SPEECH_VOICE,
+            response_format: settings.consts.DEFAULT_SPEECH_RESPONSE_FORMAT,
           },
         ),
       };
