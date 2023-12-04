@@ -3,15 +3,19 @@ import RequestAdapter from "./request/RequestAdapter.js";
 
 type ChatRequestPayload = OpenAI.ChatCompletionCreateParamsNonStreaming;
 
-export default class ChatRequestAdapter
+export default class ChatRequestAdapter<P extends ChatRequestPayload["messages"][0]["content"] = string>
   extends RequestAdapter<ChatRequestPayload> {
   public readonly payload: ChatRequestPayload;
   public readonly clientOptions: null;
 
   constructor(
     model: Extract<ChatRequestPayload["model"], string>,
-    userPrompt: string,
-    systemPrompt?: string,
+    prompt: P,
+    instructions?: string,
+    temperature?: Extract<ChatRequestPayload["temperature"], number>,
+    maxTokens?: Extract<ChatRequestPayload["max_tokens"], number>,
+    seed?: Extract<ChatRequestPayload["seed"], number>,
+
   ) {
     try {
       super();
@@ -21,16 +25,22 @@ export default class ChatRequestAdapter
         messages: [
           {
             role: "user",
-            content: userPrompt,
+            content: prompt,
           },
         ],
       };
 
-      if (systemPrompt !== undefined && systemPrompt !== "")
+      if (instructions !== undefined && instructions !== "")
         this.payload.messages.push({
           role: "system",
-          content: systemPrompt,
+          content: instructions,
         });
+      if (temperature !== undefined)
+        this.payload.temperature = temperature;
+      if (maxTokens !== undefined)
+        this.payload.max_tokens = maxTokens;
+      if (seed !== undefined)
+        this.payload.seed = seed;
     }
     catch (e) {
       throw new SyntaxError(

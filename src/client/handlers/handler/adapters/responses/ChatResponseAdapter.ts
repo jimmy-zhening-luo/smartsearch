@@ -2,8 +2,9 @@ import type OpenAI from "openai";
 import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ChatResponsePayload = OpenAI.ChatCompletion;
+
 type UnpackedChatResponse = {
-  answer: Extract<ChatResponsePayload["choices"][0]["message"]["content"], string>;
+  answer: string;
   model: Extract<ChatResponsePayload["model"], string>;
   exit: Extract<ChatResponsePayload["choices"][0]["finish_reason"], string>;
 };
@@ -19,8 +20,12 @@ export default class ChatResponseAdapter
         this.payload.choices.length === 0
         || this.payload.choices[0] === undefined
       )
-        throw new SyntaxError(
+        throw new RangeError(
           `Unexpected: Native client returned a payload with 0 messages`,
+        );
+      else if (this.payload.choices[0].finish_reason === "content_filter")
+        throw new OverconstrainedError(
+          `OpenAI is being authoritarian and believes that your request is inappropriate - ironic, as they are masquerading their own abuse as 'prevention of abuse' while doing precisely nothing to actually prevent abuse.`,
         );
       else {
         this.unpacked = {
@@ -31,7 +36,7 @@ export default class ChatResponseAdapter
       }
     }
     catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `ChatResponseAdapter: ctor: Failed to instantiate concrete response adapter with unpacked payload`,
         { cause: e },
       );

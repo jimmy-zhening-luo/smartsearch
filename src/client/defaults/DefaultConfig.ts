@@ -25,8 +25,14 @@ export const DefaultConfig: {
     // // API Handlers
     // Chat
     DEFAULT_CHAT_MODEL: "gpt-4-1106-preview",
+    // Chat: JSON
     DEFAULT_CHAT_JSON_MODEL: "gpt-4-1106-preview",
+    DEFAULT_CHAT_JSON_INSTRUCTION: "Your response must be formatted as JSON. ",
+    DEFAULT_CHAT_JSON_TEMPERATURE: 0,
+    DEFAULT_CHAT_JSON_SEED: 1,
+    // Chat: Vision
     DEFAULT_CHAT_VISION_MODEL: "gpt-4-vision-preview",
+    DEFAULT_CHAT_VISION_MAX_TOKENS: 4096,
     // Image
     DEFAULT_IMAGE_MODEL: "dall-e-3",
     DEFAULT_IMAGE_COUNT: 1,

@@ -8,8 +8,8 @@ typeof ChatRequestAdapter,
 ChatResponseAdapter,
 typeof ChatResponseAdapter,
 [
-  userPrompt: string,
-  systemPrompt?: string,
+  prompt: string,
+  instructions?: string,
   model?: Extract<ChatRequestAdapter["payload"]["model"], string>,
 ],
 {
@@ -37,15 +37,15 @@ typeof ChatResponseAdapter,
   }
 
   protected requestInterface(
-    userPrompt: string,
-    systemPrompt?: string,
+    prompt: string,
+    instructions?: string,
     model: Extract<ChatRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,
   ): ConstructorParameters<typeof ChatRequestAdapter> {
     try {
       return [
         model,
-        userPrompt,
-        systemPrompt,
+        prompt,
+        instructions,
       ];
     }
     catch (e) {

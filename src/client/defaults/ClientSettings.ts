@@ -22,8 +22,14 @@ export interface ConstSettings {
   // // API Handlers
   // Chat
   DEFAULT_CHAT_MODEL: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["model"], string>;
+  // Chat: JSON
   DEFAULT_CHAT_JSON_MODEL: Extract<Extract<ChatModelSupport["json"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
+  DEFAULT_CHAT_JSON_INSTRUCTION: string;
+  DEFAULT_CHAT_JSON_TEMPERATURE: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["temperature"], number>;
+  DEFAULT_CHAT_JSON_SEED: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["seed"], number>;
+  // Chat: Vision
   DEFAULT_CHAT_VISION_MODEL: Extract<Extract<ChatModelSupport["vision"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
+  DEFAULT_CHAT_VISION_MAX_TOKENS: Extract<OpenAI.ChatCompletionCreateParamsNonStreaming["max_tokens"], number>;
   // Image
   DEFAULT_IMAGE_MODEL: Extract<Extract<ImageModelSupport["hd"], OpenAI.ChatCompletionCreateParamsNonStreaming["model"]>, string>;
   DEFAULT_IMAGE_COUNT: Extract<Extract<ImageCount, OpenAI.Images.ImageGenerateParams["n"]>, number>;
