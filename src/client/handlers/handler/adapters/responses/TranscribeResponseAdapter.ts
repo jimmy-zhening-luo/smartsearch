@@ -17,7 +17,7 @@ export default class TranscribeResponseAdapter
       this.unpacked = this.payload.text;
     }
     catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `TranscribeResponseAdapter: ctor: Failed to instantiate concrete response adapter with unpacked payload`,
         { cause: e },
       );

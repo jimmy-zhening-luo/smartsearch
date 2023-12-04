@@ -12,7 +12,7 @@ export default class ModelsResponseAdapter
     try {
       super(payload);
       if (this.payload.data.length === 0)
-        throw new SyntaxError(
+        throw new EvalError(
           `Unexpected: native client returned a payload with 0 models`,
         );
       else {
@@ -20,7 +20,7 @@ export default class ModelsResponseAdapter
       }
     }
     catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `ModelsResponseAdapter: ctor: Failed to build instantiate response adapter with unpacked payload`,
         { cause: e },
       );

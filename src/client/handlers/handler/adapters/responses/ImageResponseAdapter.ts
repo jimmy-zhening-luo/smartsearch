@@ -32,7 +32,7 @@ export default class ImageResponseAdapter
       }
     }
     catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `ImageResponseAdapter: ctor: Failed to instantiate concrete response adapter with unpacked payload`,
         { cause: e },
       );

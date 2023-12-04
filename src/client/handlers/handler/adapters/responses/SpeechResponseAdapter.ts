@@ -17,7 +17,7 @@ export default class SpeechResponseAdapter
       this.unpacked = this.payload;
     }
     catch (e) {
-      throw new SyntaxError(
+      throw new EvalError(
         `SpeechResponseAdapter: ctor: Failed to instantiate concrete response adapter with unpacked payload`,
         { cause: e },
       );
