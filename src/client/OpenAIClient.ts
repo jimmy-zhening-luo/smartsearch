@@ -171,11 +171,11 @@ export default class OpenAIClient {
     }
   }
 
-  public async speech(fileName: string, ...input: Parameters<SpeechHandler["submit"]>): Promise<void> {
+  public async speech(outFileName: string, ...input: Parameters<SpeechHandler["submit"]>): Promise<void> {
     try {
       await new this.operators.io.file.writer(
         this.operators.io.dir.output,
-        fileName,
+        outFileName,
       )
         .write(
           this.handlers.speech.submit(...input),
@@ -184,6 +184,34 @@ export default class OpenAIClient {
     catch (e) {
       throw new EvalError(
         `OpenAIClient: speech: Failed to submit speech request`,
+        { cause: e },
+      );
+    }
+  }
+
+  public async transcribe(
+    inFileName: string,
+    inputLanguage?: Parameters<TranscribeHandler["submit"]>[1],
+    instructions?: Parameters<TranscribeHandler["submit"]>[2],
+    outputType?: Parameters<TranscribeHandler["submit"]>[3],
+    model?: Parameters<TranscribeHandler["submit"]>[4],
+  ): ReturnType<TranscribeHandler["submit"]> {
+    try {
+      return await this.handlers.transcribe.submit(
+        await new this.operators.io.file.reader(
+          this.operators.io.dir.input,
+          inFileName,
+        )
+          .read(),
+        inputLanguage,
+        instructions,
+        outputType,
+        model,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: transcribe: Failed to submit transcribe request`,
         { cause: e },
       );
     }
