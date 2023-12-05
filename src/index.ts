@@ -7,6 +7,7 @@ namespace Program {
     try {
       const client: OpenAIClient = new OpenAIClient();
 
+      // Chat
       const chatResponse: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
 
       Log.clientResponse(
@@ -15,6 +16,20 @@ namespace Program {
         chatResponse.answer,
       );
 
+      // ChatJson
+
+      // ChatVision
+
+      // Image
+      const imagePrompt: string = "A picture of a cat";
+
+      Log.clientResponse(
+        "Image",
+        `Prompt: "${imagePrompt}"`,
+        (await client.image(imagePrompt)).images,
+      );
+
+      // Models
       const modelFilter: string = "gpt";
 
       Log.clientResponse(
@@ -23,6 +38,9 @@ namespace Program {
         await client.models(modelFilter),
       );
 
+      // Reimage
+
+      // Speech
       const outputSpeechFilename: string = "hello.mp3";
       const textToSynthesize: string = "Hello world.";
 
@@ -34,6 +52,7 @@ namespace Program {
         `Synthesized text: ${textToSynthesize}`,
       );
 
+      // Transcribe
       const inputEnglishSpeechFilename: string = "hello-to-transcribe.mp3";
 
       Log.clientResponse(
@@ -42,6 +61,7 @@ namespace Program {
         await client.transcribe(inputEnglishSpeechFilename),
       );
 
+      // Translate
       const inputChineseSpeechFilename: string = "nihao-to-translate.mp3";
 
       Log.clientResponse(
