@@ -2,10 +2,10 @@ import type OpenAI from "openai";
 import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ImageResponsePayload = OpenAI.Images.ImagesResponse;
-type UnpackedImageResponse = Array<{
-  urlOrData: Extract<Extract<ImageResponsePayload["data"][0]["b64_json"], ImageResponsePayload["data"][0]["url"]>, string>;
-  editedPrompt?: Extract<ImageResponsePayload["data"][0]["revised_prompt"], string>;
-}>;
+type UnpackedImageResponse = {
+  images: Array<Extract<Extract<ImageResponsePayload["data"][0]["b64_json"], ImageResponsePayload["data"][0]["url"]>, string>>;
+  prompts: Map<Extract<Extract<ImageResponsePayload["data"][0]["b64_json"], ImageResponsePayload["data"][0]["url"]>, string>, string>;
+};
 
 export default class ImageResponseAdapter
   extends ResponseAdapter<ImageResponsePayload, UnpackedImageResponse> {
@@ -15,20 +15,22 @@ export default class ImageResponseAdapter
     try {
       super(payload);
 
-      this.unpacked = [];
+      this.unpacked = {
+        images: [],
+        prompts: new Map(),
+      };
 
-      for (const image of payload.data) {
+      const nonEmptyImages: typeof payload.data = payload.data.filter(
+        image => (image.b64_json ?? image.url ?? "") !== "",
+      );
+
+      for (const image of nonEmptyImages) {
         const urlOrData = image.b64_json ?? image.url ?? "";
         const editedPrompt = image.revised_prompt;
 
-        this.unpacked.push(
-          editedPrompt === undefined
-            ? { urlOrData }
-            : {
-                urlOrData,
-                editedPrompt,
-              },
-        );
+        this.unpacked.images.push(urlOrData);
+        if (editedPrompt !== undefined)
+          this.unpacked.prompts.set(urlOrData, editedPrompt);
       }
     }
     catch (e) {

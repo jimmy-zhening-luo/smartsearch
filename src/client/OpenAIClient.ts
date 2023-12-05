@@ -135,6 +135,18 @@ export default class OpenAIClient {
     }
   }
 
+  public async image(...input: Parameters<ImageHandler["submit"]>): ReturnType<ImageHandler["submit"]> {
+    try {
+      return await this.handlers.image.submit(...input);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: image: Failed to submit image request`,
+        { cause: e },
+      );
+    }
+  }
+
   public async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
     try {
       return await this.handlers.models.submit(...input);
