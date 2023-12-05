@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import type OutputDirectory from "../directories/OutputDirectory.js";
-import File from "./file/File.js";
+import FileOperator from "./file/FileOperator.js";
 
-export default class FileWriter extends File<"WRITE", OutputDirectory> {
+export default class FileWriter extends FileOperator<"WRITE", OutputDirectory> {
   public async write(
     content: Promise<Response>,
   ): Promise<void> {

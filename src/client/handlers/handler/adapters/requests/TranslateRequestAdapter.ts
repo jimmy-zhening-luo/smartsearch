@@ -1,4 +1,3 @@
-import type { ReadStream } from "fs";
 import type OpenAI from "openai";
 import RequestAdapter from "./request/RequestAdapter.js";
 
@@ -11,7 +10,7 @@ export default class TranslateRequestAdapter
 
   constructor(
     model: Extract<TranslateRequestPayload["model"], string>,
-    file: ReadStream,
+    file: File,
     instructions?: string,
     outputType?: Extract<TranslateRequestPayload["response_format"], string>,
   ) {

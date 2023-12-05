@@ -1,4 +1,3 @@
-import type { ReadStream } from "fs";
 import Handler from "./handler/Handler.js";
 import TranslateRequestAdapter from "./handler/adapters/requests/TranslateRequestAdapter.js";
 import TranslateResponseAdapter from "./handler/adapters/responses/TranslateResponseAdapter.js";
@@ -9,7 +8,7 @@ typeof TranslateRequestAdapter,
 TranslateResponseAdapter,
 typeof TranslateResponseAdapter,
 [
-  file: ReadStream,
+  file: File,
   instructions?: string,
   outputType?: Extract<TranslateRequestAdapter["payload"]["response_format"], string>,
   model?: Extract<TranslateRequestAdapter["payload"]["model"], string>,
@@ -39,7 +38,7 @@ typeof TranslateResponseAdapter,
   }
 
   protected requestInterface(
-    file: ReadStream,
+    file: File,
     instructions?: string,
     outputType?: Extract<TranslateRequestAdapter["payload"]["response_format"], string>,
     model: Extract<TranslateRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,

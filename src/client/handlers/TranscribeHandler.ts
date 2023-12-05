@@ -1,4 +1,3 @@
-import type { ReadStream } from "fs";
 import type { LanguageCode } from "iso-639-1";
 import Handler from "./handler/Handler.js";
 import TranscribeRequestAdapter from "./handler/adapters/requests/TranscribeRequestAdapter.js";
@@ -10,7 +9,7 @@ typeof TranscribeRequestAdapter,
 TranscribeResponseAdapter,
 typeof TranscribeResponseAdapter,
 [
-  file: ReadStream,
+  file: File,
   inputLanguage?: Extract<LanguageCode, string>,
   instructions?: string,
   outputType?: Extract<TranscribeRequestAdapter["payload"]["response_format"], string>,
@@ -41,7 +40,7 @@ typeof TranscribeResponseAdapter,
   }
 
   protected requestInterface(
-    file: ReadStream,
+    file: File,
     inputLanguage?: Extract<LanguageCode, string>,
     instructions?: string,
     outputType?: Extract<TranscribeRequestAdapter["payload"]["response_format"], string>,

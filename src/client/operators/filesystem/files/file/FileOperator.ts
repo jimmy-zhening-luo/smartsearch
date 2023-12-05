@@ -1,7 +1,7 @@
 import type Directory from "../../directories/directory/Directory.js";
 import type FileOperation from "../../operations/FileOperation.js";
 
-export default abstract class File<
+export default abstract class FileOperator<
   FileOperation extends keyof typeof FileOperation,
   DirectoryType extends Directory<FileOperation>,
 > {

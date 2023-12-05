@@ -1,4 +1,3 @@
-import type { ReadStream } from "fs";
 import Handler from "./handler/Handler.js";
 import ReimageRequestAdapter from "./handler/adapters/requests/ReimageRequestAdapter.js";
 import ReimageResponseAdapter from "./handler/adapters/responses/ReimageResponseAdapter.js";
@@ -10,7 +9,7 @@ typeof ReimageRequestAdapter,
 ReimageResponseAdapter,
 typeof ReimageResponseAdapter,
 [
-  image: ReadStream,
+  image: File,
   prompt: string,
   count?: Extract<Extract<ReimageCount, ReimageRequestAdapter["payload"]["n"]>, number>,
   dimensions?: Extract<ReimageRequestAdapter["payload"]["size"], string>,
@@ -44,7 +43,7 @@ typeof ReimageResponseAdapter,
   }
 
   protected requestInterface(
-    image: ReadStream,
+    image: File,
     prompt: string,
     count?: Extract<Extract<ReimageCount, ReimageRequestAdapter["payload"]["n"]>, number>,
     dimensions?: Extract<ReimageRequestAdapter["payload"]["size"], string>,
@@ -72,7 +71,7 @@ typeof ReimageResponseAdapter,
     requestPayload: ReimageRequestAdapter["payload"],
   ): Promise<ReimageResponseAdapter["payload"]> {
     try {
-      return await this.client.images.generate(requestPayload);
+      return await this.client.images.edit(requestPayload);
     }
     catch (e) {
       throw new EvalError(

@@ -1,12 +1,26 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 import type InputDirectory from "../directories/InputDirectory.js";
-import File from "./file/File.js";
+import FileOperator from "./file/FileOperator.js";
 
-export default class FileReader extends File<"READ", InputDirectory> {
-  public async read(): Promise<fs.ReadStream> {
+export default class FileReader extends FileOperator<"READ", InputDirectory> {
+  public async read(): Promise<File> {
     try {
-      return fs.createReadStream(
-        await this.safePath(),
+      const safePath: string = await this.safePath();
+
+      return new File(
+        [
+          new Blob(
+            [
+              Buffer.from(
+                await fs.readFile(
+                  safePath,
+                ),
+              ),
+            ],
+          ),
+        ]
+        ,
+        safePath,
       );
     }
     catch (e) {

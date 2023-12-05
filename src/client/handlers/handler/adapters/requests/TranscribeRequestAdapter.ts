@@ -1,4 +1,3 @@
-import type { ReadStream } from "fs";
 import type { LanguageCode } from "iso-639-1";
 import type OpenAI from "openai";
 import RequestAdapter from "./request/RequestAdapter.js";
@@ -12,7 +11,7 @@ export default class TranscribeRequestAdapter
 
   constructor(
     model: Extract<TranscribeRequestPayload["model"], string>,
-    file: ReadStream,
+    file: File,
     inputLanguage?: Extract<LanguageCode, string>,
     instructions?: string,
     outputType?: Extract<TranscribeRequestPayload["response_format"], string>,
