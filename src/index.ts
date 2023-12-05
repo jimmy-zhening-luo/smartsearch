@@ -17,8 +17,10 @@ namespace Program {
       );
 
       // ChatJson
+      /** TBD */
 
       // ChatVision
+      /** TBD */
 
       // Image
       const imagePrompt: string = "A picture of a cat";
@@ -39,6 +41,7 @@ namespace Program {
       );
 
       // Reimage
+      /** TBD */
 
       // Speech
       const outputSpeechFilename: string = "hello.mp3";
