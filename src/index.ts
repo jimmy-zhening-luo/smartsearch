@@ -7,24 +7,48 @@ namespace Program {
     try {
       const client: OpenAIClient = new OpenAIClient();
 
-      const chatAnswer: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
+      const chatResponse: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
 
       Log.clientResponse(
         "Chat",
-        `model: ${chatAnswer.model}`,
-        chatAnswer.answer,
+        `model: ${chatResponse.model}`,
+        chatResponse.answer,
       );
 
       const modelFilter: string = "gpt";
-      const modelsList: Awaited<ReturnType<OpenAIClient["models"]>> = await client.models(modelFilter);
 
       Log.clientResponse(
         "Models",
         `filter: "${modelFilter}"`,
-        modelsList,
+        await client.models(modelFilter),
       );
 
-      await client.speech("hello.mp3", "Hello world.");
+      const outputSpeechFilename: string = "hello.mp3";
+      const textToSynthesize: string = "Hello world.";
+
+      await client.speech(outputSpeechFilename, textToSynthesize);
+
+      Log.clientResponse(
+        "Speech",
+        `Output: ${outputSpeechFilename}`,
+        `Synthesized text: ${textToSynthesize}`,
+      );
+
+      const inputEnglishSpeechFilename: string = "hello-to-transcribe.mp3";
+
+      Log.clientResponse(
+        "Transcribe",
+        `Input: ${inputEnglishSpeechFilename}`,
+        await client.transcribe(inputEnglishSpeechFilename),
+      );
+
+      const inputChineseSpeechFilename: string = "nihao-to-translate.mp3";
+
+      Log.clientResponse(
+        "Translate",
+        `Input: ${inputChineseSpeechFilename}`,
+        await client.translate(inputChineseSpeechFilename),
+      );
     }
     catch (e) {
       console.error(e);
