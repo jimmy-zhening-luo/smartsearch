@@ -10,6 +10,7 @@ ImageEditResponseAdapter,
 typeof ImageEditResponseAdapter,
 [
   image: File,
+  mask: File,
   prompt: string,
   count?: Extract<Extract<ImageEditCount, ImageEditRequestAdapter["payload"]["n"]>, number>,
   dimensions?: Extract<ImageEditRequestAdapter["payload"]["size"], string>,
@@ -44,6 +45,7 @@ typeof ImageEditResponseAdapter,
 
   protected requestInterface(
     image: File,
+    mask: File,
     prompt: string,
     count?: Extract<Extract<ImageEditCount, ImageEditRequestAdapter["payload"]["n"]>, number>,
     dimensions?: Extract<ImageEditRequestAdapter["payload"]["size"], string>,
@@ -53,6 +55,7 @@ typeof ImageEditResponseAdapter,
       return [
         this.requestInterfaceDefaults.model,
         image,
+        mask,
         prompt,
         dimensions ?? this.requestInterfaceDefaults.dimensions,
         count ?? this.requestInterfaceDefaults.count,

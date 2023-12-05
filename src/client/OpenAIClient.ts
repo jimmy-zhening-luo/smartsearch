@@ -173,16 +173,22 @@ export default class OpenAIClient {
 
   public async imageEdit(
     inputImageFilename: string,
-    prompt: Parameters<ImageEditHandler["submit"]>[1],
-    count?: Parameters<ImageEditHandler["submit"]>[2],
-    dimensions?: Parameters<ImageEditHandler["submit"]>[3],
-    outputType?: Parameters<ImageEditHandler["submit"]>[4],
+    inputMaskFilename: string,
+    prompt: Parameters<ImageEditHandler["submit"]>[2],
+    count?: Parameters<ImageEditHandler["submit"]>[3],
+    dimensions?: Parameters<ImageEditHandler["submit"]>[4],
+    outputType?: Parameters<ImageEditHandler["submit"]>[5],
   ): ReturnType<ImageEditHandler["submit"]> {
     try {
       return await this.handlers.imageEdit.submit(
         await new this.operators.io.file.reader(
           this.operators.io.dir.input,
           inputImageFilename,
+        )
+          .read(),
+        await new this.operators.io.file.reader(
+          this.operators.io.dir.input,
+          inputMaskFilename,
         )
           .read(),
         prompt,

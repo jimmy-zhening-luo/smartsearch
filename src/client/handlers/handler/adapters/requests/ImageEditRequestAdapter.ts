@@ -12,6 +12,7 @@ export default class ImageEditRequestAdapter
   constructor(
     model: Extract<ImageEditRequestPayload["model"], string>,
     image: File,
+    mask: File,
     prompt: string,
     size: Extract<ImageEditRequestPayload["size"], string>,
     n?: Extract<Extract<ImageEditCount, ImageEditRequestPayload["n"]>, number>,
@@ -23,6 +24,7 @@ export default class ImageEditRequestAdapter
       this.payload = {
         model,
         image,
+        mask,
         prompt,
         size,
       };
