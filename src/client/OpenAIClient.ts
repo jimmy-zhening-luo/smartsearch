@@ -171,11 +171,42 @@ export default class OpenAIClient {
     }
   }
 
-  public async speech(outFileName: string, ...input: Parameters<SpeechHandler["submit"]>): Promise<void> {
+  public async reimage(
+    inputImageFilename: string,
+    prompt: Parameters<ReimageHandler["submit"]>[1],
+    count?: Parameters<ReimageHandler["submit"]>[2],
+    dimensions?: Parameters<ReimageHandler["submit"]>[3],
+    outputType?: Parameters<ReimageHandler["submit"]>[4],
+  ): ReturnType<ReimageHandler["submit"]> {
+    try {
+      return await this.handlers.reimage.submit(
+        await new this.operators.io.file.reader(
+          this.operators.io.dir.input,
+          inputImageFilename,
+        )
+          .read(),
+        prompt,
+        count,
+        dimensions,
+        outputType,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: reimage: Failed to submit reimage request`,
+        { cause: e },
+      );
+    }
+  }
+
+  public async speech(
+    outputAudioFilename: string,
+    ...input: Parameters<SpeechHandler["submit"]>
+  ): Promise<void> {
     try {
       await new this.operators.io.file.writer(
         this.operators.io.dir.output,
-        outFileName,
+        outputAudioFilename,
       )
         .write(
           this.handlers.speech.submit(...input),
@@ -190,7 +221,7 @@ export default class OpenAIClient {
   }
 
   public async transcribe(
-    inFileName: string,
+    inputAudioFilename: string,
     inputLanguage?: Parameters<TranscribeHandler["submit"]>[1],
     instructions?: Parameters<TranscribeHandler["submit"]>[2],
     outputType?: Parameters<TranscribeHandler["submit"]>[3],
@@ -200,7 +231,7 @@ export default class OpenAIClient {
       return await this.handlers.transcribe.submit(
         await new this.operators.io.file.reader(
           this.operators.io.dir.input,
-          inFileName,
+          inputAudioFilename,
         )
           .read(),
         inputLanguage,
@@ -218,7 +249,7 @@ export default class OpenAIClient {
   }
 
   public async translate(
-    inFileName: string,
+    inputAudioFilename: string,
     instructions?: Parameters<TranslateHandler["submit"]>[1],
     outputType?: Parameters<TranslateHandler["submit"]>[2],
     model?: Parameters<TranslateHandler["submit"]>[3],
@@ -227,7 +258,7 @@ export default class OpenAIClient {
       return await this.handlers.translate.submit(
         await new this.operators.io.file.reader(
           this.operators.io.dir.input,
-          inFileName,
+          inputAudioFilename,
         )
           .read(),
         instructions,
