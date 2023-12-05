@@ -217,6 +217,32 @@ export default class OpenAIClient {
     }
   }
 
+  public async translate(
+    inFileName: string,
+    instructions?: Parameters<TranslateHandler["submit"]>[1],
+    outputType?: Parameters<TranslateHandler["submit"]>[2],
+    model?: Parameters<TranslateHandler["submit"]>[3],
+  ): ReturnType<TranslateHandler["submit"]> {
+    try {
+      return await this.handlers.translate.submit(
+        await new this.operators.io.file.reader(
+          this.operators.io.dir.input,
+          inFileName,
+        )
+          .read(),
+        instructions,
+        outputType,
+        model,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: translate: Failed to submit translate request`,
+        { cause: e },
+      );
+    }
+  }
+
   private _createOperators(
     settings: ClientSettingRuntime,
     inputDirectory: InputDirectory | string,
