@@ -135,6 +135,18 @@ export default class OpenAIClient {
     }
   }
 
+  public async chatJson(...input: Parameters<ChatJsonHandler["submit"]>): ReturnType<ChatJsonHandler["submit"]> {
+    try {
+      return await this.handlers.chatJson.submit(...input);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: chatJson: Failed to submit chatJson request`,
+        { cause: e },
+      );
+    }
+  }
+
   public async image(...input: Parameters<ImageHandler["submit"]>): ReturnType<ImageHandler["submit"]> {
     try {
       return await this.handlers.image.submit(...input);
