@@ -147,6 +147,18 @@ export default class OpenAIClient {
     }
   }
 
+  public async chatVision(...input: Parameters<ChatVisionHandler["submit"]>): ReturnType<ChatVisionHandler["submit"]> {
+    try {
+      return await this.handlers.chatVision.submit(...input);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: chatVision: Failed to submit chatVision request`,
+        { cause: e },
+      );
+    }
+  }
+
   public async image(...input: Parameters<ImageHandler["submit"]>): ReturnType<ImageHandler["submit"]> {
     try {
       return await this.handlers.image.submit(...input);
