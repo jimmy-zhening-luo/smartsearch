@@ -8,8 +8,8 @@ import type {
   ImageCount,
 } from "../handlers/types/ImageTypes.js";
 import type {
-  ReimageCount,
-} from "../handlers/types/ReimageTypes.js";
+  ImageEditCount,
+} from "../handlers/types/ImageEditTypes.js";
 
 // TODO: Create utility function to extract any string from OpenAI types
 // TODO: Create utility function to extract string literals from OpenAI types
@@ -63,14 +63,14 @@ export interface ConstSettings {
   DEFAULT_IMAGE_OUTPUT_TYPE:
   | Extract<OpenAI.Images.ImageGenerateParams["response_format"], string>;
 
-  // Reimage
-  DEFAULT_REIMAGE_MODEL:
+  // Image: Edit
+  DEFAULT_IMAGE_EDIT_MODEL:
   | Extract<OpenAI.Images.ImageEditParams["model"], string>;
-  DEFAULT_REIMAGE_COUNT:
-  | Extract<Extract<ReimageCount, OpenAI.Images.ImageGenerateParams["n"]>, number>;
-  DEFAULT_REIMAGE_DIMENSIONS:
+  DEFAULT_IMAGE_EDIT_COUNT:
+  | Extract<Extract<ImageEditCount, OpenAI.Images.ImageGenerateParams["n"]>, number>;
+  DEFAULT_IMAGE_EDIT_DIMENSIONS:
   | Extract<OpenAI.Images.ImageEditParams["size"], string>;
-  DEFAULT_REIMAGE_OUTPUT_TYPE:
+  DEFAULT_IMAGE_EDIT_OUTPUT_TYPE:
   | Extract<OpenAI.Images.ImageEditParams["response_format"], string>;
 
   // Speech

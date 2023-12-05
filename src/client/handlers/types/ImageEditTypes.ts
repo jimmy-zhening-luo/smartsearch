@@ -1,4 +1,4 @@
-export type ReimageCount =
+export type ImageEditCount =
 | 1
 | 2
 | 3

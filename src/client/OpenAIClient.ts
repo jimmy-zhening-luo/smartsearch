@@ -10,8 +10,8 @@ import ChatHandler from "./handlers/ChatHandler.js";
 import ChatJsonHandler from "./handlers/ChatJsonHandler.js";
 import ChatVisionHandler from "./handlers/ChatVisionHandler.js";
 import ImageHandler from "./handlers/ImageHandler.js";
+import ImageEditHandler from "./handlers/ImageEditHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
-import ReimageHandler from "./handlers/ReimageHandler.js";
 import SpeechHandler from "./handlers/SpeechHandler.js";
 import TranscribeHandler from "./handlers/TranscribeHandler.js";
 import TranslateHandler from "./handlers/TranslateHandler.js";
@@ -36,8 +36,8 @@ export default class OpenAIClient {
     chatJson: ChatJsonHandler;
     chatVision: ChatVisionHandler;
     image: ImageHandler;
+    imageEdit: ImageEditHandler;
     models: ModelsHandler;
-    reimage: ReimageHandler;
     speech: SpeechHandler;
     transcribe: TranscribeHandler;
     translate: TranslateHandler;
@@ -129,7 +129,7 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: chat: Failed to submit chat request`,
+        `OpenAIClient: chat: Failed to submit request`,
         { cause: e },
       );
     }
@@ -141,7 +141,7 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: chatJson: Failed to submit chatJson request`,
+        `OpenAIClient: chatJson: Failed to submit request`,
         { cause: e },
       );
     }
@@ -153,7 +153,7 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: chatVision: Failed to submit chatVision request`,
+        `OpenAIClient: chatVision: Failed to submit request`,
         { cause: e },
       );
     }
@@ -165,33 +165,21 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: image: Failed to submit image request`,
+        `OpenAIClient: image: Failed to submit request`,
         { cause: e },
       );
     }
   }
 
-  public async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
-    try {
-      return await this.handlers.models.submit(...input);
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: models: Failed to submit models request`,
-        { cause: e },
-      );
-    }
-  }
-
-  public async reimage(
+  public async imageEdit(
     inputImageFilename: string,
-    prompt: Parameters<ReimageHandler["submit"]>[1],
-    count?: Parameters<ReimageHandler["submit"]>[2],
-    dimensions?: Parameters<ReimageHandler["submit"]>[3],
-    outputType?: Parameters<ReimageHandler["submit"]>[4],
-  ): ReturnType<ReimageHandler["submit"]> {
+    prompt: Parameters<ImageEditHandler["submit"]>[1],
+    count?: Parameters<ImageEditHandler["submit"]>[2],
+    dimensions?: Parameters<ImageEditHandler["submit"]>[3],
+    outputType?: Parameters<ImageEditHandler["submit"]>[4],
+  ): ReturnType<ImageEditHandler["submit"]> {
     try {
-      return await this.handlers.reimage.submit(
+      return await this.handlers.imageEdit.submit(
         await new this.operators.io.file.reader(
           this.operators.io.dir.input,
           inputImageFilename,
@@ -205,7 +193,19 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: reimage: Failed to submit reimage request`,
+        `OpenAIClient: imageEdit: Failed to submit request`,
+        { cause: e },
+      );
+    }
+  }
+
+  public async models(...input: Parameters<ModelsHandler["submit"]>): ReturnType<ModelsHandler["submit"]> {
+    try {
+      return await this.handlers.models.submit(...input);
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: models: Failed to submit request`,
         { cause: e },
       );
     }
@@ -226,7 +226,7 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: speech: Failed to submit speech request`,
+        `OpenAIClient: speech: Failed to submit request`,
         { cause: e },
       );
     }
@@ -254,7 +254,7 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: transcribe: Failed to submit transcribe request`,
+        `OpenAIClient: transcribe: Failed to submit request`,
         { cause: e },
       );
     }
@@ -280,7 +280,7 @@ export default class OpenAIClient {
     }
     catch (e) {
       throw new EvalError(
-        `OpenAIClient: translate: Failed to submit translate request`,
+        `OpenAIClient: translate: Failed to submit request`,
         { cause: e },
       );
     }
@@ -367,18 +367,18 @@ export default class OpenAIClient {
             outputType: settings.consts.DEFAULT_IMAGE_OUTPUT_TYPE,
           },
         ),
+        imageEdit: new ImageEditHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_IMAGE_EDIT_MODEL,
+            count: settings.consts.DEFAULT_IMAGE_EDIT_COUNT,
+            dimensions: settings.consts.DEFAULT_IMAGE_EDIT_DIMENSIONS,
+            outputType: settings.consts.DEFAULT_IMAGE_EDIT_OUTPUT_TYPE,
+          },
+        ),
         models: new ModelsHandler(
           openai,
           null,
-        ),
-        reimage: new ReimageHandler(
-          openai,
-          {
-            model: settings.consts.DEFAULT_REIMAGE_MODEL,
-            count: settings.consts.DEFAULT_REIMAGE_COUNT,
-            dimensions: settings.consts.DEFAULT_REIMAGE_DIMENSIONS,
-            outputType: settings.consts.DEFAULT_REIMAGE_OUTPUT_TYPE,
-          },
         ),
         speech: new SpeechHandler(
           openai,
