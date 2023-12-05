@@ -1,11 +1,11 @@
-import { promises as fs } from "fs";
+import fs from "fs";
 import type InputDirectory from "../directories/InputDirectory.js";
 import File from "./file/File.js";
 
 export default class FileReader extends File<"READ", InputDirectory> {
-  public async read(): Promise<Buffer> {
+  public async read(): Promise<fs.ReadStream> {
     try {
-      return await fs.readFile(
+      return fs.createReadStream(
         await this.safePath(),
       );
     }
