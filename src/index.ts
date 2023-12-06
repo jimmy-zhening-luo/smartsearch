@@ -31,6 +31,41 @@ namespace Program {
         (await client.image(imagePrompt)).images,
       );
 
+      // ImageEdit
+      /** OpenAI Bug -- not working */
+      const inputImageEditFilename: string = "cat-square.png";
+      const inputImageEditMaskFilename: string = "mask-transparent-square.png";
+      const imageEditPrompt: string = "I NEED to test how the tool works with extremely simple prompts. DO NOT add any detail, just use it AS-IS: Show me this cat on vacation in Hawaii";
+
+      const editedImageResponse = await client.imageEdit(
+        inputImageEditFilename,
+        inputImageEditMaskFilename,
+        imageEditPrompt,
+      );
+
+      Log.clientResponse(
+        "ImageEdit",
+        `Input: "${inputImageEditFilename}".\nMask: "${inputImageEditMaskFilename}".\nPrompt: "${imageEditPrompt}".\nNumber of images returned: ${editedImageResponse.images.length}`,
+        [
+          ...editedImageResponse.images,
+          ...Array.from(editedImageResponse.prompts.entries())
+            .map(([ image, prompt ]) => `${image}\n${prompt}`),
+        ],
+      );
+
+      // ImageVariation
+      const inputImageVariationFilename: string = "cat-square.png";
+
+      const imageVariationResponse = await client.imageVariation(
+        inputImageVariationFilename,
+      );
+
+      Log.clientResponse(
+        "ImageVariation",
+        `Input: "${inputImageVariationFilename}".\nNumber of images returned: ${imageVariationResponse.images.length}`,
+        imageVariationResponse.images,
+      );
+
       // Models
       const modelFilter: string = "gpt";
 
@@ -39,9 +74,6 @@ namespace Program {
         `filter: "${modelFilter}"`,
         await client.models(modelFilter),
       );
-
-      // Reimage
-      /** TBD */
 
       // Speech
       const outputSpeechFilename: string = "hello.mp3";
