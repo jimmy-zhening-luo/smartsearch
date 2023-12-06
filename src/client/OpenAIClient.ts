@@ -209,9 +209,9 @@ export default class OpenAIClient {
 
   public async imageVariation(
     inputImageFilename: string,
-    count: Parameters<ImageVariationHandler["submit"]>[1],
-    dimensions: Parameters<ImageVariationHandler["submit"]>[2],
-    outputType: Parameters<ImageVariationHandler["submit"]>[3],
+    count?: Parameters<ImageVariationHandler["submit"]>[1],
+    dimensions?: Parameters<ImageVariationHandler["submit"]>[2],
+    outputType?: Parameters<ImageVariationHandler["submit"]>[3],
   ): ReturnType<ImageVariationHandler["submit"]> {
     try {
       return await this.handlers.imageVariation.submit(
