@@ -9,7 +9,7 @@ typeof TranscribeRequestAdapter,
 TranscribeResponseAdapter,
 typeof TranscribeResponseAdapter,
 [
-  file: File,
+  file: Extract<File, TranscribeRequestAdapter["payload"]["file"]>,
   inputLanguage?: Extract<LanguageCode, string>,
   instructions?: string,
   outputType?: Extract<TranscribeRequestAdapter["payload"]["response_format"], string>,
@@ -40,7 +40,7 @@ typeof TranscribeResponseAdapter,
   }
 
   protected requestInterface(
-    file: File,
+    file: Extract<File, TranscribeRequestAdapter["payload"]["file"]>,
     inputLanguage?: Extract<LanguageCode, string>,
     instructions?: string,
     outputType?: Extract<TranscribeRequestAdapter["payload"]["response_format"], string>,

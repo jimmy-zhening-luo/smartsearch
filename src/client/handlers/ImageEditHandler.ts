@@ -9,8 +9,8 @@ typeof ImageEditRequestAdapter,
 ImageEditResponseAdapter,
 typeof ImageEditResponseAdapter,
 [
-  image: File,
-  mask: File,
+  image: Extract<File, ImageEditRequestAdapter["payload"]["image"]>,
+  mask: Extract<File, ImageEditRequestAdapter["payload"]["mask"]>,
   prompt: string,
   count?: Extract<Extract<ImageEditCount, ImageEditRequestAdapter["payload"]["n"]>, number>,
   dimensions?: Extract<ImageEditRequestAdapter["payload"]["size"], string>,
@@ -44,8 +44,8 @@ typeof ImageEditResponseAdapter,
   }
 
   protected requestInterface(
-    image: File,
-    mask: File,
+    image: Extract<File, ImageEditRequestAdapter["payload"]["image"]>,
+    mask: Extract<File, ImageEditRequestAdapter["payload"]["mask"]>,
     prompt: string,
     count?: Extract<Extract<ImageEditCount, ImageEditRequestAdapter["payload"]["n"]>, number>,
     dimensions?: Extract<ImageEditRequestAdapter["payload"]["size"], string>,

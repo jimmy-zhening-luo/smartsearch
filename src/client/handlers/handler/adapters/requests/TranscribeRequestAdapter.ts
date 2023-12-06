@@ -11,7 +11,7 @@ export default class TranscribeRequestAdapter
 
   constructor(
     model: Extract<TranscribeRequestPayload["model"], string>,
-    file: File,
+    file: Extract<File, TranscribeRequestPayload["file"]>,
     inputLanguage?: Extract<LanguageCode, string>,
     instructions?: string,
     outputType?: Extract<TranscribeRequestPayload["response_format"], string>,

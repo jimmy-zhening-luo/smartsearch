@@ -8,7 +8,7 @@ typeof TranslateRequestAdapter,
 TranslateResponseAdapter,
 typeof TranslateResponseAdapter,
 [
-  file: File,
+  file: Extract<File, TranslateRequestAdapter["payload"]["file"]>,
   instructions?: string,
   outputType?: Extract<TranslateRequestAdapter["payload"]["response_format"], string>,
   model?: Extract<TranslateRequestAdapter["payload"]["model"], string>,
@@ -38,7 +38,7 @@ typeof TranslateResponseAdapter,
   }
 
   protected requestInterface(
-    file: File,
+    file: Extract<File, TranslateRequestAdapter["payload"]["file"]>,
     instructions?: string,
     outputType?: Extract<TranslateRequestAdapter["payload"]["response_format"], string>,
     model: Extract<TranslateRequestAdapter["payload"]["model"], string> = this.requestInterfaceDefaults.model,

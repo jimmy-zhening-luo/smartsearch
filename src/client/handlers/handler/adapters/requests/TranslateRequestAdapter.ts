@@ -10,7 +10,7 @@ export default class TranslateRequestAdapter
 
   constructor(
     model: Extract<TranslateRequestPayload["model"], string>,
-    file: File,
+    file: Extract<File, TranslateRequestPayload["file"]>,
     instructions?: string,
     outputType?: Extract<TranslateRequestPayload["response_format"], string>,
   ) {

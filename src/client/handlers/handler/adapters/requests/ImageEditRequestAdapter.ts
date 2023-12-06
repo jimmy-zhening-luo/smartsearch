@@ -11,8 +11,8 @@ export default class ImageEditRequestAdapter
 
   constructor(
     model: Extract<ImageEditRequestPayload["model"], string>,
-    image: File,
-    mask: File,
+    image: Extract<File, ImageEditRequestPayload["image"]>,
+    mask: Extract<File, ImageEditRequestPayload["mask"]>,
     prompt: string,
     size: Extract<ImageEditRequestPayload["size"], string>,
     n?: Extract<Extract<ImageEditCount, ImageEditRequestPayload["n"]>, number>,
