@@ -67,11 +67,13 @@ export interface ConstSettings {
   DEFAULT_IMAGE_EDIT_MODEL:
   | Extract<OpenAI.Images.ImageEditParams["model"], string>;
   DEFAULT_IMAGE_EDIT_COUNT:
-  | Extract<Extract<ImageEditCount, OpenAI.Images.ImageGenerateParams["n"]>, number>;
+  | Extract<Extract<ImageEditCount, OpenAI.Images.ImageEditParams["n"]>, number>;
   DEFAULT_IMAGE_EDIT_DIMENSIONS:
   | Extract<OpenAI.Images.ImageEditParams["size"], string>;
   DEFAULT_IMAGE_EDIT_OUTPUT_TYPE:
   | Extract<OpenAI.Images.ImageEditParams["response_format"], string>;
+
+  // Image: Variation
 
   // Speech
   DEFAULT_SPEECH_MODEL:
