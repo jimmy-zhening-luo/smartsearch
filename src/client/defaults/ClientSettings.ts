@@ -10,6 +10,9 @@ import type {
 import type {
   ImageEditCount,
 } from "../handlers/types/ImageEditTypes.js";
+import type {
+  ImageVariationCount,
+} from "../handlers/types/ImageVariationTypes.js";
 
 // TODO: Create utility function to extract any string from OpenAI types
 // TODO: Create utility function to extract string literals from OpenAI types
@@ -74,6 +77,14 @@ export interface ConstSettings {
   | Extract<OpenAI.Images.ImageEditParams["response_format"], string>;
 
   // Image: Variation
+  DEFAULT_IMAGE_VARIATION_MODEL:
+  | Extract<OpenAI.Images.ImageCreateVariationParams["model"], string>;
+  DEFAULT_IMAGE_VARIATION_COUNT:
+  | Extract<Extract<ImageVariationCount, OpenAI.Images.ImageCreateVariationParams["n"]>, number>;
+  DEFAULT_IMAGE_VARIATION_DIMENSIONS:
+  | Extract<OpenAI.Images.ImageCreateVariationParams["size"], string>;
+  DEFAULT_IMAGE_VARIATION_OUTPUT_TYPE:
+  | Extract<OpenAI.Images.ImageCreateVariationParams["response_format"], string>;
 
   // Speech
   DEFAULT_SPEECH_MODEL:

@@ -17,7 +17,6 @@ EnvSettings
     settings?:
     | ClientSettingRuntime
     | {
-
       consts: typeof ClientSettingRuntime.prototype.consts;
       env: typeof ClientSettingRuntime.prototype.env;
     },

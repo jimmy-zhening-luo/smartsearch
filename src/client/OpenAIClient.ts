@@ -11,6 +11,7 @@ import ChatJsonHandler from "./handlers/ChatJsonHandler.js";
 import ChatVisionHandler from "./handlers/ChatVisionHandler.js";
 import ImageHandler from "./handlers/ImageHandler.js";
 import ImageEditHandler from "./handlers/ImageEditHandler.js";
+import ImageVariationHandler from "./handlers/ImageVariationHandler.js";
 import ModelsHandler from "./handlers/ModelsHandler.js";
 import SpeechHandler from "./handlers/SpeechHandler.js";
 import TranscribeHandler from "./handlers/TranscribeHandler.js";
@@ -37,6 +38,7 @@ export default class OpenAIClient {
     chatVision: ChatVisionHandler;
     image: ImageHandler;
     imageEdit: ImageEditHandler;
+    imageVariation: ImageVariationHandler;
     models: ModelsHandler;
     speech: SpeechHandler;
     transcribe: TranscribeHandler;
@@ -200,6 +202,32 @@ export default class OpenAIClient {
     catch (e) {
       throw new EvalError(
         `OpenAIClient: imageEdit: Failed to submit request`,
+        { cause: e },
+      );
+    }
+  }
+
+  public async imageVariation(
+    inputImageFilename: string,
+    count: Parameters<ImageVariationHandler["submit"]>[1],
+    dimensions: Parameters<ImageVariationHandler["submit"]>[2],
+    outputType: Parameters<ImageVariationHandler["submit"]>[3],
+  ): ReturnType<ImageVariationHandler["submit"]> {
+    try {
+      return await this.handlers.imageVariation.submit(
+        await new this.operators.io.file.reader(
+          this.operators.io.dir.input,
+          inputImageFilename,
+        )
+          .read(),
+        count,
+        dimensions,
+        outputType,
+      );
+    }
+    catch (e) {
+      throw new EvalError(
+        `OpenAIClient: imageVariation: Failed to submit request`,
         { cause: e },
       );
     }
@@ -380,6 +408,15 @@ export default class OpenAIClient {
             count: settings.consts.DEFAULT_IMAGE_EDIT_COUNT,
             dimensions: settings.consts.DEFAULT_IMAGE_EDIT_DIMENSIONS,
             outputType: settings.consts.DEFAULT_IMAGE_EDIT_OUTPUT_TYPE,
+          },
+        ),
+        imageVariation: new ImageVariationHandler(
+          openai,
+          {
+            model: settings.consts.DEFAULT_IMAGE_VARIATION_MODEL,
+            count: settings.consts.DEFAULT_IMAGE_VARIATION_COUNT,
+            dimensions: settings.consts.DEFAULT_IMAGE_VARIATION_DIMENSIONS,
+            outputType: settings.consts.DEFAULT_IMAGE_VARIATION_OUTPUT_TYPE,
           },
         ),
         models: new ModelsHandler(
