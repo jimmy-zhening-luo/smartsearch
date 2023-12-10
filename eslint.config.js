@@ -1,6 +1,3 @@
-// v5.2.0
-
-// PLUGINS
 import stylisticPlugin from "@stylistic/eslint-plugin";
 import jsLintPlugin from "@eslint/js";
 import tsLintPlugin from "@typescript-eslint/eslint-plugin";
