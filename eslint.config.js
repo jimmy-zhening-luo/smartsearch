@@ -12,11 +12,11 @@ const JimboLintConfigs = new JimboLint(
   jsLintPlugin,
   tsLintPlugin,
   tsLintParser,
-  ["eslint.config.js"],
+  [
+    "eslint.config.js",
+  ],
   [
     "src/**/*.ts",
-    "src/**/*.cts",
-    "src/**/*.mts",
   ],
 );
 

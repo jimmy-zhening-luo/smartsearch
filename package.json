@@ -18,7 +18,7 @@
     "clean": "npm run clean:dist && npm run clean:lint-cache",
     "clean:dist": "shx rm -rf dist",
     "clean:lint-cache": "shx rm -rf .eslintcache",
-    "lint": "eslint --cache --cache-strategy content -c eslint.config.js **",
+    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "prebuild": "npm run lint:fix",
     "build": "tsc",
@@ -28,7 +28,7 @@
   },
   "engines": {
     "node": ">=20.10.0",
-    "npm": ">=10.2.4"
+    "npm": ">=10.2.5"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
