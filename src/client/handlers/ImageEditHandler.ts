@@ -4,7 +4,7 @@ import ImageEditResponseAdapter from "./handler/adapters/responses/ImageEditResp
 import type { ImageEditCount } from "./types/ImageEditTypes.js";
 
 export default class ImageEditHandler extends Handler<
-ImageEditRequestAdapter,
+  ImageEditRequestAdapter,
 typeof ImageEditRequestAdapter,
 ImageEditResponseAdapter,
 typeof ImageEditResponseAdapter,

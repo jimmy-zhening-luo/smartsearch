@@ -3,7 +3,7 @@ import TranslateRequestAdapter from "./handler/adapters/requests/TranslateReques
 import TranslateResponseAdapter from "./handler/adapters/responses/TranslateResponseAdapter.js";
 
 export default class TranslateHandler extends Handler<
-TranslateRequestAdapter,
+  TranslateRequestAdapter,
 typeof TranslateRequestAdapter,
 TranslateResponseAdapter,
 typeof TranslateResponseAdapter,

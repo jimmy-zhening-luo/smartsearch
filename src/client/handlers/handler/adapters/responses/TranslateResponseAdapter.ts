@@ -6,8 +6,8 @@ type UnpackedTranslateResponse = Extract<TranslateResponsePayload["text"], strin
 
 export default class TranslateResponseAdapter
   extends ResponseAdapter<
-  TranslateResponsePayload,
-  UnpackedTranslateResponse
+    TranslateResponsePayload,
+    UnpackedTranslateResponse
   > {
   public readonly unpacked: UnpackedTranslateResponse;
 

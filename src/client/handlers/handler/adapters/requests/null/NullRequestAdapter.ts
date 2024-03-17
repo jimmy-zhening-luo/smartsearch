@@ -3,8 +3,8 @@ import RequestAdapter from "../request/RequestAdapter.js";
 export default abstract class NullRequestAdapter<
   ClientOptions = null,
 > extends RequestAdapter<
-  null,
-  ClientOptions
+    null,
+    ClientOptions
   > {
   public readonly payload: null;
 

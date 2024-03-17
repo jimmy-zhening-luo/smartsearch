@@ -8,10 +8,10 @@ import type {
 } from "./DefaultConfig.js";
 
 export default class ClientSettingRuntime extends SettingRuntime<
-ConstSettingIds,
-ConstSettings,
-EnvSettingIds,
-EnvSettings
+  ConstSettingIds,
+  ConstSettings,
+  EnvSettingIds,
+  EnvSettings
 > {
   constructor(
     settings?:

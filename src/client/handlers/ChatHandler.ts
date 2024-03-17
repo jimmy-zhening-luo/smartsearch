@@ -3,7 +3,7 @@ import ChatRequestAdapter from "./handler/adapters/requests/ChatRequestAdapter.j
 import ChatResponseAdapter from "./handler/adapters/responses/ChatResponseAdapter.js";
 
 export default class ChatHandler extends Handler<
-ChatRequestAdapter,
+  ChatRequestAdapter,
 typeof ChatRequestAdapter,
 ChatResponseAdapter,
 typeof ChatResponseAdapter,

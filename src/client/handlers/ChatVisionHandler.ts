@@ -4,7 +4,7 @@ import ChatVisionResponseAdapter from "./handler/adapters/responses/ChatVisionRe
 import type { ChatModelSupport } from "./types/ChatTypes.js";
 
 export default class ChatVisionHandler extends Handler<
-ChatVisionRequestAdapter,
+  ChatVisionRequestAdapter,
 typeof ChatVisionRequestAdapter,
 ChatVisionResponseAdapter,
 typeof ChatVisionResponseAdapter,

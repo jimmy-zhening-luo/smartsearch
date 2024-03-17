@@ -4,7 +4,7 @@ import TranscribeRequestAdapter from "./handler/adapters/requests/TranscribeRequ
 import TranscribeResponseAdapter from "./handler/adapters/responses/TranscribeResponseAdapter.js";
 
 export default class TranscribeHandler extends Handler<
-TranscribeRequestAdapter,
+  TranscribeRequestAdapter,
 typeof TranscribeRequestAdapter,
 TranscribeResponseAdapter,
 typeof TranscribeResponseAdapter,

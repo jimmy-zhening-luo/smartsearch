@@ -4,7 +4,7 @@ import ChatJsonResponseAdapter from "./handler/adapters/responses/ChatJsonRespon
 import type { ChatModelSupport } from "./types/ChatTypes.js";
 
 export default class ChatJsonHandler extends Handler<
-ChatJsonRequestAdapter,
+  ChatJsonRequestAdapter,
 typeof ChatJsonRequestAdapter,
 ChatJsonResponseAdapter,
 typeof ChatJsonResponseAdapter,

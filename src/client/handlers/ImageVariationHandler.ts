@@ -4,7 +4,7 @@ import ImageVariationResponseAdapter from "./handler/adapters/responses/ImageVar
 import type { ImageVariationCount } from "./types/ImageVariationTypes.js";
 
 export default class ImageVariationHandler extends Handler<
-ImageVariationRequestAdapter,
+  ImageVariationRequestAdapter,
 typeof ImageVariationRequestAdapter,
 ImageVariationResponseAdapter,
 typeof ImageVariationResponseAdapter,

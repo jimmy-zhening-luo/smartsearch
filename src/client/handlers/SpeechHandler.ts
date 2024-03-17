@@ -3,7 +3,7 @@ import SpeechRequestAdapter from "./handler/adapters/requests/SpeechRequestAdapt
 import SpeechResponseAdapter from "./handler/adapters/responses/SpeechResponseAdapter.js";
 
 export default class SpeechHandler extends Handler<
-SpeechRequestAdapter,
+  SpeechRequestAdapter,
 typeof SpeechRequestAdapter,
 SpeechResponseAdapter,
 typeof SpeechResponseAdapter,

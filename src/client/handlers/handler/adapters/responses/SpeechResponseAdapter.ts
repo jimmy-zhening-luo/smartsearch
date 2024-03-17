@@ -6,8 +6,8 @@ type UnpackedSpeechResponse = Extract<SpeechResponsePayload, Response>;
 
 export default class SpeechResponseAdapter
   extends ResponseAdapter<
-  SpeechResponsePayload,
-  UnpackedSpeechResponse
+    SpeechResponsePayload,
+    UnpackedSpeechResponse
   > {
   public readonly unpacked: UnpackedSpeechResponse;
 

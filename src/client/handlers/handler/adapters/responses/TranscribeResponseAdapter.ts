@@ -6,8 +6,8 @@ type UnpackedTranscribeResponse = Extract<TranscribeResponsePayload["text"], str
 
 export default class TranscribeResponseAdapter
   extends ResponseAdapter<
-  TranscribeResponsePayload,
-  UnpackedTranscribeResponse
+    TranscribeResponsePayload,
+    UnpackedTranscribeResponse
   > {
   public readonly unpacked: UnpackedTranscribeResponse;
 

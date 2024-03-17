@@ -3,7 +3,7 @@ import ModelsRequestAdapter from "./handler/adapters/requests/ModelsRequestAdapt
 import ModelsResponseAdapter from "./handler/adapters/responses/ModelsResponseAdapter.js";
 
 export default class ModelsHandler extends Handler<
-ModelsRequestAdapter,
+  ModelsRequestAdapter,
 typeof ModelsRequestAdapter,
 ModelsResponseAdapter,
 typeof ModelsResponseAdapter,
