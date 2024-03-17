@@ -25,7 +25,7 @@ export default class ChatRequestAdapter<P extends ChatRequestPayload["messages"]
         messages: [
           {
             role: "user",
-            content: prompt,
+            content: prompt ?? "",
           },
         ],
       };
