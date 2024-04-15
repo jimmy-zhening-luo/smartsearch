@@ -22,12 +22,7 @@
     "prebuild": "npm run lint:fix",
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "npm run build && npm run start",
-    "dev:clean": "npm run clean && npm dev"
-  },
-  "engines": {
-    "node": ">=20.10.0",
-    "npm": ">=10.2.5"
+    "dev": "npm run build && npm run start"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
