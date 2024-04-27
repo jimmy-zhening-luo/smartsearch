@@ -27,6 +27,7 @@ export default class ImageVariationRequestAdapter
 
       if (n !== undefined)
         this.payload.n = n;
+
       if (outputType !== undefined)
         this.payload.response_format = outputType;
     }

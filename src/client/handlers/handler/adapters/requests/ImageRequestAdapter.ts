@@ -27,10 +27,13 @@ export default class ImageRequestAdapter
         quality,
         size,
       };
+
       if (style !== undefined)
         this.payload.style = style;
+
       if (n !== undefined)
         this.payload.n = n;
+
       if (outputType !== undefined)
         this.payload.response_format = outputType;
     }

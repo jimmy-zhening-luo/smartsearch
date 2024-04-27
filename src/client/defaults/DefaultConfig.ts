@@ -1,8 +1,14 @@
 import path from "path";
 import type { EnvConfig } from "./configs/EnvConfig.js";
 import type { ConstConfig } from "./configs/ConstConfig.js";
-import type { ConstSettingIds, EnvSettingIds } from "./ClientSettingIds.js";
-import type { ConstSettings, EnvSettings } from "./ClientSettings.js";
+import type {
+  ConstSettingIds,
+  EnvSettingIds,
+} from "./ClientSettingIds.js";
+import type {
+  ConstSettings,
+  EnvSettings,
+} from "./ClientSettings.js";
 
 export type {
   ConstSettingIds,

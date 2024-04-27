@@ -23,10 +23,13 @@ export default class TranscribeRequestAdapter
         model,
         file,
       };
+
       if (inputLanguage !== undefined)
         this.payload.language = inputLanguage;
+
       if (instructions !== undefined)
         this.payload.prompt = instructions;
+
       if (outputType !== undefined)
         this.payload.response_format = outputType;
     }

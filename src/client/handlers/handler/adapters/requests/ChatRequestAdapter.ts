@@ -35,10 +35,13 @@ export default class ChatRequestAdapter<P extends ChatRequestPayload["messages"]
           role: "system",
           content: instructions,
         });
+
       if (temperature !== undefined)
         this.payload.temperature = temperature;
+
       if (maxTokens !== undefined)
         this.payload.max_tokens = maxTokens;
+
       if (seed !== undefined)
         this.payload.seed = seed;
     }

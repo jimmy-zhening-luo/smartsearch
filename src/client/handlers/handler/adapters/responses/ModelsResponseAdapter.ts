@@ -11,12 +11,18 @@ export default class ModelsResponseAdapter
   constructor(payload: ModelsResponsePayload) {
     try {
       super(payload);
+
       if (this.payload.data.length === 0)
         throw new EvalError(
           `Unexpected: native client returned a payload with 0 models`,
         );
       else {
-        this.unpacked = this.payload.data.map(model => model.id);
+        this.unpacked = this.payload
+          .data
+          .map(
+            model =>
+              model.id,
+          );
       }
     }
     catch (e) {

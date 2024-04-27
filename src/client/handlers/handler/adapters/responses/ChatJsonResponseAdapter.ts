@@ -10,6 +10,7 @@ export default class ChatJsonResponseAdapter extends ChatResponseAdapter {
   constructor(payload: ChatResponseAdapter["payload"]) {
     try {
       super(payload);
+
       if (this.unpacked.exit === "length")
         throw new RangeError(
           `Response had finish_reason of length, which means the returned JSON is not readable due to being cut off.`,

@@ -63,7 +63,8 @@ typeof ModelsResponseAdapter,
       return unpacked
         .sort()
         .filter(
-          model => model.includes(clientOptions.filter),
+          model =>
+            model.includes(clientOptions.filter),
         );
     }
     catch (e) {

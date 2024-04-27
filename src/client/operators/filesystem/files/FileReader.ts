@@ -18,8 +18,7 @@ export default class FileReader extends FileOperator<"READ", InputDirectory> {
               ),
             ],
           ),
-        ]
-        ,
+        ],
         safePath,
       );
     }

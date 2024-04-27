@@ -14,14 +14,14 @@ export default class ImageResponseAdapter
   constructor(payload: ImageResponsePayload) {
     try {
       super(payload);
-
       this.unpacked = {
         images: [],
         prompts: new Map(),
       };
 
       const nonEmptyImages: typeof payload.data = payload.data.filter(
-        image => (image.b64_json ?? image.url ?? "") !== "",
+        image =>
+          (image.b64_json ?? image.url ?? "") !== "",
       );
 
       for (const image of nonEmptyImages) {
@@ -29,8 +29,14 @@ export default class ImageResponseAdapter
         const editedPrompt = image.revised_prompt;
 
         this.unpacked.images.push(urlOrData);
+
         if (editedPrompt !== undefined)
-          this.unpacked.prompts.set(urlOrData, editedPrompt);
+          this.unpacked
+            .prompts
+            .set(
+              urlOrData,
+              editedPrompt,
+            );
       }
     }
     catch (e) {

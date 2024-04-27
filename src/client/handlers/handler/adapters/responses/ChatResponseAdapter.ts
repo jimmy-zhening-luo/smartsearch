@@ -1,9 +1,7 @@
 import type OpenAI from "openai";
 import ResponseAdapter from "./response/ResponseAdapter.js";
 
-type ChatResponsePayload = OpenAI.ChatCompletion;
-
-type UnpackedChatResponse = {
+type ChatResponsePayload = OpenAI.ChatCompletion;type UnpackedChatResponse = {
   answer: string;
   model: Extract<ChatResponsePayload["model"], string>;
   exit: Extract<ChatResponsePayload["choices"][0]["finish_reason"], string>;
@@ -16,6 +14,7 @@ export default class ChatResponseAdapter
   constructor(payload: ChatResponsePayload) {
     try {
       super(payload);
+
       if (
         this.payload.choices.length === 0
         || this.payload.choices[0] === undefined

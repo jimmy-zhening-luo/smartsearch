@@ -21,8 +21,10 @@ export default class TranslateRequestAdapter
         model,
         file,
       };
+
       if (instructions !== undefined)
         this.payload.prompt = instructions;
+
       if (outputType !== undefined)
         this.payload.response_format = outputType;
     }

@@ -6,8 +6,6 @@ namespace Program {
   export async function main(): Promise<void> {
     try {
       const client: OpenAIClient = new OpenAIClient();
-
-      // Chat
       const chatResponse: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
 
       Log.clientResponse(

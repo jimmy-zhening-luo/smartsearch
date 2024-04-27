@@ -147,10 +147,12 @@ export default abstract class Directory<Op extends keyof typeof FileOperation> {
         safePath,
       )
         .then(
-          () => true,
+          () =>
+            true,
         )
         .catch(
-          () => false,
+          () =>
+            false,
         );
     }
     catch (e) {

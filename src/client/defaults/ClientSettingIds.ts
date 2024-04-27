@@ -1,5 +1,6 @@
 // TODO: Require these to be string literals (type SettingIds)
 export type ConstSettingIds =
+
   // // Client Operations
   | "DEFAULT_INPUT_RELATIVE_PATH"
   | "DEFAULT_OUTPUT_RELATIVE_PATH"
@@ -50,9 +51,8 @@ export type ConstSettingIds =
   | "DEFAULT_TRANSCRIBE_MODEL"
 
   // Translate
-  | "DEFAULT_TRANSLATE_MODEL";
+  | "DEFAULT_TRANSLATE_MODEL";export type EnvSettingIds =
 
-export type EnvSettingIds =
   // // OpenAI API
   | "OPENAI_API_KEY"
   | "OPENAI_ORG_ID"

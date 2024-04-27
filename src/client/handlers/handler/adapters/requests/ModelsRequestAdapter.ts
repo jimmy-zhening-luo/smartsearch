@@ -12,9 +12,7 @@ class ModelsRequestAdapter extends NullRequestAdapter<{
   ) {
     try {
       super();
-      this.clientOptions = {
-        filter,
-      };
+      this.clientOptions = { filter };
     }
     catch (e) {
       throw new SyntaxError(

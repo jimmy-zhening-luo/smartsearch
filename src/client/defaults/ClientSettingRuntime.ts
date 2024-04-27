@@ -15,11 +15,11 @@ export default class ClientSettingRuntime extends SettingRuntime<
 > {
   constructor(
     settings?:
-    | ClientSettingRuntime
-    | {
-      consts: typeof ClientSettingRuntime.prototype.consts;
-      env: typeof ClientSettingRuntime.prototype.env;
-    },
+      | ClientSettingRuntime
+      | {
+        consts: typeof ClientSettingRuntime.prototype.consts;
+        env: typeof ClientSettingRuntime.prototype.env;
+      },
   ) {
     super(
       settings ?? {

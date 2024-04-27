@@ -1,7 +1,10 @@
 import Handler from "./handler/Handler.js";
 import ImageRequestAdapter from "./handler/adapters/requests/ImageRequestAdapter.js";
 import ImageResponseAdapter from "./handler/adapters/responses/ImageResponseAdapter.js";
-import type { ImageShape, ImageCount } from "./types/ImageTypes.js";
+import type {
+  ImageShape,
+  ImageCount,
+} from "./types/ImageTypes.js";
 
 export default class ImageHandler extends Handler<
   ImageRequestAdapter,

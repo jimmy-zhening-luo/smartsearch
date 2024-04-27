@@ -1,12 +1,8 @@
 import OpenAI from "openai";
-import ClientSettingRuntime from "./defaults/ClientSettingRuntime.js";
-
-import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
+import ClientSettingRuntime from "./defaults/ClientSettingRuntime.js";import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
 import OutputDirectory from "./operators/filesystem/directories/OutputDirectory.js";
 import FileReader from "./operators/filesystem/files/FileReader.js";
-import FileWriter from "./operators/filesystem/files/FileWriter.js";
-
-import ChatHandler from "./handlers/ChatHandler.js";
+import FileWriter from "./operators/filesystem/files/FileWriter.js";import ChatHandler from "./handlers/ChatHandler.js";
 import ChatJsonHandler from "./handlers/ChatJsonHandler.js";
 import ChatVisionHandler from "./handlers/ChatVisionHandler.js";
 import ImageHandler from "./handlers/ImageHandler.js";
@@ -47,10 +43,10 @@ export default class OpenAIClient {
 
   constructor(
     client?:
-    OpenAI | OpenAIClient | {
-      apiKey: string;
-      organization?: string;
-    },
+      OpenAI | OpenAIClient | {
+        apiKey: string;
+        organization?: string;
+      },
     overrides?: {
       inputDirectory?: InputDirectory | string;
       outputDirectory?: OutputDirectory | string;
@@ -65,6 +61,7 @@ export default class OpenAIClient {
             organization: client.openai.organization,
           },
         );
+
         if (overrides === undefined) {
           this.settings = new ClientSettingRuntime(client.settings);
           this.operators = { ...client.operators };
@@ -102,7 +99,7 @@ export default class OpenAIClient {
             : {
                 apiKey: client?.apiKey ?? this.settings.env.OPENAI_API_KEY ?? "",
                 organization: client?.organization
-               ?? this.settings.env.OPENAI_ORG_ID,
+                ?? this.settings.env.OPENAI_ORG_ID,
               },
         );
         this.operators = this._createOperators(
@@ -329,9 +326,7 @@ export default class OpenAIClient {
       const input: InputDirectory = new InputDirectory(
         inputDirectory,
         settings.consts.DEFAULT_INPUT_RELATIVE_PATH,
-      );
-
-      const output: OutputDirectory = new OutputDirectory(
+      );      const output: OutputDirectory = new OutputDirectory(
         outputDirectory,
         settings.consts.DEFAULT_OUTPUT_RELATIVE_PATH,
       );
@@ -365,9 +360,7 @@ export default class OpenAIClient {
       return {
         chat: new ChatHandler(
           openai,
-          {
-            model: settings.consts.DEFAULT_CHAT_MODEL,
-          },
+          { model: settings.consts.DEFAULT_CHAT_MODEL },
         ),
         chatJson: new ChatJsonHandler(
           openai,
@@ -433,15 +426,11 @@ export default class OpenAIClient {
         ),
         transcribe: new TranscribeHandler(
           openai,
-          {
-            model: settings.consts.DEFAULT_TRANSCRIBE_MODEL,
-          },
+          { model: settings.consts.DEFAULT_TRANSCRIBE_MODEL },
         ),
         translate: new TranslateHandler(
           openai,
-          {
-            model: settings.consts.DEFAULT_TRANSLATE_MODEL,
-          },
+          { model: settings.consts.DEFAULT_TRANSLATE_MODEL },
         ),
       };
     }

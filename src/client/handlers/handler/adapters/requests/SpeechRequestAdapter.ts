@@ -23,8 +23,10 @@ export default class SpeechRequestAdapter
         voice,
         input,
       };
+
       if (speed !== undefined)
         this.payload.speed = speed;
+
       if (outputType !== undefined)
         this.payload.response_format = outputType;
     }

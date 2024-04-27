@@ -1,24 +1,19 @@
 import type OpenAI from "openai";
-import type {
-  ChatModelSupport,
-} from "../handlers/types/ChatTypes.js";
+import type { ChatModelSupport } from "../handlers/types/ChatTypes.js";
 import type {
   ImageModelSupport,
   ImageShape,
   ImageCount,
 } from "../handlers/types/ImageTypes.js";
-import type {
-  ImageEditCount,
-} from "../handlers/types/ImageEditTypes.js";
-import type {
-  ImageVariationCount,
-} from "../handlers/types/ImageVariationTypes.js";
+import type { ImageEditCount } from "../handlers/types/ImageEditTypes.js";
+import type { ImageVariationCount } from "../handlers/types/ImageVariationTypes.js";
 
 // TODO: Create utility function to extract any string from OpenAI types
 // TODO: Create utility function to extract string literals from OpenAI types
 // TODO: Require these Settings below to implement Settings<SettingIds, unknown>
 
 export interface ConstSettings {
+
   // // Client Operations
   DEFAULT_INPUT_RELATIVE_PATH:
   string;
@@ -101,16 +96,15 @@ export interface ConstSettings {
   // Translate
   DEFAULT_TRANSLATE_MODEL:
   | Extract<OpenAI.Audio.TranslationCreateParams["model"], string>;
-}
+}export interface EnvSettings {
 
-export interface EnvSettings {
   // // OpenAI API
   OPENAI_API_KEY:
-  | string
-  | null;
+    | string
+    | null;
   OPENAI_ORG_ID:
-  | string
-  | null;
+    | string
+    | null;
 
   // // Client Operations
   INPUT_DIRECTORY:

@@ -6,11 +6,11 @@ export default abstract class Handler<
   Req extends RequestAdapter<Req["payload"], Req["clientOptions"]>,
   ReqCtor extends new (
     ...args: ConstructorParameters<ReqCtor>
-  ) => Req,
+  )=> Req,
   Res extends ResponseAdapter<Res["payload"], Res["unpacked"]>,
   ResCtor extends new (
     payload: Res["payload"]
-  ) => Res,
+  )=> Res,
   ReqInterface extends unknown[] = [],
   ReqInterfaceDefaults extends Required<Record<string, unknown>> | null = null,
 > {
@@ -51,7 +51,8 @@ export default abstract class Handler<
         requestAdapter.payload,
       )
         .then(
-          responsePayload => this.unpack(responsePayload),
+          responsePayload =>
+            this.unpack(responsePayload),
         )
         .then(
           unpacked =>

@@ -1,6 +1,12 @@
 import dotenv from "dotenv";
-import type { ConstSettings, ConstConfig } from "../configs/ConstConfig.js";
-import type { EnvSettings, EnvConfig } from "../configs/EnvConfig.js";
+import type {
+  ConstSettings,
+  ConstConfig,
+} from "../configs/ConstConfig.js";
+import type {
+  EnvSettings,
+  EnvConfig,
+} from "../configs/EnvConfig.js";
 
 export default abstract class SettingRuntime<
   CK extends string,
@@ -18,7 +24,6 @@ export default abstract class SettingRuntime<
     },
   ) {
     this.consts = { ...settings.consts };
-
     dotenv.config();
     this.env = { ...this.hydrateEnvConfig(settings.env) };
   }
