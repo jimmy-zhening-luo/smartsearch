@@ -8,7 +8,7 @@ namespace Program {
       const client: OpenAIClient = new OpenAIClient();
       const chatResponse: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'hello world'");
 
-      Log.clientResponse(
+      Log.logResponse(
         "Chat",
         `model: ${chatResponse.model}`,
         chatResponse.answer,
@@ -23,7 +23,7 @@ namespace Program {
       // Image
       const imagePrompt: string = "A family on vacation in Shanghai";
 
-      Log.clientResponse(
+      Log.logResponse(
         "Image",
         `Prompt: "${imagePrompt}"`,
         (await client.image(imagePrompt)).images,
@@ -41,7 +41,7 @@ namespace Program {
       //   imageEditPrompt,
       // );
 
-      // Log.clientResponse(
+      // Log.log(
       //   "ImageEdit",
       //   `Input: "${inputImageEditFilename}".\nMask: "${inputImageEditMaskFilename}".\nPrompt: "${imageEditPrompt}".\nNumber of images returned: ${editedImageResponse.images.length}`,
       //   [
@@ -58,7 +58,7 @@ namespace Program {
       //   inputImageVariationFilename,
       // );
 
-      // Log.clientResponse(
+      // Log.log(
       //   "ImageVariation",
       //   `Input: "${inputImageVariationFilename}".\nNumber of images returned: ${imageVariationResponse.images.length}`,
       //   imageVariationResponse.images,
@@ -67,7 +67,7 @@ namespace Program {
       // // Models
       // const modelFilter: string = "gpt";
 
-      // Log.clientResponse(
+      // Log.log(
       //   "Models",
       //   `filter: "${modelFilter}"`,
       //   await client.models(modelFilter),
@@ -79,7 +79,7 @@ namespace Program {
 
       // await client.speech(outputSpeechFilename, textToSynthesize);
 
-      // Log.clientResponse(
+      // Log.log(
       //   "Speech",
       //   `Output: ${outputSpeechFilename}`,
       //   `Synthesized text: ${textToSynthesize}`,
@@ -88,7 +88,7 @@ namespace Program {
       // Transcribe
       const inputEnglishSpeechFilename: string = "hello-to-transcribe.mp3";
 
-      Log.clientResponse(
+      Log.logResponse(
         "Transcribe",
         `Input: ${inputEnglishSpeechFilename}`,
         await client.transcribe(inputEnglishSpeechFilename),
@@ -97,7 +97,7 @@ namespace Program {
       // Translate
       // const inputChineseSpeechFilename: string = "nihao-to-translate.mp3";
 
-      // Log.clientResponse(
+      // Log.log(
       //   "Translate",
       //   `Input: ${inputChineseSpeechFilename}`,
       //   await client.translate(inputChineseSpeechFilename),

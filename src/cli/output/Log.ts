@@ -1,41 +1,40 @@
-import type { LogMessage } from "./log/LogMessage.js";
+import type { ResponseLogger } from "./loggers/ResponseLogger.js";
 
 export default class Log {
-  public static clientResponse: LogMessage = function (
-    endpoint: string,
-    qualifier: string,
-    response: string[] | string,
+  public static readonly logResponse: ResponseLogger<void> = function (
+    ...args: Parameters<typeof Log.print>
   ): void {
-    Log.logFormattedP(
-      `${endpoint}:${
-        qualifier === ""
+    Log
+      .logMessage(
+        ...Log
+          .print(
+            ...args,
+          ),
+      );
+  };
+  private static readonly print: ResponseLogger<string[]> = function (
+    action: string,
+    context: string,
+    response: string[] | string,
+  ): string[] {
+    return [
+      `${action}:${
+        context.length === 0
           ? ""
-          : " [" + qualifier + "]"
+          : ` [${context}]`
       }`,
-      response,
-    );
+      ...[response].flat(),
+    ];
   };
 
-  protected static logFormattedP(
-    prefix: string,
-    body: string[] | string,
+  private static logMessage(
+    ...message: string[]
   ): void {
-    Log.logP(
-      ...[
-        prefix,
-        ...Array.isArray(body)
-          ? body
-          : [body],
-      ],
-    );
-  }
+    const END_OF_MESSAGE: string = "\n";
 
-  protected static logP(
-    ...lines: string[]
-  ): void {
-    for (const line of lines)
+    for (const line of message)
       console.log(line);
 
-    console.log("\n");
+    console.log(END_OF_MESSAGE);
   }
 }
