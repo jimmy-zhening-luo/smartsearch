@@ -1,8 +1,7 @@
 import type Directory from "../../directories/directory/Directory.js";
-import type FileOperation from "../../operations/FileOperation.js";
 
 export default abstract class FileOperator<
-  FileOperation extends keyof typeof FileOperation,
+  FileOperation extends "READ" | "WRITE",
   DirectoryType extends Directory<FileOperation>,
 > {
   public readonly sanitizedName: string;

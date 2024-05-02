@@ -12,7 +12,7 @@ import type { ImageVariationCount } from "../handlers/types/ImageVariationTypes.
 // TODO: Create utility function to extract string literals from OpenAI types
 // TODO: Require these Settings below to implement Settings<SettingIds, unknown>
 
-export interface ConstSettings {
+export type ConstSettings = {
 
   // // Client Operations
   DEFAULT_INPUT_RELATIVE_PATH:
@@ -96,7 +96,7 @@ export interface ConstSettings {
   // Translate
   DEFAULT_TRANSLATE_MODEL:
   | Extract<OpenAI.Audio.TranslationCreateParams["model"], string>;
-}export interface EnvSettings {
+};export type EnvSettings = {
 
   // // OpenAI API
   OPENAI_API_KEY:
@@ -111,4 +111,4 @@ export interface ConstSettings {
   | string;
   OUTPUT_DIRECTORY:
   | string;
-}
+};

@@ -1,3 +1,5 @@
-export default interface IAdapter<Payload> {
+type IAdapter<Payload> = {
   readonly payload: Payload;
-}
+};
+
+export type { IAdapter };

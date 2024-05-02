@@ -1,9 +1,7 @@
 import Directory from "./directory/Directory.js";
 
-type WRITE = "WRITE";
-
-export default class OutputDirectory extends Directory<WRITE> {
-  public readonly operation: WRITE = "WRITE";
+export default class OutputDirectory extends Directory<"WRITE"> {
+  public readonly operation = "WRITE";
 
   public async ifNotExists(): Promise<void> {
     try {

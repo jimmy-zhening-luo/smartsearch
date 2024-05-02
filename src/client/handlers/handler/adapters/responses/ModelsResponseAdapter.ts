@@ -16,14 +16,13 @@ export default class ModelsResponseAdapter
         throw new EvalError(
           `Unexpected: native client returned a payload with 0 models`,
         );
-      else {
+      else
         this.unpacked = this.payload
           .data
           .map(
-            model =>
+            (model: OpenAI.Models.Model): Extract<OpenAI.Models.Model["id"], string> =>
               model.id,
           );
-      }
     }
     catch (e) {
       throw new EvalError(

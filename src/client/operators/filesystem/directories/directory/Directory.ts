@@ -1,9 +1,8 @@
 import path from "path";
 import { promises as fs } from "fs";
 import sanitize from "sanitize-filename";
-import type FileOperation from "../../operations/FileOperation.js";
 
-export default abstract class Directory<Op extends keyof typeof FileOperation> {
+export default abstract class Directory<Op extends "READ" | "WRITE"> {
   public readonly fullPath: string;
   public abstract readonly operation: Op;
 
@@ -12,9 +11,9 @@ export default abstract class Directory<Op extends keyof typeof FileOperation> {
     defaultRelativeSubpath: string = "",
   ) {
     try {
-      if (directory instanceof Directory) {
+      if (directory instanceof Directory)
         this.fullPath = directory.fullPath;
-      }
+
       else {
         const resolvedPath: string = path.normalize(
           path.resolve(
@@ -63,9 +62,9 @@ export default abstract class Directory<Op extends keyof typeof FileOperation> {
     try {
       if (fileName === "")
         throw new SyntaxError(`fileName cannot be empty`);
-      else if (fileName.includes("/") || fileName.includes("\\")) {
+      else if (fileName.includes("/") || fileName.includes("\\"))
         throw new SyntaxError(`fileName cannot contain slashes`);
-      }
+
       else {
         const sanitizedFilename: string = sanitize(fileName);
 
@@ -147,11 +146,11 @@ export default abstract class Directory<Op extends keyof typeof FileOperation> {
         safePath,
       )
         .then(
-          () =>
+          (): true =>
             true,
         )
         .catch(
-          () =>
+          (): false =>
             false,
         );
     }

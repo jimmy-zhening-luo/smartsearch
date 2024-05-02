@@ -20,7 +20,7 @@ export default class ImageResponseAdapter
       };
 
       const nonEmptyImages: typeof payload.data = payload.data.filter(
-        image =>
+        (image: OpenAI.Images.Image): boolean =>
           (image.b64_json ?? image.url ?? "") !== "",
       );
 

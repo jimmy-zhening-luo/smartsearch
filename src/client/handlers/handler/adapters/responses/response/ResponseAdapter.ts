@@ -1,4 +1,4 @@
-import type IAdapter from "../../adapter/IAdapter.js";
+import type { IAdapter } from "../../adapter/IAdapter.js";
 
 export default abstract class ResponseAdapter<ResponsePayload, UnpackedResponse>
 implements IAdapter<ResponsePayload> {

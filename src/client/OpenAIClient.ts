@@ -1,8 +1,10 @@
 import OpenAI from "openai";
-import ClientSettingRuntime from "./defaults/ClientSettingRuntime.js";import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
+import ClientSettingRuntime from "./defaults/ClientSettingRuntime.js";
+import InputDirectory from "./operators/filesystem/directories/InputDirectory.js";
 import OutputDirectory from "./operators/filesystem/directories/OutputDirectory.js";
 import FileReader from "./operators/filesystem/files/FileReader.js";
-import FileWriter from "./operators/filesystem/files/FileWriter.js";import ChatHandler from "./handlers/ChatHandler.js";
+import FileWriter from "./operators/filesystem/files/FileWriter.js";
+import ChatHandler from "./handlers/ChatHandler.js";
 import ChatJsonHandler from "./handlers/ChatJsonHandler.js";
 import ChatVisionHandler from "./handlers/ChatVisionHandler.js";
 import ImageHandler from "./handlers/ImageHandler.js";
@@ -326,7 +328,8 @@ export default class OpenAIClient {
       const input: InputDirectory = new InputDirectory(
         inputDirectory,
         settings.consts.DEFAULT_INPUT_RELATIVE_PATH,
-      );      const output: OutputDirectory = new OutputDirectory(
+      );
+      const output: OutputDirectory = new OutputDirectory(
         outputDirectory,
         settings.consts.DEFAULT_OUTPUT_RELATIVE_PATH,
       );

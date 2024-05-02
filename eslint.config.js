@@ -10,11 +10,7 @@ export default [
     jsLintPlugin,
     tsLintPlugin,
     tsLintParser,
-    [
-      "eslint.config.js",
-    ],
-    [
-      "src/**/*.ts",
-    ],
+    ["eslint.config.js"],
+    ["src/**/*.ts"],
   ).configs,
 ];

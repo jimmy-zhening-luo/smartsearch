@@ -51,18 +51,18 @@ export default abstract class Handler<
         requestAdapter.payload,
       )
         .then(
-          responsePayload =>
+          (responsePayload: Res["payload"]): Res["unpacked"] =>
             this.unpack(responsePayload),
         )
         .then(
-          unpacked =>
+          (unpacked: Res["unpacked"]): Res["unpacked"] =>
             this.after?.(
               unpacked,
               requestAdapter.clientOptions,
             ) ?? unpacked,
         )
         .catch(
-          rejection => {
+          (rejection: unknown): never => {
             throw new EvalError(
               `Promise rejected`,
               { cause: rejection },

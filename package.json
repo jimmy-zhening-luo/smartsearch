@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
-    "@jimbojet/lint": "^6.0.0",
+    "@jimbojet/lint": "^6.1.0",
     "@stylistic/eslint-plugin": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",

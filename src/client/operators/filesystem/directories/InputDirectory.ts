@@ -1,9 +1,7 @@
 import Directory from "./directory/Directory.js";
 
-type READ = "READ";
-
-export default class InputDirectory extends Directory<READ> {
-  public readonly operation: READ = "READ";
+export default class InputDirectory extends Directory<"READ"> {
+  public readonly operation = "READ";
 
   public ifNotExists(): void {
     try {

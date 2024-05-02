@@ -26,13 +26,12 @@ export default class ChatResponseAdapter
         throw new OverconstrainedError(
           `OpenAI is being authoritarian and believes that your request is inappropriate - ironic, as they are masquerading their own abuse as 'prevention of abuse' while doing precisely nothing to actually prevent abuse.`,
         );
-      else {
+      else
         this.unpacked = {
           answer: this.payload.choices[0].message.content ?? "",
           model: this.payload.model,
           exit: this.payload.choices[0].finish_reason,
         };
-      }
     }
     catch (e) {
       throw new EvalError(
