@@ -3,7 +3,7 @@
   "version": "0.6.0-alpha.6",
   "description": "Extend Quick Search by using the OpenAI API to allow natural language queries in addition to the standard first-token-to-engine mapping",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/js/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jimmy-zhening-luo/smart-search.git"
@@ -21,7 +21,7 @@
     "lint:fix": "npm run lint -- --fix",
     "prebuild": "npm run lint:fix",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/js/index.js",
     "dev": "npm run build && npm run start"
   },
   "dependencies": {
