@@ -34,10 +34,10 @@ export default class ClientSettingRuntime extends SettingRuntime<
   ): typeof ClientSettingRuntime.prototype.env {
     return {
       ...c,
-      OPENAI_API_KEY: process.env.OPENAI_API_KEY ?? c.OPENAI_API_KEY,
-      OPENAI_ORG_ID: process.env.OPENAI_ORG_ID ?? c.OPENAI_ORG_ID,
-      INPUT_DIRECTORY: process.env.INPUT_DIRECTORY ?? c.INPUT_DIRECTORY,
-      OUTPUT_DIRECTORY: process.env.OUTPUT_DIRECTORY ?? c.OUTPUT_DIRECTORY,
+      OPENAI_API_KEY: process.env["OPENAI_API_KEY"] ?? c.OPENAI_API_KEY,
+      OPENAI_ORG_ID: process.env["OPENAI_ORG_ID"] ?? c.OPENAI_ORG_ID,
+      INPUT_DIRECTORY: process.env["INPUT_DIRECTORY"] ?? c.INPUT_DIRECTORY,
+      OUTPUT_DIRECTORY: process.env["OUTPUT_DIRECTORY"] ?? c.OUTPUT_DIRECTORY,
     };
   }
 }
