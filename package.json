@@ -21,8 +21,9 @@
     "lint:fix": "npm run lint -- --fix",
     "prebuild": "npm run lint:fix",
     "build": "tsc",
+    "prestart": "npm run build",
     "start": "node dist/js/index.js",
-    "dev": "npm run build && npm run start"
+    "dev": "npm run start"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
