@@ -31,8 +31,7 @@
     "sanitize-filename": "^1.6.3"
   },
   "devDependencies": {
-    "@eslint/js": "^8.57.0",
-    "@jimbojet/lint": "^6.1.6",
+    "@jimbojet/lint": "^7.0.0",
     "@stylistic/eslint-plugin": "^1.8.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
