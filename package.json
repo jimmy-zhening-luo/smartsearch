@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "openai": "^4.40.2",
+    "openai": "^4.45.0",
     "sanitize-filename": "^1.6.3"
   },
   "devDependencies": {
