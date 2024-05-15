@@ -1,6 +1,6 @@
 {
   "name": "smart-search",
-  "version": "0.6.0-alpha.20",
+  "version": "0.6.0-alpha.21",
   "description": "Extend Quick Search by using the OpenAI API to allow natural language queries in addition to the standard first-token-to-engine mapping",
   "type": "module",
   "main": "dist/js/index.js",
