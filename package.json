@@ -15,11 +15,9 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/smart-search#readme",
   "scripts": {
-    "clean": "npm run clean:dist",
-    "clean:dist": "shx rm -rf dist",
     "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
-    "prebuild": "npm run clean && npm run lint:fix",
+    "prebuild": "npm run lint:fix",
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node dist/js/index.js",
