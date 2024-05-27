@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/jimmy-zhening-luo/smart-search#readme",
   "scripts": {
-    "lint": "eslint --cache --cache-strategy content -c eslint.config.js src/**/*.ts",
+    "lint": "eslint --cache --cache-strategy content -c eslint.config.js *.config.js src/**/*.ts",
     "lint:fix": "npm run lint -- --fix",
     "prebuild": "npm run lint:fix",
     "build": "tsc",
