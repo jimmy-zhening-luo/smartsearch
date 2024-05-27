@@ -21,8 +21,8 @@
     "build": "tsc",
     "prestart": "npm run build",
     "start": "node dist/js/index.js",
-    "dev": "npm run start",
-    "test": "npm run dev"
+    "test": "npm run start",
+    "dev": "npm run test"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
