@@ -1,18 +1,3 @@
-import stylistic from "@stylistic/eslint-plugin";
-import ts from "@typescript-eslint/eslint-plugin";
-import parser from "@typescript-eslint/parser";
-import Lint from "@jimbojet/lint";
+import linted from "linted";
 
-export default [
-  ...new Lint(
-    {
-      stylistic,
-      files: ["*.config.js"],
-    },
-    {
-      ts,
-      parser,
-      files: ["src/**/*.ts"],
-    },
-  ).configs,
-];
+export default linted();
