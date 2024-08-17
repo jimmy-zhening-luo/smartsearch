@@ -8,7 +8,7 @@ export default abstract class Directory<Op extends "READ" | "WRITE"> {
 
   constructor(
     directory: Directory<Op> | string = ".",
-    defaultRelativeSubpath: string = "",
+    defaultRelativeSubpath = "",
   ) {
     try {
       if (directory instanceof Directory)
@@ -21,15 +21,15 @@ export default abstract class Directory<Op extends "READ" | "WRITE"> {
               directory,
             ),
           ),
-        );
-        const root: string = path.normalize(
+        ),
+        root: string = path.normalize(
           path.resolve(
             path.normalize(
               process.cwd(),
             ),
           ),
-        );
-        const dot: string = path.normalize(
+        ),
+        dot: string = path.normalize(
           path.resolve(
             path.normalize(
               ".",
@@ -146,12 +146,10 @@ export default abstract class Directory<Op extends "READ" | "WRITE"> {
         safePath,
       )
         .then(
-          (): true =>
-            true,
+          (): true => true,
         )
         .catch(
-          (): false =>
-            false,
+          (): false => false,
         );
     }
     catch (e) {

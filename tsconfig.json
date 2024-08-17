@@ -1,9 +1,9 @@
 {
   "include": [
     "*.config.js",
-    "src/**/*"
+    "src/**/*",
   ],
-  "exclude": [ ],
+  "exclude": [],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
     /* Projects */
@@ -34,7 +34,7 @@
     "paths": {
       "*": [
         "node_modules/*",
-      ]
+      ],
     }, /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -105,6 +105,6 @@
     "allowUnreachableCode": false, /* Disable error reporting for unreachable code. */
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": false /* Skip type checking all .d.ts files. */
-  }
+    "skipLibCheck": false, /* Skip type checking all .d.ts files. */
+  },
 }

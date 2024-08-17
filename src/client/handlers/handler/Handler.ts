@@ -51,15 +51,13 @@ export default abstract class Handler<
         requestAdapter.payload,
       )
         .then(
-          (responsePayload: Res["payload"]): Res["unpacked"] =>
-            this.unpack(responsePayload),
+          (responsePayload: Res["payload"]): Res["unpacked"] => this.unpack(responsePayload),
         )
         .then(
-          (unpacked: Res["unpacked"]): Res["unpacked"] =>
-            this.after?.(
-              unpacked,
-              requestAdapter.clientOptions,
-            ) ?? unpacked,
+          (unpacked: Res["unpacked"]): Res["unpacked"] => this.after?.(
+            unpacked,
+            requestAdapter.clientOptions,
+          ) ?? unpacked,
         )
         .catch(
           (rejection: unknown): never => {

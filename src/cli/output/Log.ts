@@ -3,7 +3,7 @@ import type { ResponseLogger } from "./loggers/ResponseLogger.js";
 export function logMessage(
   ...message: string[]
 ): void {
-  const END_OF_MESSAGE: string = "\n";
+  const END_OF_MESSAGE = "\n";
 
   for (const line of message)
     console.log(line);

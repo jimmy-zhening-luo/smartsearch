@@ -8,7 +8,7 @@ class ModelsRequestAdapter extends NullRequestAdapter<{
   };
 
   constructor(
-    filter: string = "",
+    filter = "",
   ) {
     try {
       super();

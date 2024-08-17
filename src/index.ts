@@ -5,8 +5,8 @@ namespace Program {
 
   export async function main(): Promise<void> {
     try {
-      const client: OpenAIClient = new OpenAIClient();
-      const chatResponse: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'I am a little teapot!'");
+      const client: OpenAIClient = new OpenAIClient,
+      chatResponse: Awaited<ReturnType<OpenAIClient["chat"]>> = await client.chat("Say 'I am a little teapot!'");
 
       log(
         "Chat",
@@ -17,11 +17,8 @@ namespace Program {
       // ChatJson
       /** TBD */
 
-      // ChatVision
-      /** TBD */
-
       // Image
-      const imagePrompt: string = "A family on vacation in Shanghai";
+      const imagePrompt = "A family on vacation in Shanghai";
 
       log(
         "Image",
@@ -86,7 +83,7 @@ namespace Program {
       // );
 
       // Transcribe
-      const inputEnglishSpeechFilename: string = "hello-to-transcribe.mp3";
+      const inputEnglishSpeechFilename = "hello-to-transcribe.mp3";
 
       log(
         "Transcribe",

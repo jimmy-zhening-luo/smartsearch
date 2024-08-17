@@ -3,14 +3,13 @@ import RequestAdapter from "./request/RequestAdapter.js";
 
 type ChatRequestPayload = OpenAI.ChatCompletionCreateParamsNonStreaming;
 
-export default class ChatRequestAdapter<P extends ChatRequestPayload["messages"][0]["content"] = string>
-  extends RequestAdapter<ChatRequestPayload> {
+export default class ChatRequestAdapter extends RequestAdapter<ChatRequestPayload> {
   public readonly payload: ChatRequestPayload;
   public readonly clientOptions: null;
 
   constructor(
     model: Extract<ChatRequestPayload["model"], string>,
-    prompt: P,
+    prompt: string,
     instructions?: string,
     temperature?: Extract<ChatRequestPayload["temperature"], number>,
     maxTokens?: Extract<ChatRequestPayload["max_tokens"], number>,
@@ -25,7 +24,7 @@ export default class ChatRequestAdapter<P extends ChatRequestPayload["messages"]
         messages: [
           {
             role: "user",
-            content: prompt ?? "",
+            content: prompt,
           },
         ],
       };

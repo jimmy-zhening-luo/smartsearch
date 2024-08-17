@@ -5,6 +5,6 @@ export default abstract class RequestAdapter<
   ClientOptions = null,
 >
 implements IAdapter<RequestPayload> {
-  public abstract readonly payload: RequestPayload;
+  public abstract readonly payload: ClientOptions extends null ? RequestPayload : RequestPayload;
   public abstract readonly clientOptions: ClientOptions;
 }

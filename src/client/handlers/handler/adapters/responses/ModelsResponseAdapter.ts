@@ -2,7 +2,7 @@ import type OpenAI from "openai";
 import ResponseAdapter from "./response/ResponseAdapter.js";
 
 type ModelsResponsePayload = OpenAI.Models.ModelsPage;
-type UnpackedModelsResponse = Array<Extract<ModelsResponsePayload["data"][0]["id"], string>>;
+type UnpackedModelsResponse = Extract<ModelsResponsePayload["data"][0]["id"], string>[];
 
 export default class ModelsResponseAdapter
   extends ResponseAdapter<ModelsResponsePayload, UnpackedModelsResponse> {
@@ -20,8 +20,7 @@ export default class ModelsResponseAdapter
         this.unpacked = this.payload
           .data
           .map(
-            (model: OpenAI.Models.Model): Extract<OpenAI.Models.Model["id"], string> =>
-              model.id,
+            (model: OpenAI.Models.Model): Extract<OpenAI.Models.Model["id"], string> => model.id,
           );
     }
     catch (e) {

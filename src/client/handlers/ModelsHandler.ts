@@ -31,7 +31,7 @@ typeof ModelsResponseAdapter,
     }
   }
 
-  protected requestInterface(filter: string = ""): ConstructorParameters<typeof ModelsRequestAdapter> {
+  protected requestInterface(filter = ""): ConstructorParameters<typeof ModelsRequestAdapter> {
     try {
       return [filter];
     }
@@ -63,8 +63,7 @@ typeof ModelsResponseAdapter,
       return unpacked
         .sort()
         .filter(
-          (model: string): boolean =>
-            model.includes(clientOptions.filter),
+          (model: string): boolean => model.includes(clientOptions.filter),
         );
     }
     catch (e) {

@@ -6,7 +6,6 @@ import FileReader from "./operators/filesystem/files/FileReader.js";
 import FileWriter from "./operators/filesystem/files/FileWriter.js";
 import ChatHandler from "./handlers/ChatHandler.js";
 import ChatJsonHandler from "./handlers/ChatJsonHandler.js";
-import ChatVisionHandler from "./handlers/ChatVisionHandler.js";
 import ImageHandler from "./handlers/ImageHandler.js";
 import ImageEditHandler from "./handlers/ImageEditHandler.js";
 import ImageVariationHandler from "./handlers/ImageVariationHandler.js";
@@ -33,7 +32,6 @@ export default class OpenAIClient {
   protected readonly handlers: {
     chat: ChatHandler;
     chatJson: ChatJsonHandler;
-    chatVision: ChatVisionHandler;
     image: ImageHandler;
     imageEdit: ImageEditHandler;
     imageVariation: ImageVariationHandler;
@@ -91,7 +89,7 @@ export default class OpenAIClient {
         }
       }
       else {
-        this.settings = overrides?.defaults ?? new ClientSettingRuntime();
+        this.settings = overrides?.defaults ?? new ClientSettingRuntime;
         this.openai = new OpenAI(
           client instanceof OpenAI
             ? {
@@ -143,18 +141,6 @@ export default class OpenAIClient {
     catch (e) {
       throw new EvalError(
         `OpenAIClient: chatJson: Failed to submit request`,
-        { cause: e },
-      );
-    }
-  }
-
-  public async chatVision(...input: Parameters<ChatVisionHandler["submit"]>): ReturnType<ChatVisionHandler["submit"]> {
-    try {
-      return await this.handlers.chatVision.submit(...input);
-    }
-    catch (e) {
-      throw new EvalError(
-        `OpenAIClient: chatVision: Failed to submit request`,
         { cause: e },
       );
     }
@@ -328,8 +314,8 @@ export default class OpenAIClient {
       const input: InputDirectory = new InputDirectory(
         inputDirectory,
         settings.consts.DEFAULT_INPUT_RELATIVE_PATH,
-      );
-      const output: OutputDirectory = new OutputDirectory(
+      ),
+      output: OutputDirectory = new OutputDirectory(
         outputDirectory,
         settings.consts.DEFAULT_OUTPUT_RELATIVE_PATH,
       );
@@ -372,13 +358,6 @@ export default class OpenAIClient {
             jsonInstruction: settings.consts.DEFAULT_CHAT_JSON_INSTRUCTION,
             temperature: settings.consts.DEFAULT_CHAT_JSON_TEMPERATURE,
             seed: settings.consts.DEFAULT_CHAT_JSON_SEED,
-          },
-        ),
-        chatVision: new ChatVisionHandler(
-          openai,
-          {
-            model: settings.consts.DEFAULT_CHAT_VISION_MODEL,
-            maxTokens: settings.consts.DEFAULT_CHAT_VISION_MAX_TOKENS,
           },
         ),
         image: new ImageHandler(

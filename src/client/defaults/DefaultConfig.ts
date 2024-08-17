@@ -17,8 +17,8 @@ export type {
   EnvSettings,
 };
 
-const _INPUT = "input";
-const _OUTPUT = "output";
+const _INPUT = "input",
+_OUTPUT = "output";
 
 export const DefaultConfig: {
   consts: ConstConfig<ConstSettingIds, ConstSettings>;
